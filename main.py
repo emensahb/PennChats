@@ -6,6 +6,10 @@ def penn_chats():
     return 'Welcome to Penn Chats'
 
 
+@app.route("/name/<name>")
+def get_user_name(name):
+    return "name : {}".format(name)
+
 if __name__ == '__main__':
     app.run()
 
