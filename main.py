@@ -1,18 +1,18 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def penn_chats():
-    return 'Welcome to Penn Chats'
+    return render_template('index.html', quote='You are on the home page')
 
 @app.route('/profile')
-def penn_chats():
-    return 'Welcome to Penn Chats Profile Page'
+def profile():
+    return render_template('index.html', quote='This is the landing page for all profiles')
 
 @app.route('/profile/jimmy')
-def penn_chats():
-    return 'Welcome to Penn Chats Profile Page for Jimmy!'
+def profile_jimmy():
+    return render_template('index.html', quote='This is the profile page for Jimmy')
 
 
 if __name__ == '__main__':
