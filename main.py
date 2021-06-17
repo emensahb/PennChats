@@ -1,9 +1,29 @@
-from flask import Flask
+from flask import Flask, render_template
+from forms import SignUpForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
+
+# home page
 @app.route('/')
 def penn_chats():
-    return 'Welcome to Penn Chats'
+    return render_template("home.html")
+
+# example profile page
+@app.route('/profile')
+def test_profile():
+    return 'Profile goes here'
+
+# example login (registered user main screen) page
+@app.route('/login')
+def test_login():
+    return 'Login'
+
+# example signup page
+@app.route('/signup', methods=["POST", "GET"])
+def test_signup():
+    form = SignUpForm()
+    return render_template("signup.html", form = form)
 
 
 @app.route("/name/<name>")
