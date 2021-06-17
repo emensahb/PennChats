@@ -15,6 +15,10 @@ def profile_jimmy():
     return render_template('index.html', quote='This is the profile page for Jimmy')
 
 
+@app.route("/name/<name>")
+def get_user_name(name):
+    return "name : {}".format(name)
+
 if __name__ == '__main__':
     app.run()
 
