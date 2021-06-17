@@ -1,0 +1,48 @@
+/* For Penn Chats header, might change to actual header */
+h1 {
+    font-size: 7vw;
+    margin-top: 3vw;
+    margin-bottom: 0px;
+    }
+
+/* For intro text on homepage, might be changed to p */
+h3 {
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+/* To justify text */
+div {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* For logo on homepage */
+.responsive {
+  width: 10%;
+  height: auto;
+}
+
+/* For banner image on homepage */
+.responsive_banner {
+    width: 40%;
+}
+
+/* For homepage buttons */
+.button {
+  border: none;
+  color: white;
+  font-family: 'Times New Roman';
+  padding: 3vw 3vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 2vw;
+  margin: 2vw 2vw;
+  cursor: pointer;
+}
+
+.homepage_button {
+    /* blue from logo */
+    background-color: #03205A;
+}
