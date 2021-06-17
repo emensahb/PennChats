@@ -1,9 +1,18 @@
 from flask import Flask
 
 app = Flask(__name__)
+
 @app.route('/')
 def penn_chats():
     return 'Welcome to Penn Chats'
+
+@app.route('/profile')
+def penn_chats():
+    return 'Welcome to Penn Chats Profile Page'
+
+@app.route('/profile/jimmy')
+def penn_chats():
+    return 'Welcome to Penn Chats Profile Page for Jimmy!'
 
 
 if __name__ == '__main__':
