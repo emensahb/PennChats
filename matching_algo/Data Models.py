@@ -82,7 +82,7 @@ class Course(db.model):
 
 class CourseEnrolledLookup(db.model):
     """this table is used to store all pairings of students and their enrolled_courses_by_student tables.
-    There is a one-to-one relationship between the student table and this table."""
+    There is a one-to-one relationship between the student and this table."""
 
     student_id = db.Column(db.Integer, primary_key=True)
     enrolled_courses_by_student_id = db.Column(db.Integer)
@@ -145,13 +145,13 @@ class Group(db.model):
     group_id = db(db.Integer, primary_key=True) # this is the id of this table and the primary_key
     group_student_number = db.Column(db.Integer)
     student_id = db.Column(db.Integer)
-    name = db.Column(db.Text)
-    email = db.Column(db.Text)
+    # name = db.Column(db.Text)
+    # email = db.Column(db.Text)
 
-    def __init__(self, name, student_id, email):
-        self.name = name
+    def __init__(self, student_id):
+        # self.name = name
         self.student_id = student_id
-        self.email = email
+        # self.email = email
 
 
 class Meeting(db.model):
@@ -169,4 +169,3 @@ class Meeting(db.model):
         """Each meeting object has to have a group associated with it, and a meeting time associated with it."""
         self.group_id = group_id
         self.time = time
-

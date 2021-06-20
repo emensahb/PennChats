@@ -28,11 +28,11 @@ def main():
         # for loop: for each student object in the given time selection group, read todo the primary_networking_goal_id
         # of the student, and put the student object into a todo PRIME NETWORKING GOAL DICTIONARY
         # with the primary_networking_goal_id as key, and a list of student objects as value
-        # (there will likely be only two keys in this dictionary: sort by class & sort by interest)
+        # (there will likely be only two keys in this dictionary: match by class & match by interest)
 
     # further sort students by type of primary networking goal
         # for loop if condition: for each key in the PRIME NETWORKING GOAL DICTIONARY, compare the primary_networking_goal_id...
-            # if the key = "sort by class", do the following:
+            # if the key = "match by class", do the following:
                 # for loop: for each student object in the "sort by class" list, lookup the courses the student is currently taking
                 # from the todo COURSES_ENROLLED_BY_STUDENT TABLE, and put the student into a SHARED COURSE DICTIONARY
                 # with the key being the course_id of the first course of the COURSES_ENROLLED_BY_STUDENT TABLE
