@@ -12,12 +12,12 @@ def penn_chats():
 # example profile page
 @app.route('/profile')
 def test_profile():
-    return 'Profile goes here'
+    return render_template("profile.html")
 
 # example login (registered user main screen) page
 @app.route('/login')
 def test_login():
-    return 'Login'
+    return render_template("login.html")
 
 # example signup page
 @app.route('/signup', methods=["POST", "GET"])
