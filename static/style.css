@@ -5,10 +5,21 @@ h1 {
     margin-bottom: 0px;
     }
 
+/* Secondary header */
+h2 {
+    font-size: 3vw;
+    margin-top: 2vw;
+    margin-bottom: 0px;
+    }
+
 /* For intro text on homepage, might be changed to p */
 h3 {
     padding-left: 20%;
     padding-right: 20%;
+}
+
+p {
+    text-align: left;
 }
 
 /* To justify text */
@@ -33,12 +44,12 @@ div {
   border: none;
   color: white;
   font-family: 'Times New Roman';
-  padding: 3vw 3vw;
+  padding: 2vw 2vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 2vw;
-  margin: 2vw 2vw;
+  margin: 1vw 1vw;
   cursor: pointer;
 }
 

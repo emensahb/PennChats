@@ -25,6 +25,11 @@ def test_signup():
     form = SignUpForm()
     return render_template("signup.html", form = form)
 
+# example matches page
+@app.route('/matches')
+def test_matches():
+    return render_template("matches.html")
+
 
 @app.route("/name/<name>")
 def get_user_name(name):
