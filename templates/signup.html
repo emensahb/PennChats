@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %} Sign Up {% endblock %}
+
+{% block heading %} {% endblock %}
+
+{% block content %}
+<div style="text-align: center;">
+    <div style="display: inline-block; text-align: left;">
+            <form action="{{url_for('test_signup')}}" method="POST" style="padding:5px;">
+                <!-- First Name Field -->
+                {{ form.first_name.label }}:
+                {{ form.first_name }}
+                <br>
+
+                <!-- Last Name Field -->
+                {{ form.last_name.label }}:
+                {{ form.last_name }}
+                <br>
+
+                <!-- City Field -->
+                {{ form.city.label }}:
+                {{ form.city }}
+                <br>
+
+                <!-- State Field -->
+                {{ form.state.label }}:
+                {{ form.state }}
+                <br>
+
+                <!-- Country Field -->
+                {{ form.country.label }}:
+                {{ form.country }}
+                <br>
+
+                <!-- Primary Class Field -->
+                {{ form.primary_class.label }}:
+                {{ form.primary_class }}
+                <br>
+
+                <!-- Secondary Class Field -->
+                {{ form.secondary_class.label }}:
+                {{ form.secondary_class }}
+                <br>
+
+                <!-- Class Field -->
+                {{ form.class_checkboxes.label }}:
+                {{ form.class_checkboxes }}
+                <br>
+
+                <!-- Current Class Field -->
+                {{ form.current_class.label }}:
+                {{ form.current_class }}
+                <br>
+
+                <!-- Primary Interest Field -->
+                {{ form.primary_interest.label }}:
+                {{ form.primary_interest }}
+                <br>
+
+                <!-- Secondary Interest Field -->
+                {{ form.secondary_interest.label }}:
+                {{ form.secondary_interest }}
+                <br>
+
+                <!-- Cohort Field -->
+                {{ form.cohort.label }}:
+                {{ form.cohort }}
+                <br>
+
+                <!-- LinkedIn Field -->
+                {{ form.linkedin.label }}:
+                {{ form.linkedin }}
+                <br>
+
+                <!-- Bio Field -->
+                {{ form.bio.label }}:
+                {{ form.bio }}
+                <br>
+
+                <!-- Primary Time Field -->
+                {{ form.primary_time.label }}:
+                {{ form.primary_time }}
+                <br>
+
+                <!-- Secondary Time Field -->
+                {{ form.secondary_time.label }}:
+                {{ form.secondary_time }}
+                <br>
+
+                <!-- Matching Field -->
+                {{ form.matching.label }}:
+                {{ form.matching }}
+                <br>
+
+                <!-- Submit Field -->
+                {{ form.submit }}
+            </form>
+        </div>
+</div>
+
+
+{% endblock %}

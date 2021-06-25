@@ -1,15 +1,37 @@
 from flask import Flask, render_template, request, redirect, url_for
+from forms import SignUpForm
 from flask_sqlalchemy import SQLAlchemy
 from app.models import Student,
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql +psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
-
 @app.route('/')
 def penn_chats():
-    return 'Welcome to Penn Chats'
+    return render_template("home.html")
+
+# example profile page
+@app.route('/profile')
+def test_profile():
+    return render_template("profile.html")
+
+# example login (registered user main screen) page
+@app.route('/login')
+def test_login():
+    return render_template("login.html")
+
+# example signup page
+@app.route('/signup', methods=["POST", "GET"])
+def test_signup():
+    form = SignUpForm()
+    return render_template("signup.html", form = form)
+
+# example matches page
+@app.route('/matches')
+def test_matches():
+    return render_template("matches.html")
 
 #for profile route
 @app.route('/profile')

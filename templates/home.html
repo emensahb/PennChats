@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %} Penn Chats {% endblock %}
+
+{% block heading %} {% endblock %}
+
+{% block content%}
+    <!-- Should make into header class -->
+    <center><img
+            src="https://user-images.githubusercontent.com/84137452/122130241-56b82880-ce05-11eb-86ff-af092808b0ee.jpg"
+            alt="Students talking"
+            class="responsive_banner"
+    ></center>
+
+    <!-- Make regular paragraph? -->
+    <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
+        MCIT Online students. Tell us what classes you
+        are taking, your interests, and when you'd like to meet,
+        and we'll match you with a group of 2-5 students for a chat!</div></center></h3>
+
+    <center>
+        <a href="{{ url_for('test_signup') }}">
+            <button class="button homepage_button">Sign Up</button></a>
+        <a href="{{ url_for('test_login') }}">
+            <button class="button homepage_button">Login</button></a>
+    </center>
+{% endblock %}
