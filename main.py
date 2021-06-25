@@ -1,9 +1,28 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from app.models import Student,
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql +psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
+
+
 @app.route('/')
 def penn_chats():
     return 'Welcome to Penn Chats'
+
+#for profile route
+@app.route('/profile')
+def penn_chats():
+    return 'Welcome to Penn Chats'
+
+#for processing profile route
+@app.route('/process', methods = ['POST'])
+def process():
+    name = request.form['name']
+    email = request.form['email']
+
+    return redirect(url_for('index.html'))
 
 
 @app.route("/name/<name>")
