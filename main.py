@@ -1,10 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from forms import SignUpForm
+from flask_sqlalchemy import SQLAlchemy
+from app.models import Student,
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql +psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
-# home page
 @app.route('/')
 def penn_chats():
     return render_template("home.html")
@@ -29,6 +32,19 @@ def test_signup():
 @app.route('/matches')
 def test_matches():
     return render_template("matches.html")
+
+#for profile route
+@app.route('/profile')
+def penn_chats():
+    return 'Welcome to Penn Chats'
+
+#for processing profile route
+@app.route('/process', methods = ['POST'])
+def process():
+    name = request.form['name']
+    email = request.form['email']
+
+    return redirect(url_for('index.html'))
 
 
 @app.route("/name/<name>")
