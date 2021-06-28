@@ -99,4 +99,18 @@ def main():
                 # if any attribute (course, interest) is present in the todo student's profile (read from a table of student's courses/interests or do a query)
                 # add the student to this Meeting (by updating the Group object)
                 # and remove the student from the LIST OF UNMATCHED STUDENTS
-        # at the end of iteration, OUTPUT final LIST OF MATCHED MEETINGS and LIST OF UNMATCHED STUDENTS
+        # at the end of iteration, OUTPUT LIST OF MATCHED MEETINGS and LIST OF UNMATCHED STUDENTS
+
+###################################################
+########## safety check algorithm #################
+###################################################
+
+    # This extra part of algorithm is used to make sure the same groups do not keep being matched together
+
+    # For loop & if condition:
+        # for each meeting in the LIST OF MATCHED MEETINGS, read the group attribute of the meeting.
+        # if the group is identical to a group that was matched previously (need to define what equal means for the group object)
+            # then add the students in this group to the LIST OF UNMATCHED STUDENTS
+            # and remove this meeting object from the LIST OF MATCHED MEETINGS
+
+    # Optional: rerun the final iteration for unmatched students code block again to match unmatched students
