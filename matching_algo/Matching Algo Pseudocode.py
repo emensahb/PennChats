@@ -96,7 +96,7 @@ def main():
         # for each student in the LIST OF UNMATCHED STUDENTS, read the primary_time_selection_id and the secondary_time_selection_id,
         # from the LIST OF MATCHED MEETINGS, find Meetings that have the same time attributes and store in a list
             # for each Meeting in this list, read the other attributes of the meeting
-                # if any attribute (course, interest) is present in the student's profile (read from a table of student's courses/interests or do a query)
+                # if any attribute (course, interest) is present in the todo student's profile (read from a table of student's courses/interests or do a query)
                 # add the student to this Meeting (by updating the Group object)
                 # and remove the student from the LIST OF UNMATCHED STUDENTS
         # at the end of iteration, OUTPUT final LIST OF MATCHED MEETINGS and LIST OF UNMATCHED STUDENTS
