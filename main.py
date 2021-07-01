@@ -1,26 +1,65 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from forms import SignUpForm
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
-from app.models import Student,
+from flask_migrate import Migrate
+from models import *
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
+app.config.from_object(Config)
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql +psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 @app.route('/')
 def penn_chats():
+    # get student's first name from Google Authenticate
+    # student_name = from google authenticate.name  or something like that
+    # return render_template("home.html", current_student = student_name)
     return render_template("home.html")
+
 
 # example profile page
 @app.route('/profile')
 def test_profile():
     return render_template("profile.html")
 
+
+@app.route('/process_profile', methods=['POST'])
+def process_profile():
+    firstname = request.form['firstname']
+    lastname = request.form['lastname']
+    city = request.form['city']
+    state = request.form['state']
+    country = request.form['country']
+    bio = request.form['bio']
+    cohort = request.form['cohort']
+    linkedin = request.form['linkedin']
+    return redirect(url_for("home.html"))
+
+
+
+
 # example login (registered user main screen) page
 @app.route('/login')
 def test_login():
     return render_template("login.html")
+
+
+@app.route('/process_login')
+def test_login():
+    email = request.form['email']
+    password = request.form['password']
+    return redirect(url_for("home.html"))
+
+
 
 # example signup page
 @app.route('/signup', methods=["POST", "GET"])
@@ -38,18 +77,11 @@ def test_matches():
 def penn_chats():
     return 'Welcome to Penn Chats'
 
-#for processing profile route
-@app.route('/process', methods = ['POST'])
-def process():
-    name = request.form['name']
-    email = request.form['email']
-
-    return redirect(url_for('index.html'))
-
 
 @app.route("/name/<name>")
 def get_user_name(name):
     return "name : {}".format(name)
+
 
 if __name__ == '__main__':
     app.run()

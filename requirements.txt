@@ -21,3 +21,5 @@ Flask-User==1.0.1.5
 pytest==3.0.5
 pytest-cov==2.4.0
 MyApplication~=0.1.0
+config~=0.5.0.post0
+WTForms~=2.3.3
