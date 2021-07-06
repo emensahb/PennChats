@@ -1,10 +1,20 @@
-from app import db
+from app import db, models
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
+
 class Student(db.Model):
+    """
+    Create a student table
+    """
+
+    # Ensures that table will be named students in plural vs singular like the model name
+    __tablename__ = 'students'
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Text, index=True, unique=True)
-    password_hash = db.Column(db.Text)
+    #password_hash = db.Column(db.Text)
     firstname = db.Column(db.Text)
     lastname = db.Column(db.Text)
     city = db.Column(db.Text)
@@ -14,19 +24,29 @@ class Student(db.Model):
     cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
 
-    def __init__(self, firstname, email):
+    def __init__(self, firstname, lastname, email, city, state, country, bio, cohort, linkedin):
         self.firstname = firstname
+        self.lastname = lastname
         self.email = email
+        self.city = city
+        self.state = state
+        self.country = country
+        self.bio = bio
+        self.cohort = cohort
+        self.linkedin = linkedin
 
     def __repr__(self):
-        '''the toString method of the Student class
+        """
+        the toString method of the Student class
         :return: a String that includes the student's name and email.
-        '''
+        """
         return f"{self.firstname} {self.lastname} has email: {self.email}"
 
 
 class TimePreference(db.Model):
-    """this table is used to store all available time slots for students to choose from"""
+    """
+    This table is used to store all available time slots for students to choose from
+    """
 
     time_preference_id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.Datetime)
@@ -36,8 +56,10 @@ class TimePreference(db.Model):
 
 
 class NetworkingGoal(db.Model):
-    """this table is used to store the all networking goals for PennChats.
-    Currently contains only two goals: match by class, match by interest"""
+    """
+    this table is used to store the all networking goals for PennChats.
+    Currently contains only two goals: match by class, match by interest
+    """
 
     networking_goal_id = db.Column(db.Integer, primary_key=True)
     networking_goal = db.Column(db.Text)
@@ -47,8 +69,11 @@ class NetworkingGoal(db.Model):
 
 
 class Course(db.model):
-    """this table is used to store all MCIT Online courses."""
-    """ Course id is the actual MCIT online course ID number"""
+    """
+    This table is used to store all MCIT Online courses.
+    Course id is the actual MCIT online course ID number.
+
+    """
 
     id = db.Column(db.Integer, primary_key=True) # this is auto generated
     course_id = db.Column(db.Integer, unique=True)  # we want to make sure it's unique
@@ -59,8 +84,10 @@ class Course(db.model):
 
 
 class Interest(db.model):
-    """this table is used to sore all interests we plan to provide as options for students to choose from
-    when they fill out their user profile."""
+    """
+    this table is used to sore all interests we plan to provide as options for students to choose from
+    when they fill out their user profile.
+    """
 
     interest_id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text)
@@ -69,13 +96,11 @@ class Interest(db.model):
         self.interest_name = interest_name
 
 
-
-
-
-
 class CourseEnrolledLookup(db.model):
-    """this table is used to store all pairings of students and their enrolled_courses_by_student tables.
-    There is a one-to-one relationship between the student table and this table."""
+    """
+    This table is used to store all pairings of students and their enrolled_courses_by_student tables.
+    There is a one-to-one relationship between the student table and this table.
+    """
 
     student_id = db.Column(db.Integer, primary_key=True)
     enrolled_courses_by_student_id = db.Column(db.Integer)
@@ -86,7 +111,9 @@ class CourseEnrolledLookup(db.model):
 
 
 class CoursesEnrolledByStudent(db.model):
-    """this table records all the courses currently taken by a specific student."""
+    """
+    this table records all the courses currently taken by a specific student.
+    """
 
     enrolled_courses_by_student_id # this is the id of this table and the primary_key
     enrolled_course_number = db.Column(db.Integer)

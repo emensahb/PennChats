@@ -32,21 +32,6 @@ def test_profile():
     return render_template("profile.html")
 
 
-@app.route('/process_profile', methods=['POST'])
-def process_profile():
-    firstname = request.form['firstname']
-    lastname = request.form['lastname']
-    city = request.form['city']
-    state = request.form['state']
-    country = request.form['country']
-    bio = request.form['bio']
-    cohort = request.form['cohort']
-    linkedin = request.form['linkedin']
-    return redirect(url_for("home.html"))
-
-
-
-
 # example login (registered user main screen) page
 @app.route('/login')
 def test_login():
@@ -60,19 +45,34 @@ def test_login():
     return redirect(url_for("home.html"))
 
 
-
-# example signup page
 @app.route('/signup', methods=["POST", "GET"])
-def test_signup():
+def signup():
+    """
+    Handle requests to the /signup route
+    Adds a student to the database through the sign up form
+    """
     form = SignUpForm()
-    return render_template("signup.html", form = form)
+    if form.validate_on_submit():
+        student = Student(firstname=form.firstname.data,
+                          lastname=form.lastname.data,
+                          email=form.email.data,
+                          city=form.city.data,
+                          state=form.state.data,
+                          country=form.country.data,
+                          bio=form.bio.data,
+                          cohort=form.cohort.data,
+                          linkedin=form.linkedin.data
+                          )
+    return render_template("signup.html", form=form)
+
 
 # example matches page
 @app.route('/matches')
 def test_matches():
     return render_template("matches.html")
 
-#for profile route
+
+# for profile route
 @app.route('/profile')
 def penn_chats():
     return 'Welcome to Penn Chats'
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-#def print_hi(name):
+# def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
  #   print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
