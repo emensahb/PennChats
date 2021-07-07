@@ -9,21 +9,24 @@ app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 def penn_chats():
     return render_template("home.html")
 
-# example profile page
-@app.route('/profile')
-def test_profile():
-    return 'Profile goes here'
-
-# example login (registered user main screen) page
-@app.route('/login')
-def test_login():
-    return 'Login'
-
-# example signup page
+# dummy signup page
 @app.route('/signup', methods=["POST", "GET"])
-def test_signup():
+def signup():
     form = SignUpForm()
     return render_template("signup.html", form = form)
+
+# dummy login page
+@app.route('/login', methods=["POST", "GET"])
+def login():
+    form = SignUpForm()
+    return render_template("login.html", form = form)
+
+# example profile page
+@app.route('/create_profile')
+def create_profile():
+    form = SignUpForm()
+    return render_template("create_profile.html", form = form)
+
 
 
 @app.route("/name/<name>")
