@@ -6,11 +6,11 @@
 
 {% block content%}
     <!-- Should make into header class -->
-    <center><img
-            src="https://user-images.githubusercontent.com/84137452/122130241-56b82880-ce05-11eb-86ff-af092808b0ee.jpg"
-            alt="Students talking"
-            class="responsive_banner"
-    ></center>
+<!--    <center><img-->
+<!--            src="https://user-images.githubusercontent.com/84137452/122130241-56b82880-ce05-11eb-86ff-af092808b0ee.jpg"-->
+<!--            alt="Students talking"-->
+<!--            class="responsive_banner"-->
+<!--    ></center>-->
 
     <!-- Make regular paragraph? -->
     <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
@@ -20,8 +20,8 @@
 
     <center>
         <a href="{{ url_for('signup') }}">
-            <button class="button homepage_button">Sign Up</button></a>
+            <button type="button" name="button">Sign Up</button></a>
         <a href="{{ url_for('login') }}">
-            <button class="button homepage_button">Login</button></a>
+            <button type="button" name="button">Login</button></a>
     </center>
 {% endblock %}
