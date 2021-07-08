@@ -28,7 +28,23 @@ def penn_chats():
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
     form = SignUpForm()
+    if form.validate_on_submit():
+        student = Student(firstname=form.firstname.data,
+                          lastname=form.lastname.data,
+                          email=form.email.data,
+                          city=form.city.data,
+                          state=form.state.data,
+                          country=form.country.data,
+                          bio=form.bio.data,
+                          cohort=form.cohort.data,
+                          linkedin=form.linkedin.data
+                          )
+
     return render_template("signup.html", form = form)
+
+
+
+
 
 # dummy login page
 @app.route('/login', methods=["POST", "GET"])
