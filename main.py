@@ -7,16 +7,18 @@ from flask_migrate import Migrate
 from models import *
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+print(basedir)
 
 app = Flask(__name__)
-app.config.from_object(Config)
+# app.config.from_object(Config)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+#migrate = Migrate(app, db)
 
 @app.route('/')
 def penn_chats():

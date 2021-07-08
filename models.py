@@ -24,12 +24,12 @@ class Student(db.Model):
     cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
 
-    def __init__(self, firstname, lastname, email, city, state, country, bio, cohort, linkedin):
+    def __init__(self, firstname, lastname, email, city, country, bio, cohort, linkedin):
         self.firstname = firstname
         self.lastname = lastname
         self.email = email
         self.city = city
-        self.state = state
+        # self.state = state We don't need state
         self.country = country
         self.bio = bio
         self.cohort = cohort
@@ -48,6 +48,8 @@ class TimePreference(db.Model):
     This table is used to store all available time slots for students to choose from
     """
 
+    __tablename__ = 'time_preferences'
+
     time_preference_id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.Datetime)
 
@@ -56,10 +58,13 @@ class TimePreference(db.Model):
 
 
 class NetworkingGoal(db.Model):
+
     """
     this table is used to store the all networking goals for PennChats.
     Currently contains only two goals: match by class, match by interest
     """
+
+    __tablename__ = 'networking_goals'
 
     networking_goal_id = db.Column(db.Integer, primary_key=True)
     networking_goal = db.Column(db.Text)
@@ -75,6 +80,8 @@ class Course(db.model):
 
     """
 
+    __tablename__ = 'courses'
+
     id = db.Column(db.Integer, primary_key=True) # this is auto generated
     course_id = db.Column(db.Integer, unique=True)  # we want to make sure it's unique
     course_name = db.Column(db.Text)
@@ -88,6 +95,9 @@ class Interest(db.model):
     this table is used to sore all interests we plan to provide as options for students to choose from
     when they fill out their user profile.
     """
+
+    __tablename__ = 'interests'
+
 
     interest_id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text)
