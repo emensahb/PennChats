@@ -71,7 +71,7 @@ class SignUpForm(FlaskForm):
 
     # Interest list
     interest_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
-                     'Data Science', 'Blockchain', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
+                     'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
                      'Networking & Computer Systems', 'Project Management', 'Software Development']
 
     # create value/label pairs (should both be str for name of class)
