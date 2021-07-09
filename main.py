@@ -15,14 +15,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cd
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-#migrate = Migrate(app, db)
-
+# migrate = Migrate(app, db)
 
 
 # home page
 @app.route('/')
 def penn_chats():
     return render_template("home.html")
+
 
 # dummy signup page
 @app.route('/signup', methods=["POST", "GET"])
@@ -43,14 +43,12 @@ def signup():
     return render_template("signup.html", form = form)
 
 
-
-
-
 # dummy login page
 @app.route('/login', methods=["POST", "GET"])
 def login():
     form = SignUpForm()
     return render_template("login.html", form = form)
+
 
 # example profile page
 @app.route('/create_profile')
@@ -59,10 +57,10 @@ def create_profile():
     return render_template("create_profile.html", form = form)
 
 
-
 @app.route("/name/<name>")
 def get_user_name(name):
     return "name : {}".format(name)
+
 
 if __name__ == '__main__':
     app.run()
