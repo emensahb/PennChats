@@ -12,6 +12,10 @@
 <!--            class="responsive_banner"-->
 <!--    ></center>-->
 
+    <img alt="Students having a conversation"
+         class="img-responsive"
+         src="https://user-images.githubusercontent.com/84137452/125167996-4fb8d780-e171-11eb-8ff6-5efd9d9cc9ff.jpg">
+
     <!-- Make regular paragraph? -->
     <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
         MCIT Online students. Tell us what classes you
@@ -20,8 +24,8 @@
 
     <center>
         <a href="{{ url_for('signup') }}">
-            <button type="button" name="button">Sign Up</button></a>
+            <button type="button" name="button" class="btn btn-primary btn-lg">Sign Up</button></a>
         <a href="{{ url_for('login') }}">
-            <button type="button" name="button">Login</button></a>
+            <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
     </center>
 {% endblock %}

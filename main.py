@@ -33,10 +33,15 @@ def next_week():
     form = SignUpForm()
     return render_template("next_week.html", form = form)
 
+# member area page
+@app.route('/member_area')
+def member_area():
+    return render_template("member_area.html")
 
 @app.route("/name/<name>")
 def get_user_name(name):
-    return "name : {}".format(name)
+    return render_template("get_user_name.html", name = name)
+    # return "name : {}".format(name)
 
 if __name__ == '__main__':
     app.run()
