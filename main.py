@@ -21,12 +21,17 @@ def login():
     form = SignUpForm()
     return render_template("login.html", form = form)
 
-# example profile page
+# create a profile page
 @app.route('/create_profile')
 def create_profile():
     form = SignUpForm()
     return render_template("create_profile.html", form = form)
 
+# next week (sign up for chat) page
+@app.route('/next_week')
+def next_week():
+    form = SignUpForm()
+    return render_template("next_week.html", form = form)
 
 
 @app.route("/name/<name>")

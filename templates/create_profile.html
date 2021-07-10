@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<form class="form form-horizontal" action="{{url_for('signup')}}" method="POST" role="form">
+<form class="form form-horizontal" action="{{url_for('create_profile')}}" method="POST" role="form">
     <!-- First Name Field -->
     {{ form.first_name.label }}:
     {{ form.first_name }}
@@ -80,21 +80,6 @@
     <!-- Bio Field -->
     {{ form.bio.label }}:
     {{ form.bio }}
-    <br>
-
-    <!-- Primary Time Field -->
-    {{ form.primary_time.label }}:
-    {{ form.primary_time }}
-    <br>
-
-    <!-- Secondary Time Field -->
-    {{ form.secondary_time.label }}:
-    {{ form.secondary_time }}
-    <br>
-
-    <!-- Matching Field -->
-    {{ form.matching.label }}:
-    {{ form.matching }}
     <br>
 
     <!-- Submit Field -->

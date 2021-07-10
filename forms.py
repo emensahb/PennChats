@@ -3,6 +3,7 @@ from wtforms import StringField, SubmitField, SelectField, widgets, SelectMultip
 from wtforms.validators import InputRequired, DataRequired, URL
 
 
+
 # Checkboxes
 class MultipleCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
@@ -142,4 +143,6 @@ class SignUpForm(FlaskForm):
     )
 
     submit = SubmitField('Sign Up')
+
+    match = SubmitField("Match me for next week's chat!")
 
