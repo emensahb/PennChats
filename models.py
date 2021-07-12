@@ -63,7 +63,7 @@ class WeeklySignUp(db.Model):
     __tablename__ = 'weekly_signups'
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.relationship('Student', backref='weeklySignup', lazy='dynamic')
-    week_meet = db.Column(db.Text)  # week students are meeting
+
 
     # one to one relationships
     networking_goal = db.relationship('NetworkingGoal', backref='weeklySignup', uselist=False)
@@ -72,6 +72,9 @@ class WeeklySignUp(db.Model):
     prim_interest = db.relationship('Interest', backref='weeklySignup', uselist=False)
     sec_interest = db.relationship('Interest', backref='weeklySignup', uselist=False)
     course_to_match = db.relationship('Course', backref='weeklySignup', uselist=False)
+
+    group_id = db.relationship('Group', backref='weeklySignup', uselist=False)
+    week_meet = db.relationship('Group', backref='weeklySignup', uselist=False)  # week students are meeting
 
     def __init__(self, student_id, week_meet, networking_goal, prim_time, sec_time, prim_interest, sec_interest,
                  course_to_match):
@@ -176,4 +179,22 @@ class Interest(db.Model):
     def __init__(self, interest_name):
         self.interest_name = interest_name
 
+
+class Group(db.Model):
+    """
+    This table is used to store all the groups formed
+    """
+       #__tablename__ = 'groups'
+       # id = db.Column(db.Integer, primary_key=True)
+       # student_id =
+       # networking_goal_id =
+       # time_preference_id =
+       # interest_id =
+       # week_meet =  # week the students are meeting
+    pass
+
+
+
+class Meeting(db.Model):
+    pass
 
