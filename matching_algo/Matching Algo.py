@@ -1,27 +1,8 @@
-class Student():
-    """This is a class representing a Student object.
-    It will include methods that can be performed on a student."""
-
-    # A student gets instantiated with four parameters
-    def __init__(self, student_id, firstname, lastname, email):
-        self.student_id = student_id
-        self.firstname = firstname
-        self.lastname = lastname
-        self.email = email
-
-    # A student will be represented by the following String message
-    def __repr__(self):
-        return f"Student name:{self.firstname} {self.lastname}, ID:{self.student_id}, Email:{self.email}"
-
-
 def main():
     """This is the main function that runs the algorithm."""
 
     # import user information into a list
-    all_students = Student.query.all() # maybe I need to import a module/package here so I can call the query.all() method
-
-        # read all students who would like to be matched into a list from todo STUDENT_WHO_WANT_MATCHED_TABLE
-        # all_students = Student.query.all()
+    all_students = Student.query.all() # returns a list of student objects
 
     # if list is empty, output N/A, exit program
     if len(all_students) == 0:
@@ -31,23 +12,17 @@ def main():
         return matched_meetings, unmatched_students
     # if list is not empty, proceed to next step
     else:
-        # what is it a list of? A list of student_ids? some sort of data object? what info does the list contain? (e.g. name, time_preference, email?)
-        # initialize an empty student list
-        student_list = []
-        # initialize student object first? how? how to go about naming the variables? do I store them into another list?
-        for item in all_students:
-            student = Student(firstname='John', lastname='Doe', student_id=001, email='jdoe@email.com')
-            student_list.append(student)
+        for student in all_students:
 
-#################################################
-###### sort by primary time selection ###########
-#################################################
-
+    #################################################
+    ###### sort by primary time selection ###########
+    #################################################
+    
     # sort by primary time selection
         # for loop: for each student object in list, read todo the primary_time_selection_id of the student
         # put the student object into a todo PRIME TIME SELECTION DICTIONARY
         # with the primary_time_selection_id as key, and a list of student objects as value
-        
+
 
     # check how many students are in each time selection group
         # for loop: for each key in the PRIME TIME SELECTION DICTIONARY, count the number of student objects

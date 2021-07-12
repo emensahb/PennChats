@@ -31,6 +31,10 @@ class Student(db.model):
     bio = db.Column(db.Text)
     cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
+    courses_enrolled = db.relationship('Course', backref='student', lazy='dynamic') # one to many, student enrolled in many courses
+    courses_taken = db.relationship('Course', backref='student', lazy='dynamic') # similar as above
+    interests = db.relationship('Interest', backref='student', lazy='dynamic') # similar as above
+    groups = db.relationship()
 
     # matching setup
     primary_time_selection_id = db.Column(db.Integer)
@@ -46,7 +50,7 @@ class Student(db.model):
         '''the toString method of the Student class
         :return: a String that includes the student's name and email.
         '''
-        return f"{this.name} has email: {this.email}"
+        return f"{self.name} has email: {self.email}"
 
 
 class TimePreference(db.model):
