@@ -28,17 +28,6 @@ def penn_chats():
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
     form = SignUpForm()
-    if form.validate_on_submit():
-        student = Student(firstname=form.firstname.data,
-                          lastname=form.lastname.data,
-                          email=form.email.data,
-                          city=form.city.data,
-                          state=form.state.data,
-                          country=form.country.data,
-                          bio=form.bio.data,
-                          cohort=form.cohort.data,
-                          linkedin=form.linkedin.data
-                          )
 
     return render_template("signup.html", form = form)
 
@@ -54,6 +43,20 @@ def login():
 @app.route('/create_profile')
 def create_profile():
     form = SignUpForm()
+    if form.validate_on_submit():
+        student = Student(firstname=form.firstname.data,
+                          lastname=form.lastname.data,
+                          email=form.email.data,
+                          city=form.city.data,
+                          state=form.state.data,
+                          country=form.country.data,
+                          bio=form.bio.data,
+                          cohort=form.cohort.data,
+                          linkedin=form.linkedin.data
+                          )
+        db.session.add(student)
+        db.session.commit()
+        # maybe want to take them to url for editing profile
     return render_template("create_profile.html", form = form)
 
 

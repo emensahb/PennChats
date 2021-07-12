@@ -21,10 +21,12 @@ class SignUpForm(FlaskForm):
     login = SubmitField('Login')
 
     # Class list
-    class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
-                  'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
 
+    class_list = Course.query.all()
 
+    # Wondering if this is a pull form the database
+    # class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
+                 #  'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
     # create value/label pairs (should both be str for name of class)
     class_tuples = [(x, x) for x in class_list]
 
