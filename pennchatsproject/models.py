@@ -39,11 +39,11 @@ class Student(db.Model, UserMixin):
     interests = db.relationship('interests', secondary=student_interest_record, backref='students')
     matchingpreferences = db.relatinoship('MatchingPreference', backref='student') # calling MatchingPreference.student will refer to the student associated with the matching preference instance
 
-    firstchoicecourse #one to many, new course table
-    secondchoicecourse #one to many
+    firstchoicecourse = db.Column(db.Text, db.ForeignKey('currentcourses.course_id'), nullable=False) #one to many, use current course table
+    secondchoicecourse = db.Column(db.Text, db.ForeignKey('currentcourses.course_id'), nullable=False) #one to many, use current course table
 
-    firstchoiceinterests #one to many
-    secondchoiceinterests #one to many
+    firstchoiceinterests = db.Column(db.Text, db.ForeignKey('interests.interest_id'), nullable=False) #one to many, use interest table twice
+    secondchoiceinterests = db.Column(db.Text, db.ForeignKey('interests.interest_id'), nullable=False) #one to many, use interest table twice
 
     def __init__(self, student_id, password, firstname, lastname, email):
         self.student_id = student_id
@@ -53,7 +53,7 @@ class Student(db.Model, UserMixin):
         self.email = email
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash,password)
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return f"This is a registered student by the name of {self.firstname} {self.lastname}, with a student_id of {self.student_id}."
@@ -254,10 +254,11 @@ class Group(db.Model):
 
     group_id = db.Column(db.Integer, primary_key=True)
     students = db.relationship('students', secondary=grouping_record, backref='groupings')
+    belongs_to_meeting_id = db.Column(db.Integer, db.ForeignKey('meetings.meeting_id'), nullable=False)
 
-    def __init__(self):
-        pass # not sure how to initialize a group, given that there is no other attribute than student objects
-             # how do I pass in a statement in the algorithm to initialize a group object?
+    def __init__(self, students):
+        self.students = students # pass in a list of student objects to initialize a group
+            # should there be any other attributes other than student objects
 
 
 grouping_record = db.Table('student_groupings',
@@ -271,3 +272,17 @@ class Meeting(db.Model):
     The final output of the matching algorithm will be a list of Meeting objects.
     There is a one-to-one relationship between the Group table and this table."""
     # how do we input data to this table?
+
+    __tablename__ = 'meetings'
+
+    meeting_id = db.Column(db.Integer, primary_key=True)
+    group = db.relatinoship('Group', backref='meeting', uselist=False)
+    time_id
+    course_id
+    interest_id
+
+    def __init__(self, group, time_id, course_id=None, interest_id=None):
+        self.group = group
+        self.time_id = time_id
+        self.course_id = course_id
+        self.interest_id = interest_id
