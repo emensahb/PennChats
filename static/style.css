@@ -1,3 +1,7 @@
-.penn_blue {
+.penn_blue {background-color: #03205A}
 
-}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+
+  background-color: #03205A;
+  border-color: #31347B;
+ }

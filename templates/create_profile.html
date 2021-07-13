@@ -6,84 +6,73 @@
 
 {% block content %}
 
+<!-- import form template -->
+{% from "_formhelpers.html" import render_field %}
+
 <form class="form form-horizontal" action="{{url_for('create_profile')}}" method="POST" role="form">
     <!-- First Name Field -->
-    {{ form.first_name.label }}:
-    {{ form.first_name }}
+    {{ render_field(form.first_name) }}
     <br>
 
     <!-- Last Name Field -->
-    {{ form.last_name.label }}:
-    {{ form.last_name }}
+    {{ render_field(form.last_name) }}
     <br>
 
     <!-- City Field -->
-    {{ form.city.label }}:
-    {{ form.city }}
+    {{ render_field(form.city) }}
     <br>
 
     <!-- State Field -->
-    {{ form.state.label }}:
-    {{ form.state }}
+    {{ render_field(form.state) }}
     <br>
 
     <!-- Country Field -->
-    {{ form.country.label }}:
-    {{ form.country }}
+    {{ render_field(form.country) }}
     <br>
 
     <!-- Primary Class Field -->
-    {{ form.primary_class.label }}:
-    {{ form.primary_class }}
+    {{ render_field(form.primary_class) }}
     <br>
 
     <!-- Secondary Class Field -->
-    {{ form.secondary_class.label }}:
-    {{ form.secondary_class }}
+    {{ render_field(form.secondary_class) }}
     <br>
 
     <!-- Class Field -->
-    {{ form.class_checkboxes.label }}:
-    {{ form.class_checkboxes }}
+    {{ render_field(form.class_checkboxes) }}
     <br>
 
     <!-- Current Class Field -->
-    {{ form.current_class.label }}:
-    {{ form.current_class }}
+    {{ render_field(form.current_class) }}
     <br>
 
     <!-- Primary Interest Field -->
-    {{ form.primary_interest.label }}:
-    {{ form.primary_interest }}
+    {{ render_field(form.primary_interest) }}
     <br>
 
     <!-- Secondary Interest Field -->
-    {{ form.secondary_interest.label }}:
-    {{ form.secondary_interest }}
+    {{ render_field(form.secondary_interest) }}
     <br>
 
     <!-- Others Interests Field -->
-    {{ form.other_interests.label }}:
-    {{ form.other_interests }}
+    {{ render_field(form.other_interests) }}
     <br>
 
     <!-- Cohort Field -->
-    {{ form.cohort.label }}:
-    {{ form.cohort }}
+    {{ render_field(form.cohort) }}
     <br>
 
     <!-- LinkedIn Field -->
-    {{ form.linkedin.label }}:
-    {{ form.linkedin }}
+    {{ render_field(form.linkedin) }}
     <br>
 
     <!-- Bio Field -->
-    {{ form.bio.label }}:
-    {{ form.bio }}
+    {{ render_field(form.bio) }}
     <br>
 
     <!-- Submit Field -->
     {{ form.submit }}
+
 </form>
 
 {% endblock %}
