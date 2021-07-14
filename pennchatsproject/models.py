@@ -22,6 +22,7 @@
 
 # db = SQLAlchemy(app)
 # migrate = Migrate(app, db)
+from sqlalchemy import ForeignKey
 
 
 class Student(db.Model):
