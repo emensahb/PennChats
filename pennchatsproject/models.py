@@ -1,9 +1,27 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
-from app import db
+# from app import db
 
 # A side note. Table and class names camel case. Field names with the dashes
+import os
+from flask import Flask, render_template, request, redirect, url_for
+from students.forms import *
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+# from models import *
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+print(basedir)
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 class Student(db.Model):
