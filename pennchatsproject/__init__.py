@@ -35,3 +35,6 @@ app = Flask(__name__)
 ##################################################
 ##### Register Blueprints for different pages#####
 ##################################################
+
+from pennchatsproject.core.views import core
+app.register_blueprint(core)

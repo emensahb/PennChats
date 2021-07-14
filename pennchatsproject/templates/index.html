@@ -1,5 +1,5 @@
-# includes html code that renders the homepage (home.html)
-# Audra to copy her home.thml from her templates folder
+{# includes html code that renders the homepage (home.html) #}
+{# Audra to copy her home.thml from her templates folder #}
 
 {% extends "base.html" %}
 
@@ -22,11 +22,10 @@
 
     <!-- Signup/Login buttons -->
     <center>
-        <a href="{{ url_for('signup') }}">
+        <a href="#">
             <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Sign Up</button></a>
-        <a href="{{ url_for('login') }}">
+        <a href="#">
             <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
     </center>
 
 {% endblock %}
-

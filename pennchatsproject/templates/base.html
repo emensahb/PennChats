@@ -1,11 +1,11 @@
-# includes html code for the original bootstrap links, nav bar code, container block
-# Audra to copy her base.html from her templates folder
+{# includes html code for the original bootstrap links, nav bar code, container block #}
+{# Audra to copy her base.html from her templates folder #}
 
 <!-- Jinja template for all html files -->
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" dir="ltr">
+  <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %} | Penn Chats</title>
 
@@ -15,42 +15,69 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> #}
+
     <!-- favicon -->
     <link rel="shortcut icon" type="image/jpg" href="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"/>
-</head>
+  </head>
 
 
-<body>
-<div class="container">
-    <div class="jumbotron">
-        <div class="row">
-            <div class="column">
-                <img src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"
-                class="img-responsive"
-                 width="12%"
-                 height="12%"
-                     align="left"
-                alt="PennChats logo">
-            </div>
-            <div class="column">
-                <h1 class="display-4">Penn Chats</h1>
+  <body>
+    <div class="container">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="column">
+                    <img src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"
+                    class="img-responsive"
+                     width="15%"
+                     height="15%"
+                         align="left"
+                    alt="PennChats logo">
+                </div>
+                <div class="column">
+                    <h1 class="display-4">Penn Chats</h1>
+                </div>
             </div>
         </div>
-
-
     </div>
-</div>
 
-<div class="container"><h2>{% block head %} {% endblock %}</h2></div>
+    {# <ul class='nav'>
+      <li class='nav-link'>
+        <a href="{{url_for('core.index')}}">Home</a>
+      </li>
+      <li class='nav-link'>
+        <a href="{{url_for('core.info')}}">About</a>
+      </li>
+      <li class='nav-link'>
+        <a href="#">Log Out</a>
+      </li>
+      <li class='nav-link'>
+        <a href="#">Profile</a>
+      </li>
+      <li class='nav-link'>
+        <a href="#">Sign-up for chats</a>
+      </li>
+      <li class='nav-link'>
+        <a href="#">Log In</a>
+      </li>
+      <li class='nav-link'>
+        <a href="#">Register</a>
+      </li>
+    </ul> #}
+
+  <div class="container"><h2>{% block heading %} {% endblock %}</h2></div>
 
 
-<!--    <img-->
-<!--            src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->
-<!--            alt="Penn Chats Logo"-->
-<!--            class="responsive">-->
+  <!--    <img-->
+  <!--            src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->
+  <!--            alt="Penn Chats Logo"-->
+  <!--            class="responsive">-->
 
-    <div class="container">
-        {% block content %} {% endblock %}
-    </div>
-</body>
+      <div class="container">
+          {% block content %} {% endblock %}
+      </div>
+  </body>
 </html>
