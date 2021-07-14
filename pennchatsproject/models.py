@@ -48,9 +48,6 @@ class Student(db.Model):
     courses_taken = db.relationship('Course', secondary='courses_taken', backref='student', lazy='dynamic')
     courses_enrolled = db.relationship('Course', secondary='courses_enrolled',  backref='student', lazy='dynamic')
     interests = db.relationship('Interest', secondary='student_interests', backref='student', lazy='dynamic')
-    # week_meet
-    #.hy0=
-
 
     # Many to one relationships
     networking_goal = db.relationship('NetworkingGoal', secondary='student_networking_goals', backref='weekly_signup',lazy='dynamic')
