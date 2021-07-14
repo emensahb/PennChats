@@ -286,7 +286,6 @@ class CourseToMatch(db.Model):
         self.course_id = course_id
 
 
-
 class WeeklySignUp(db.Model):
     # should be an edit sheet that will pull in from last week and when they hit submit repopulates
     """
@@ -298,7 +297,6 @@ class WeeklySignUp(db.Model):
     __tablename__ = 'weekly_signups'
     student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
     week_meet = db.Column(db.Text)
-
 
     def __init__(self, week_meet):
         self.week_meet = week_meet
@@ -327,7 +325,8 @@ class Group(db.Model):
     __tablename__ = 'groups'
 
     id = db.Column(db.Integer, primary_key=True)
-    group_id = student_id = db.Column(db.Integer) # give the group a number so that we can collect students in the same group
+    # give the group a number so that we can collect students in the same group
+    group_id = student_id = db.Column(db.Integer)
 
     student_id = db.Column(db.Integer, ForeignKey("students.student_id"))
     networking_goal_id = db.Column(db.Integer, ForeignKey("networking_goals.networking_goal_id"))
