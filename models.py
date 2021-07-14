@@ -25,12 +25,22 @@ class Student(db.Model):
     bio = db.Column(db.Text)
     cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
-    # Student to many courses enrolled and taken
-    courses_taken = db.relationship('Course', backref='student', lazy='dynamic')
-    courses_enrolled = db.relationship('Course', backref='student', lazy='dynamic')
 
-    # Student to many interests
-    interests = db.relationship('Interest', backref='student', lazy='dynamic')
+    # Many to many relationships
+    courses_taken = db.relationship('Course', secondary='courses_taken', backref='student', lazy='dynamic')
+    courses_enrolled = db.relationship('Course', secondary='courses_enrolled',  backref='student', lazy='dynamic')
+    interests = db.relationship('Interest', secondary='student_interests', backref='student', lazy='dynamic')
+    week_meet
+    .hy0=
+
+
+    # Many to one relationships
+    networking_goal = db.relationship('NetworkingGoal', secondary='student_networking_goals', backref='weekly_signup',lazy='dynamic')
+    prim_time = db.relationship('TimePreference', secondary='primary_time_preferences',backref='student',lazy='dynamic')
+    sec_time = db.relationship('TimePreference', secondary='secondary_time_preferences',backref='student',lazy='dynamic')
+    prim_interest = db.relationship('Interest', secondary='primary_interests', backref='student',lazy='dynamic')
+    sec_interest = db.relationship('Interest', secondary='secondary_interests', backref='student',lazy='dynamic')
+    course_to_match = db.relationship('Course', secondary='courses_to_match', backref='student', lazy='dynamic')
 
     def __init__(self, student_id, firstname, lastname, email, city, country, bio, cohort, linkedin):
         self.student_id = student_id
@@ -52,68 +62,15 @@ class Student(db.Model):
         return f"{self.firstname} {self.lastname} has email: {self.email}"
 
 
-class WeeklySignUp(db.Model):
-    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
-    """
-    Create a weekly signup table
-    """
-
-    # Ensures that table will be named students in plural vs singular like the model name
-
-    __tablename__ = 'weekly_signups'
-    id = db.Column(db.Integer, primary_key=True)
-    student_id = db.relationship('Student', backref='weeklySignup', lazy='dynamic')
-
-
-    # one to one relationships
-    networking_goal = db.relationship('NetworkingGoal', backref='weeklySignup', uselist=False)
-    prim_time = db.relationship('TimePreference', backref='weeklySignup', uselist=False)
-    sec_time = db.relationship('TimePreference', backref='weeklySignup', uselist=False)
-    prim_interest = db.relationship('Interest', backref='weeklySignup', uselist=False)
-    sec_interest = db.relationship('Interest', backref='weeklySignup', uselist=False)
-    course_to_match = db.relationship('Course', backref='weeklySignup', uselist=False)
-
-    group_id = db.relationship('Group', backref='weeklySignup', uselist=False)
-    week_meet = db.relationship('Group', backref='weeklySignup', uselist=False)  # week students are meeting
-
-    def __init__(self, student_id, week_meet, networking_goal, prim_time, sec_time, prim_interest, sec_interest,
-                 course_to_match):
-        self.student_id = student_id
-        self.week_meet = week_meet
-        self.networking_goal = networking_goal
-        self.prim_time = prim_time
-        self.sec_time = sec_time
-        self.prim_interest = prim_interest
-        self.sec_interest = sec_interest
-        self.course_to_match = course_to_match
-
-    def __repr__(self):
-        """
-        the toString method of the Student class
-        :return: a String that includes the student's name and email.
-        """
-        return f"Meetings happening {self.week_meet}"
-
-    # if we want to know the number of students participating this week
-    def count_students(self):
-        print("Students participating in Penn Chats this week")
-        student_count = 0
-        for weekly_signup in self.weekly_signups:
-            student_count += 1
-        return student_count
-
-
 class TimePreference(db.Model):
     """
     This table is used to store all available time slots for students to choose from
     """
 
-    __tablename__ = 'timePreferences'
+    __tablename__ = 'time_preferences'
 
     id = db.Column(db.Integer, primary_key=True)  # time_preference_id
     time = db.Column(db.Text)  # Might have to be text for now and then convert later
-
-    weekly_signup_id = db.Column(db.Text, db.ForeignKey('weekly_signups.id'))
 
     def __init__(self, time):
         self.time = time
@@ -133,12 +90,10 @@ class NetworkingGoal(db.Model):
     Currently contains only two goals: match by class, match by interest
     """
 
-    __tablename__ = 'networkingGoals'
+    __tablename__ = 'networking_goals'
 
     id = db.Column(db.Integer, primary_key=True)  # networkingGoal_id
     networking_goal = db.Column(db.Text)
-
-    weekly_signup_id = db.Column(db.Text, db.ForeignKey('weekly_signups.id'))
 
     def __init__(self, networking_goal):
         self.networking_goal = networking_goal
@@ -153,11 +108,8 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    id = db.Column(db.Integer, primary_key=True)  # this is auto generated
-    course_id = db.Column(db.Text, unique=True)  # we want to make sure it's unique
+    course_id = db.Column(db.Text, primary_key=True)  # we want to make sure it's unique
     course_name = db.Column(db.Text)
-
-    student_id = db.Column(db.Text, db.ForeignKey('students.id'))
 
     def __init__(self, course_id):
         self.course_id = course_id
@@ -170,8 +122,7 @@ class Interest(db.Model):
     """
 
     __tablename__ = 'interests'
-
-    interest_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text)
 
     weekly_signup_id = db.Column(db.Text, db.ForeignKey('weekly_signups.id'))
@@ -180,21 +131,191 @@ class Interest(db.Model):
         self.interest_name = interest_name
 
 
+###################################################
+#              Association tables                 #
+###################################################
+class CoursesTaken(db.Model):
+    """
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-many relationship between the student table and this table.
+    """
+    __tablename__ = 'courses_taken'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    course_id = db.Column(db.Text, ForeignKey("courses.course_id"), primary_key=True)
+
+    def __init__(self, student_id, course_id):
+        self.student_id = student_id
+        self.course_id = course_id
+
+
+class CourseEnrolled(db.Model):
+    """
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-one relationship between the student table and this table.
+    """
+    __tablename__ = 'courses_enrolled'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    course_id = db.Column(db.Text, ForeignKey("courses.course_id"), primary_key=True)
+
+    def __init__(self, student_id, course_id):
+        self.student_id = student_id
+        self.course_id = course_id
+
+
+class StudentInterest(db.Model):
+    """
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-one relationship between the student table and this table.
+    """
+    __tablename__ = 'student_interests'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    interest_id = db.Column(db.Text, ForeignKey("interests.id"), primary_key=True)
+
+    def __init__(self, student_id, interest_id):
+        self.student_id = student_id
+        self.interest_id = interest_id
+
+
+class StudentNetworkingGoal(db.Model):
+    """
+    This table is used to store all pairings of students and their networking_goals tables.
+    There is a one-to-many relationship between the student table and this table.
+    """
+    __tablename__ = 'student_networking_goals'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    networking_goal_id = db.Column(db.Integer, ForeignKey("networking_goals.id"), primary_key=True)
+
+    def __init__(self, student_id, networking_goal_id):
+        self.student_id = student_id
+        self.networking_goal_id = networking_goal_id
+
+
+class StudentPrimaryTimePreference(db.Model):
+    """
+    This table is used to store all pairings of students and their time_preferences tables.
+    There is a one-to-many relationship between the student table and this table.
+    """
+    __tablename__ = 'primary_time_preferences'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    time_preference_id = db.Column(db.Integer, ForeignKey("time_preferences.id"))
+
+    def __init__(self, student_id, time_preference_id):
+        self.student_id = student_id
+        self.time_preference_id = time_preference_id
+
+
+class StudentSecondaryTimePreference(db.Model):
+    """
+    This table is used to store all pairings of students and their time_preferences tables.
+    There is a one-to-many relationship between the student table and this table.
+    """
+    __tablename__ = 'secondary_time_preferences'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    time_preference_id = db.Column(db.Integer, ForeignKey("time_preferences.id"))
+
+    def __init__(self, student_id, time_preference_id):
+        self.student_id = student_id
+        self.time_preference_id = time_preference_id
+
+
+class StudentPrimaryInterest(db.Model):
+    """
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-one relationship between the student table and this table.
+    """
+    __tablename__ = 'primary_interests'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    interest_id = db.Column(db.Text, ForeignKey("interests.id"), primary_key=True)
+
+    def __init__(self, student_id, interest_id):
+        self.student_id = student_id
+        self.interest_id = interest_id
+
+
+class StudentSecondaryInterest(db.Model):
+    """
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-one relationship between the student table and this table.
+    """
+    __tablename__ = 'secondary_interests'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    interest_id = db.Column(db.Text, ForeignKey("interests.id"), primary_key=True)
+
+    def __init__(self, student_id, interest_id):
+        self.student_id = student_id
+        self.interest_id = interest_id
+
+
+class CourseToMatch(db.Model):
+    """
+    The course the student wants to match on
+    """
+    __tablename__ = 'courses_to_match'
+
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    course_id = db.Column(db.Text, ForeignKey("courses.course_id"), primary_key=True)
+
+    def __init__(self, student_id, course_id):
+        self.student_id = student_id
+        self.course_id = course_id
+
+
+
+class WeeklySignUp(db.Model):
+    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
+    """
+    Create a weekly signup table. This is in essence a join table from students to weekly signup
+    """
+
+    # Ensures that table will be named students in plural vs singular like the model name
+
+    __tablename__ = 'weekly_signups'
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    week_meet = db.Column(db.Text)
+
+
+    def __init__(self, week_meet):
+        self.week_meet = week_meet
+
+    def __repr__(self):
+        """
+        the toString method of the Student class
+        :return: a String that includes the student's name and email.
+        """
+        return f"We we're talking about {self.week_meet}"
+
+    # if we want to know the number of students participating this week
+    def count_students(self):
+        print("Students participating in Penn Chats this week")
+        student_count = 0
+        for weekly_signup in self.weekly_signups:
+            student_count += 1
+        return student_count
+
+
 class Group(db.Model):
     """
-    This table is used to store all the groups formed
+    This table is used to store all pairings of students and their courses tables.
+    There is a one-to-one relationship between the student table and this table.
     """
-       #__tablename__ = 'groups'
-       # id = db.Column(db.Integer, primary_key=True)
-       # student_id =
-       # networking_goal_id =
-       # time_preference_id =
-       # interest_id =
-       # week_meet =  # week the students are meeting
-    pass
+    __tablename__ = 'groups'
 
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = student_id = db.Column(db.Integer) # give the group a number so that we can collect students in the same group
 
+    student_id = db.Column(db.Integer, ForeignKey("students.student_id"))
+    networking_goal_id = db.Column(db.Integer, ForeignKey("networking_goals.networking_goal_id"))
+    time_preference_id = db.Column(db.Text, ForeignKey("TimePreference.time_preference_id"))
 
-class Meeting(db.Model):
-    pass
-
+    def __init__(self, student_id, time_preference_id, networking_goal_id):
+        self.student_id = student_id
+        self.time_preference_id = time_preference_id
+        self.networking_goal_id = networking_goal_id
