@@ -3,24 +3,67 @@
 # register, login, logout, sign-up for next week's chat, thank you, account, edit profile, <username> profile page
 # from Audra's main.py file lines 12-44
 
+from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask_login import login_user, login_required, logout_user, current_user
+from pennchatsproject import db
+#from werkzeug.security import generate_password_hash, check_password_hash
+from pennchatsproject.models import Student
+from pennchatsproject.students.forms import RegistrationForm, LoginForm
+
+
+students = Blueprint('students', __name__)
+
 #register
-# dummy signup page
-@app.route('/register', methods=["POST", "GET"])
-def signup():
-    form = SignUpForm()
+@students.route('/register', methods=["POST", "GET"])
+def register():
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        student = Student(email=form.email.data,
+                    username=form.username.data,
+                    student_id=form.student_id.data,
+                    password=form.password.data)
+
+        db.session.add(student)
+        db.session.commit()
+        flash('Thank you for registering!')
+        return redirect(url_for('students.login'))
+
     return render_template("register.html", form = form)
 
 #login
-# dummy login page
-@app.route('/login', methods=["POST", "GET"])
+@students.route('/login', methods=["POST", "GET"])
 def login():
-    form = SignUpForm()
+    form = LoginForm
+    if form.validate_on_submit():
+        # Grab the student from our Student Models table
+        student = Student.query.filter_by(email=form.email.data).first()
+
+        if student.check_password(form.password.data) and student is not None:
+
+            #log in the user by calling in the login_user method
+            login_user(student)
+
+            #flash a msg with the following message
+            flash('You have logged in successfully!')
+
+            # if a user was trying to visit a page that requires a log, flask saves that URL as 'next'
+            next = request.args.get('next')
+
+            if next == None or not next[0]=='/':
+                next = url_for('student.index')
+
+            return redirect(next)
+
     return render_template("login.html", form = form)
 
 #logout
-@app.route('/logout')
+@students.route('/logout')
+@login_required
 def logout():
-    return 'You are now logged out. Come back soon!'
+    logout_user()
+    flash("You have successfully logged out.")
+    return redirect(url_for('core.index'))
 
 
 #sign up-for next week's chat

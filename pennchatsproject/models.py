@@ -1,9 +1,17 @@
 # models.py, Efua to copy and paste all data models created
 
-from pennchatsproject import db
+from pennchatsproject import db, login_manager
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 
-class Student(db.Model):
+@login_manager.user_loader
+def load_user(student_id):
+    """Allows app the load the student based on the student_id that was passed in."""
+    return Student.query.get(student_id)
+
+
+class Student(db.Model, UserMixin):
     """
     Create a student table
     """
@@ -11,9 +19,10 @@ class Student(db.Model):
     # Ensures that table will be named students in plural vs singular like the model name
     __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, unique=True)
     email = db.Column(db.Text, index=True, unique=True)
-    # password_hash = db.Column(db.Text)
+    username = db.Column(db.Text, unique=True, index=True)
+    student_id = db.Column(db.Integer, unique=True)
+    password_hash = db.Column(db.String(128))
     firstname = db.Column(db.Text)
     lastname = db.Column(db.Text)
     city = db.Column(db.Text)
@@ -36,17 +45,16 @@ class Student(db.Model):
     sec_interest = db.relationship('Interest', secondary='secondary_interests', backref='student',lazy='dynamic')
     course_to_match = db.relationship('Course', secondary='courses_to_match', backref='student', lazy='dynamic')
 
-    def __init__(self, student_id, firstname, lastname, email, city, country, bio, cohort, linkedin):
-        self.student_id = student_id
-        self.firstname = firstname
-        self.lastname = lastname
+    def __init__(self, email, username, student_id, password):
         self.email = email
-        self.city = city
-        self.state = state
-        self.country = country
-        self.bio = bio
-        self.cohort = cohort
-        self.linkedin = linkedin
+        self.username = username
+        self.student_id = student_id
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        """check if the password user provides for the second or more time is the same
+        as the password used to register the account."""
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         """

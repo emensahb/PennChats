@@ -44,32 +44,25 @@
         </div>
     </div>
 
-    {# <ul class='nav'>
-      <li class='nav-link'>
-        <a href="{{url_for('core.index')}}">Home</a>
-      </li>
-      <li class='nav-link'>
-        <a href="{{url_for('core.info')}}">About</a>
-      </li>
-      <li class='nav-link'>
-        <a href="#">Log Out</a>
-      </li>
-      <li class='nav-link'>
-        <a href="#">Profile</a>
-      </li>
-      <li class='nav-link'>
-        <a href="#">Sign-up for chats</a>
-      </li>
-      <li class='nav-link'>
-        <a href="#">Log In</a>
-      </li>
-      <li class='nav-link'>
-        <a href="#">Register</a>
-      </li>
-    </ul> #}
-
   <div class="container"><h2>{% block heading %} {% endblock %}</h2></div>
 
+  <ul class='nav'>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('core.index') }}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('core.info') }}">About Us</a>
+    </li>
+      {% if current_user.is_authenticated %}
+      <li class="nav-link"><a href="{{url_for('students.logout')}}">Log Out</a></li>
+      <li class="nav-link"><a href="#">Sign Up for Next Week</a></li>
+      <li class="nav-link"><a href="#">Meetings</a></li>
+      {% else %}
+      <li class="nav-link"><a href="{{url_for('students.login')}}">Log In</a></li>
+      <li class="nav-link"><a href="{{url_for('students.register')}}">Register</a></li>
+      {% endif %}
+
+  </ul>
 
   <!--    <img-->
   <!--            src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->

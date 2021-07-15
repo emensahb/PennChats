@@ -20,12 +20,26 @@
         are taking, your interests, and when you'd like to meet,
         and we'll match you with a group of 2-5 students for a chat!</div></center></h3>
 
-    <!-- Signup/Login buttons -->
-    <center>
-        <a href="#">
-            <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Sign Up</button></a>
-        <a href="#">
-            <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
-    </center>
+    <!-- If studnet is signed in -->
+      {% if current_user.is_authenticated %}
+      <!-- Intro paragraph -->
+      <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! To sign up for next week's chat,
+          click on "Sign Up for Next Week". We can't wait to meet you!</div></center></h3>
+    <!-- If studnet is not signed in -->
+      {% else %}
+      <!-- Intro paragraph -->
+      <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
+          MCIT Online students. Tell us what classes you
+          are taking, your interests, and when you'd like to meet,
+          and we'll match you with a group of 2-5 students for a chat!</div></center></h3>
+      <!-- Signup/Login buttons -->
+      <center>
+          <a href="#">
+              <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Sign Up</button></a>
+          <a href="#">
+              <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
+      </center>
+      {% endblock %}
+
 
 {% endblock %}
