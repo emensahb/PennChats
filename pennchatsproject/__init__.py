@@ -37,4 +37,7 @@ app = Flask(__name__)
 ##################################################
 
 from pennchatsproject.core.views import core
+from pennchatsproject.error_pages.handlers import error_pages
+
 app.register_blueprint(core)
+app.register_blueprint(error_pages)
