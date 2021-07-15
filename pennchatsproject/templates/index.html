@@ -1,2 +1,32 @@
 # includes html code that renders the homepage (home.html)
 # Audra to copy her home.thml from her templates folder
+
+{% extends "base.html" %}
+
+{% block title %} Penn Chats {% endblock %}
+
+{% block heading %} {% endblock %}
+
+{% block content%}
+
+    <!--Homepage Image -->
+    <img alt="Students having a conversation"
+         class="img-responsive"
+         src="https://user-images.githubusercontent.com/84137452/125167996-4fb8d780-e171-11eb-8ff6-5efd9d9cc9ff.jpg">
+
+    <!-- Intro paragraph -->
+    <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
+        MCIT Online students. Tell us what classes you
+        are taking, your interests, and when you'd like to meet,
+        and we'll match you with a group of 2-5 students for a chat!</div></center></h3>
+
+    <!-- Signup/Login buttons -->
+    <center>
+        <a href="{{ url_for('signup') }}">
+            <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Sign Up</button></a>
+        <a href="{{ url_for('login') }}">
+            <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
+    </center>
+
+{% endblock %}
+
