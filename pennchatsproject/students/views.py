@@ -22,6 +22,11 @@ def login():
 def logout():
     return 'You are now logged out. Come back soon!'
 
+#create profile
+@app.route('/create_profile')
+def create_profile():
+    return render_template('create_profile.html')
+
 
 #sign up-for next week's chat
 @app.route('/next_week')
