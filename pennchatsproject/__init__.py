@@ -6,19 +6,21 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
 
 app = Flask(__name__)
 
 ################################
 ######## Database Setup ########
 ################################
+basedir = os.path.abspath(os.path.dirname(__file__))
+print(basedir)
 
+app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
-
-
-
-
+db = SQLAlchemy(app)
+Migrate(app, db)
 
 
 #####################################
