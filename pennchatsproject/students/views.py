@@ -39,6 +39,11 @@ def thank_you():
 def member_area():
     return render_template("account.html")
 
+#create profile
+@app.route('create_profile')
+def create_profile():
+    return render_template('create_profile')
+
 #edit profile
 @app.route('/account/<name>')
 def edit_profile(name):
