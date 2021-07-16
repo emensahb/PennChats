@@ -18,6 +18,7 @@ class Student(db.Model, UserMixin):
 
     # Ensures that table will be named students in plural vs singular like the model name
     __tablename__ = 'students'
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.Text, index=True, unique=True)
     username = db.Column(db.Text, unique=True, index=True)
@@ -142,7 +143,8 @@ class CoursesTaken(db.Model):
     """
     __tablename__ = 'courses_taken'
 
-    student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    #student_id = db.Column(db.Integer, ForeignKey("students.student_id"), primary_key=True)
+    student_id = db.Column(db.Integer, ForeignKey("students.id"), primary_key=True)
     course_id = db.Column(db.Text, ForeignKey("courses.course_id"), primary_key=True)
 
     def __init__(self, student_id, course_id):

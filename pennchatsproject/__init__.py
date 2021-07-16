@@ -16,10 +16,11 @@ app = Flask(__name__)
 ######## Database Setup ########
 ################################
 basedir = os.path.abspath(os.path.dirname(__file__))
-print(basedir)
+#print(basedir)
 
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Jf_CSAx^ld192@localhost/pennchats'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -34,14 +35,14 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-
-
 ##################################################
 ##### Register Blueprints for different pages#####
 ##################################################
 
 from pennchatsproject.core.views import core
 from pennchatsproject.error_pages.handlers import error_pages
+from pennchatsproject.students.views import students
 
 app.register_blueprint(core)
 app.register_blueprint(error_pages)
+app.register_blueprint(students)
