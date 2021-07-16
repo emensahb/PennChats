@@ -42,6 +42,7 @@ def member_area():
 #create profile
 @app.route('create_profile')
 def create_profile():
+
     return render_template('create_profile')
 
 #edit profile
