@@ -1,5 +1,3 @@
-# models.py, copied Jimmy's models to test
-
 from pennchatsproject import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -36,8 +34,6 @@ class Student(db.Model, UserMixin):
     #profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
-    # currentcourses = db.relationship('currentcourses', secondary=current_courses_record, backref='currentstudents')
-    # pastcourses = db.relationship('pastcourses', secondary=past_courses_record, backref='paststudents')
     current_courses = db.relationship('Course', secondary='current_courses_record', backref='current_students')
     past_courses = db.relationship('Course', secondary='past_courses_record', backref='past_students')
     interests = db.relationship('Interest', secondary='student_interest_record', backref='all_students')
@@ -47,9 +43,7 @@ class Student(db.Model, UserMixin):
 
     # one to many relatinoships
     course_id_to_match = db.Column(db.Integer, db.ForeignKey('courses.id')) #one to many, use course table
-    # secondchoicecourse = db.Column(db.Text, db.ForeignKey('currentcourses.course_id'), nullable=False) #one to many, use current course table
     interest_id_to_match = db.Column(db.Integer, db.ForeignKey('interests.interest_id')) #one to many, use interest table twice
-    # secondchoiceinterests = db.Column(db.Text, db.ForeignKey('interests.interest_id'), nullable=False) #one to many, use interest table twice
 
     def __init__(self, email, username, student_id, password):
         self.username = username
