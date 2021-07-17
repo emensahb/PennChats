@@ -39,15 +39,18 @@ class Student(db.Model, UserMixin):
 
     # Many to one relationships
     cohort = db.Column(db.Text)
+
+    # next week
     networking_goal = db.relationship('NetworkingGoal', secondary='networking_goals', backref='weekly_signup')
     prim_time = db.relationship('TimePreference', secondary='student_primary_time_preferences', backref='student')
     sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='student')
+    #####next week end fiedls####
+
     prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='student')
     sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student')
     class_to_match = db.relationship('Class', secondary='class_to_match', backref='student')
 
     # Whether they are participating in the weekly meeting or not
-    # week_meet =
 
     def __init__(self, email, username, student_id, password):
         self.username = username
@@ -72,7 +75,7 @@ class WeeklySignUp(db.Model):
 
     __tablename__ = 'weekly_signups'
     id = db.Column(db.Integer, primary_key=True)
-    week_meet = db.Column(db.Text)
+    week_meet = db.Column(db.Text) # time stamp for when student submits week meet form
     student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
 
     def __init__(self, week_meet):

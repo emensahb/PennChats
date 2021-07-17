@@ -6,7 +6,9 @@
 
 {% block content %}
 
-<form class="form form-horizontal" action="{{url_for('next_week')}}" method="POST" role="form">
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+    <form method="POST" style="padding:5px;">
 
     <!-- Primary Time Field -->
     {{ form.primary_time.label }}:
@@ -26,5 +28,7 @@
     <!-- Submit Field -->
     {{ form.match }}
 </form>
+</div>
+</div>
 
 {% endblock %}

@@ -118,9 +118,7 @@ class ProfileForm(FlaskForm):
         choices=interest_tuples,
     )
 
-    # other_interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
-    interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
-
+    other_interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
 
     cohort = SelectField(
         'Cohort',
@@ -140,38 +138,39 @@ class ProfileForm(FlaskForm):
     linkedin = StringField('LinkedIn', validators=[URL()])
     bio = StringField('Bio (optional)', validators=[InputRequired()])
 
-    primary_time = SelectField(
-        'First meeting time preference',
-        [DataRequired()],
-        choices=[
-            ('morning', 'Morning: 9am ET'), # should classes be ranked?
-            ('afternoon', 'Afternoon: 3pm ET'),
-            ('evening', 'Evening: 7pm ET'),
-            ('overnight', 'Overnight: 1am ET'),
-        ]
-    )
+    submit = SubmitField('Sign Up')
 
-    secondary_time = SelectField(
-        'Second meeting time preference',
-        [DataRequired()],
-        choices=[
-            ('morning', 'Morning: 9am ET'), # should classes be ranked?
-            ('afternoon', 'Afternoon: 3pm ET'),
-            ('evening', 'Evening: 7pm ET'),
-            ('overnight', 'Overnight: 1am ET'),
-            ('na', 'NA'),
-        ]
-    )
 
-    matching = SelectField(
+# Next week meet form
+class NextWeekForm(FlaskForm):
+    matching = SelectField(  # Networking Goal
         'Please choose your preference in being matched',
         [DataRequired()],
         choices=[
-            ('classes', 'I would like to be matched by class.'), # should classes be ranked?
+            ('classes', 'I would like to be matched by class.'),  # should classes be ranked?
             ('interest', 'I would like to be matched by interest'),
         ]
     )
 
-    submit = SubmitField('Sign Up')
+    primary_time = SelectField(  # Next week
+        'First meeting time preference',
+        [DataRequired()],
+        choices=[
+            ('morning', 'Morning: 9am ET'),  # should classes be ranked?
+            ('afternoon', 'Afternoon: 3pm ET'),
+            ('evening', 'Evening: 7pm ET'),
+            ('overnight', 'Overnight: 1am ET'),
+        ]
+    )
+
+    secondary_time = SelectField(  # Next week
+        'Second meeting time preference',
+        [DataRequired()],
+        choices=[
+            ('morning', 'Morning: 9am ET'),  # should classes be ranked?
+            ('afternoon', 'Afternoon: 3pm ET'),
+            ('evening', 'Evening: 7pm ET'),
+            ('overnight', 'Overnight: 1am ET'),
+            ])
 
     match = SubmitField("Match me for next week's chat!")

@@ -9,7 +9,7 @@ from pennchatsproject import db
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from pennchatsproject.models import Student
 from pennchatsproject.models import *
-from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm
+from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm, NextWeekForm
 # from pennchatsproject.students.forms import *
 
 
@@ -71,6 +71,14 @@ def logout():
     return redirect(url_for('core.index'))
 
 
+@students.route('/test_profile')
+def test_profile():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        student = Student(email=form.email.data)
+    return render_template("test_profile.html", form=form)
+
+
 # example profile page
 @students.route('/create_profile')
 def create_profile():
@@ -86,11 +94,14 @@ def create_profile():
         student.bio = form.bio.data,
         student.cohort = form.cohort.data,
         student.linkedin = form.linkedin.data,
+        student.prim_interest = form.primary_interest.data
+        student.sec_interest = form.secondary_interest.data
+        student.class_to_match = form.primary_class.data  # just using primary class for now
 
         # student.current_classes
         # student.classes_taken
         # student.interests
-        student.networking_goal = form.matching.data
+
         db.session.commit()
         # maybe want to take them to url for editing profile
     return render_template("create_profile.html", form=form)
@@ -99,14 +110,13 @@ def create_profile():
 # sign up-for next week's chat
 @students.route('/next_week')
 def next_week():
-    form = ProfileForm()
+    form = NextWeekForm()
     if form.validate_on_submit():
         student = Student.query.filter_by(email=form.email.data).first()
+        student.networking_goal = form.matching.data
         student.prim_time = form.primary_time.data
         student.sec_time = form.secondary_time.data
-        student.prim_interest = form.primary_interest.data
-        student.sec_interest = form.secondary_interest.data
-        student.class_to_match = form.primary_class.data  # just using primary class for now
+
     return render_template("next_week.html", form=form)
 
 

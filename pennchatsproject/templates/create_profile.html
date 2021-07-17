@@ -5,74 +5,91 @@
 {% block head %} Create Profile {% endblock %}
 
 {% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+    <form method="POST" style="padding:5px;">
+        <!-- First Name Field -->
+        {{ form.first_name.label}}
+        {{ form.first_name}}
+        <br>
 
-<!-- import form template -->
-{% from "_formhelpers.html" import render_field %}
+        <!-- Last Name Field -->
+        {{ form.last_name.label }}
+        {{ form.last_name }}
+        <br>
 
-<form class="form form-horizontal" action="{{url_for('create_profile')}}" method="POST" role="form">
-    <!-- First Name Field -->
-    {{ render_field(form.first_name) }}
-    <br>
+        <!-- City Field -->
+        {{ form.city.label }}
+        {{ form.city }}
+        <br>
 
-    <!-- Last Name Field -->
-    {{ render_field(form.last_name) }}
-    <br>
+        <!-- State Field -->
+        {{ form.state.label }}
+        {{ form.state }}
+        <br>
 
-    <!-- City Field -->
-    {{ render_field(form.city) }}
-    <br>
+        <!-- Country Field -->
+        {{ form.country.label }}
+        {{ form.country}}
+        <br>
 
-    <!-- State Field -->
-    {{ render_field(form.state) }}
-    <br>
 
-    <!-- Country Field -->
-    {{ render_field(form.country) }}
-    <br>
+        <!-- Past Classes Field -->
+        {{ form.classes_checkboxes.label }}
+        {{ form.classes_checkboxes }}
+        <br>
 
-    <!-- Primary Class Field -->
-    {{ render_field(form.primary_class) }}
-    <br>
+        <!-- Current Class Field -->
+        {{ form.current_class.label }}
+        {{ form.current_class }}
+        <br>
 
-    <!-- Secondary Class Field -->
-    {{ render_field(form.secondary_class) }}
-    <br>
+        <!-- Primary Class Field -->
+        {{ form.primary_class.label }}
+        {{ form.primary_class }}
+        <br>
 
-    <!-- Class Field -->
-    {{ render_field(form.class_checkboxes) }}
-    <br>
+        <!-- Secondary Class Field -->
+        {{ form.secondary_class.label }}
+        {{ form.secondary_class }}
+        <br>
 
-    <!-- Current Class Field -->
-    {{ render_field(form.current_class) }}
-    <br>
+        <!-- Primary Interest Field -->
+        {{ form.primary_interest.label }}
+        {{ form.primary_interest }}
+        <br>
 
-    <!-- Primary Interest Field -->
-    {{ render_field(form.primary_interest) }}
-    <br>
+        <!-- Secondary Interest Field -->
+        {{ form.secondary_interest.label }}
+        {{ form.secondary_interest }}
+        <br>
 
-    <!-- Secondary Interest Field -->
-    {{ render_field(form.secondary_interest) }}
-    <br>
+        <!-- Others Interests Field -->
+        {{ form.other_interests.label }}
+        {{ form.other_interests }}
+        <br>
 
-    <!-- Others Interests Field -->
-    {{ render_field(form.other_interests) }}
-    <br>
+        <!-- Cohort Field -->
+        {{ form.cohort.label }}
+        {{ form.cohort }}
+        <br>
 
-    <!-- Cohort Field -->
-    {{ render_field(form.cohort) }}
-    <br>
+        <!-- LinkedIn Field -->
+        {{ form.linkedin.label }}
+        {{ form.linkedin }}
+        <br>
 
-    <!-- LinkedIn Field -->
-    {{ render_field(form.linkedin) }}
-    <br>
+        <!-- Bio Field -->
+        {{ form.bio.label }}
+        {{ form.bio }}
+        <br>
 
-    <!-- Bio Field -->
-    {{ render_field(form.bio) }}
-    <br>
-
-    <!-- Submit Field -->
-    {{ form.submit }}
+        <!-- Submit Field -->
+        {{ form.submit }}
 
 </form>
+  </div>
+</div>
+
 
 {% endblock %}
