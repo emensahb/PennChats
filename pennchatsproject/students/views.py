@@ -34,7 +34,7 @@ def register():
 #login
 @students.route('/login', methods=["POST", "GET"])
 def login():
-    form = LoginForm
+    form = LoginForm()
     if form.validate_on_submit():
         # Grab the student from our Student Models table
         student = Student.query.filter_by(email=form.email.data).first()
@@ -51,7 +51,7 @@ def login():
             next = request.args.get('next')
 
             if next == None or not next[0]=='/':
-                next = url_for('student.index')
+                next = url_for('core.index')
 
             return redirect(next)
 
@@ -66,33 +66,33 @@ def logout():
     return redirect(url_for('core.index'))
 
 
-#sign up-for next week's chat
-@app.route('/next_week')
-def next_week():
-    form = SignUpForm()
-    return render_template("next_week.html", form = form)
-
-#thank you
-@app.route('/thank_you')
-def thank_you():
-    return 'Thanks for signing up!'
-
-#account
-@app.route('/account')
-def member_area():
-    return render_template("account.html")
-
-#create profile
-@app.route('create_profile')
-def create_profile():
-    return render_template('create_profile')
-
-#edit profile
-@app.route('/account/<name>')
-def edit_profile(name):
-    return 'edit profile'
-
-#<username> profile page
-@app.route("/name/<name>")
-def get_user_name(name):
-    return render_template("get_user_name.html", name = name)
+# #sign up-for next week's chat
+# @app.route('/next_week')
+# def next_week():
+#     form = SignUpForm()
+#     return render_template("next_week.html", form = form)
+#
+# #thank you
+# @app.route('/thank_you')
+# def thank_you():
+#     return 'Thanks for signing up!'
+#
+# #account
+# @app.route('/account')
+# def member_area():
+#     return render_template("account.html")
+#
+# #create profile
+# @app.route('create_profile')
+# def create_profile():
+#     return render_template('create_profile')
+#
+# #edit profile
+# @app.route('/account/<name>')
+# def edit_profile(name):
+#     return 'edit profile'
+#
+# #<username> profile page
+# @app.route("/name/<name>")
+# def get_user_name(name):
+#     return render_template("get_user_name.html", name = name)
