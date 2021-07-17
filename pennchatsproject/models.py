@@ -1,5 +1,3 @@
-# models.py, Efua to copy and paste all data models created
-
 from pennchatsproject import db
 
 
