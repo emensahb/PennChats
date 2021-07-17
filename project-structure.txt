@@ -1,0 +1,43 @@
+To avoid putting too much code in the app.py file,
+and provide a clear/organized structure for PennChats,
+a documentation is created to outline the file structure for the project.
+
+
+├───app.py # To be called to run the __init__.py file under pennchatsproject and start server for web app
+├───requirements.txt # File of pip install statements for your app
+├───migrations # folder created for migrations by calling
+├───pennchatsproject # main project folder, sub-components will be in separate folders
+│   │   models.py # this will hold all our models (students, courses, interests, weeklysignups etc.) (Efua)
+│   │   __init__.py # this will hold a lot of our flask application logic and blueprint logic (Efua, Jimmy and Audra)
+│   │
+│   ├───core (Audra)
+│   │   │   __init__.py
+│   │   │   views.py # includes routing code for two views (homepage view and the about us (nice to have) view) - main.py line 7-10 (Audra)
+│   │
+│   │
+│   ├───students (Audra)
+│   │   │   __init__.py
+│   │   │   forms.py # contains form classes that are used to create and update student profiles
+│   │   │   views.py # contains routing code for eight views (Audra)
+│   │   │	(register, login, logout, sign-up for next week's chat, thank you, account, edit profile, <username> profile page)- main.py l12-44
+│   │   │   picture_handler.py # includes code that allow us to handle the profile picture of the user (nice to have)
+│   │
+│   │
+│   ├───meetings (Jimmy)
+│   │   │   __init__.py # this is created so Python know that we can import this meetings folder as a module
+│   │   │   views.py # contains routing code for x views (generate matches, view matches meetings & unmatched students, (student-meeting view)etc.)
+│   │   │   matchingalgo.py # contains code for the matching function
+│   │
+│   │
+│   ├───error_pages # includes custom templates for error pages
+│   │   │   handlers.py # includes routing code for two error page views (404 error and 403 error)
+│   │
+│   │
+│   ├───static # Where we store our CSS, JS, Images, Fonts, etc...
+│   ├───templates (Audra)   # Where all the html files go (
+│   │   │  base.html # includes html code for the original bootstrap links, nav bar code, container block (Audra's base.thml under templates folder
+│   │   │  index.html # includes html code that renders the homepage (home.html)
+│   │   │  info.html # includes html code that renders the about us page (nice to have)
+│   │   │   └───error_pages
+│   │   │           403.html # html that displays custom 403 error msg
+│   │   │           404.html # html that displays custom 404 error msg
