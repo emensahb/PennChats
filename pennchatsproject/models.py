@@ -47,7 +47,7 @@ class Student(db.Model, UserMixin):
     class_to_match = db.relationship('Class', secondary='class_to_match', backref='student')
 
     # Whether they are participating in the weekly meeting or not
-    week_meet =
+    # week_meet =
 
     def __init__(self, email, username, student_id, password):
         self.username = username
@@ -71,8 +71,9 @@ class WeeklySignUp(db.Model):
     # Ensures that table will be named students in plural vs singular like the model name
 
     __tablename__ = 'weekly_signups'
-    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     week_meet = db.Column(db.Text)
+    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
 
     def __init__(self, week_meet):
         self.week_meet = week_meet
@@ -98,7 +99,8 @@ class Class(db.Model):
     class id is the actual MCIT online course ID number.
     There are several relationships between this table and the Student table."""
     # how do we input data to this table?
-    # for reference why I commented out students: https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+    # for reference why I commented out students:
+    # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
     # see using backref
 
     __tablename__ = 'classes'
@@ -254,9 +256,10 @@ networking_goals = db.Table('networking_goal',
 
 
 # class TimeOption(db.Model):
-    """This table is used to store all available time slots for
-    students to choose from for their PennChats meetings.
-    There are two many to one relationships between this table and the WeeklySignUp table."""
+"""This table is used to store all available time slots for
+students to choose from for their PennChats meetings.
+There are two many to one relationships between this table and the WeeklySignUp table.
+"""
     # how do we input data to this table?
 
   #  __tablename__ = 'time_options'

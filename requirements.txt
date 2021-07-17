@@ -7,7 +7,7 @@ Flask==1.1.2
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-Werkzeug==0.16.1 # changed from 1.0.1 to resolve error: https://stackoverflow.com/questions/60896993/importerror-cannot-import-name-url-encode-from-werkzeug
+Werkzeug~=0.16.0
 
 # Flask Packages
 Flask-Login==0.4.0
@@ -20,3 +20,6 @@ Flask-User==1.0.1.5
 # Automated tests
 pytest==3.0.5
 pytest-cov==2.4.0
+alembic~=1.6.5
+SQLAlchemy~=1.4.17
+WTForms~=2.3.3

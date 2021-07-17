@@ -8,8 +8,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 from pennchatsproject import db
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from pennchatsproject.models import Student
+from pennchatsproject.models import *
 from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm
-from pennchatsproject.students.forms import *
+# from pennchatsproject.students.forms import *
 
 
 students = Blueprint('students', __name__)
@@ -76,33 +77,41 @@ def create_profile():
     form = ProfileForm()
     if form.validate_on_submit():
         student = Student.query.filter_by(email=form.email.data).first()
-        student.firstname = form.firstname.data,
-        student.lastname = form.lastname.data,
+        student.firstname = form.first_name.data,
+        student.lastname = form.last_name.data,
         student.email = form.email.data,
         student.city = form.city.data,
         student.state = form.state.data,
         student.country = form.country.data,
         student.bio = form.bio.data,
         student.cohort = form.cohort.data,
-        student.linkedin = form.linkedin.data
+        student.linkedin = form.linkedin.data,
+
+        # student.current_classes
+        # student.classes_taken
+        # student.interests
+        student.networking_goal = form.matching.data
         db.session.commit()
         # maybe want to take them to url for editing profile
     return render_template("create_profile.html", form=form)
 
 
+# sign up-for next week's chat
+@students.route('/next_week')
+def next_week():
+    form = ProfileForm()
+    if form.validate_on_submit():
+        student = Student.query.filter_by(email=form.email.data).first()
+        student.prim_time = form.primary_time.data
+        student.sec_time = form.secondary_time.data
+        student.prim_interest = form.primary_interest.data
+        student.sec_interest = form.secondary_interest.data
+        student.class_to_match = form.primary_class.data  # just using primary class for now
+    return render_template("next_week.html", form=form)
 
 
 
 
-
-
-
-# #sign up-for next week's chat
-# @students.route('/next_week')
-# def next_week():
-#     form = SignUpForm()
-#     return render_template("next_week.html", form = form)
-#
 # #thank you
 # @students.route('/thank_you')
 # def thank_you():
