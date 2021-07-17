@@ -67,32 +67,27 @@ def logout():
 
 
 # #sign up-for next week's chat
-# @app.route('/next_week')
+# @students.route('/next_week')
 # def next_week():
 #     form = SignUpForm()
 #     return render_template("next_week.html", form = form)
 #
 # #thank you
-# @app.route('/thank_you')
+# @students.route('/thank_you')
 # def thank_you():
 #     return 'Thanks for signing up!'
 #
 # #account
-# @app.route('/account')
+# @students.route('/account')
 # def member_area():
 #     return render_template("account.html")
 #
-# #create profile
-# @app.route('create_profile')
-# def create_profile():
-#     return render_template('create_profile')
-#
 # #edit profile
-# @app.route('/account/<name>')
+# @students.route('/account/<name>')
 # def edit_profile(name):
 #     return 'edit profile'
 #
 # #<username> profile page
-# @app.route("/name/<name>")
+# @students.route("/name/<name>")
 # def get_user_name(name):
 #     return render_template("get_user_name.html", name = name)
