@@ -30,10 +30,10 @@ class RegistrationForm(FlaskForm):
         if Student.query.filter_by(email=self.email.data).first():
             raise ValidationError('This email has already been registered.')
 
-    def validate_username(self, field):
-        """this function will check to see if the given username has already been registered."""
-        if Student.query.filter_by(username=self.username.data).first():
-            raise ValidationError('This username is already taken.')
+    # def validate_username(self, field):
+        # """this function will check to see if the given username has already been registered."""
+       #  if Student.query.filter_by(username=self.username.data).first():
+        #    raise ValidationError('This username is already taken.')
 
     def validate_student_id(self, field):
         """this function will check to see if the given student_id has already been registered."""
@@ -80,7 +80,7 @@ class ProfileForm(FlaskForm):
     )
 
     # create checkboxes for classes
-    class_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=class_tuples)
+    classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=class_tuples)
 
     current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_tuples)
 
@@ -126,7 +126,9 @@ class ProfileForm(FlaskForm):
         choices=interest_tuples,
     )
 
-    other_interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
+    # other_interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
+    interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
+
 
     cohort = SelectField(
         'Cohort',

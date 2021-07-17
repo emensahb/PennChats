@@ -28,24 +28,26 @@ class Student(db.Model, UserMixin):
     state = db.Column(db.Text)
     country = db.Column(db.Text)
     bio = db.Column(db.Text)
-    cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
+
     # many to many relationships
-    courses_enrolled = db.relationship('Course', secondary='courses_enrolled', backref='student')
-    courses_taken = db.relationship('Course', secondary='courses_taken', backref='student')
+    current_classes = db.relationship('Class', secondary='current_classes', backref='student')
+    classes_taken = db.relationship('Class', secondary='classes_taken', backref='student')
     interests = db.relationship('Interest', secondary='student_interests', backref='student')
 
     # Many to one relationships
-    networking_goal = db.relationship('NetworkingGoal', secondary='student_networking_goals', backref='weekly_signup')
-    prim_time = db.relationship('TimePreference', secondary='primary_time_preferences', backref='student')
-    sec_time = db.relationship('TimePreference', secondary='secondary_time_preferences', backref='student')
-    prim_interest = db.relationship('Interest', secondary='primary_interests', backref='student')
-    sec_interest = db.relationship('Interest', secondary='secondary_interests', backref='student')
-    course_to_match = db.relationship('Course', secondary='courses_to_match', backref='student')
+    cohort = db.Column(db.Text)
+    networking_goal = db.relationship('NetworkingGoal', secondary='networking_goals', backref='weekly_signup')
+    prim_time = db.relationship('TimePreference', secondary='student_primary_time_preferences', backref='student')
+    sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='student')
+    prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='student')
+    sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student')
+    class_to_match = db.relationship('Class', secondary='class_to_match', backref='student')
 
     # Whether they are participating in the weekly meeting or not
+    week_meet =
 
     def __init__(self, email, username, student_id, password):
         self.username = username
@@ -57,13 +59,13 @@ class Student(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"{self.firstname} {self.lastname} has email: {self.email} and student ID: {self.student_id}"
+        return f"{self.firstname}  {self.lastname} has email: {self.email} and student ID: {self.student_id}"
 
 
 class WeeklySignUp(db.Model):
     # should be an edit sheet that will pull in from last week and when they hit submit repopulates
     """
-    Create a weekly signup table. This is in essence a join table from students to weekly signup
+    A list of students who are signed up to chat this week
     """
 
     # Ensures that table will be named students in plural vs singular like the model name
@@ -91,35 +93,42 @@ class WeeklySignUp(db.Model):
         return student_count
 
 
-class Course(db.Model):
+class Class(db.Model):
     """This table is used to store all MCIT Online courses
-    Course id is the actual MCIT online course ID number.
+    class id is the actual MCIT online course ID number.
     There are several relationships between this table and the Student table."""
     # how do we input data to this table?
+    # for reference why I commented out students: https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+    # see using backref
 
-    __tablename__ = 'courses'
+    __tablename__ = 'classes'
 
     # id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Text, primary_key=True, nullable=False) # not sure if we can just use course_id as primary key here
-    course_name = db.Column(db.Text, nullable=False)
+    class_id = db.Column(db.Integer, primary_key=True, nullable=False) # not sure if we can just use course_id as primary key here
+    class_name = db.Column(db.Text, nullable=False)
     # students = db.relationship('Student', backref='course_to_match') # calling student.course_to_match will return all the course this student prefers to be matched with
 
-    def __init__(self, course_id, course_name):
-        self.course_id = course_id
-        self.course_name = course_name
+    def __init__(self, class_id, class_name):
+        self.class_id = class_id
+        self.class_name = class_name
 
     def __repr__(self):
-        return f" {self.course_id} - {self.course_name} "
+        return f" {self.class_id} - {self.class_name} "
 
 
-courses_enrolled = db.Table('courses_enrolled',
+current_classes = db.Table('current_classes',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.course_id'), primary_key=True)
 )
 
-courses_taken = db.Table('courses_taken',
+courses_taken = db.Table('classes_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.course_id'), primary_key=True)
+)
+
+courses_to_match = db.Table('class_to_match',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
 
 
@@ -131,22 +140,59 @@ class Interest(db.Model):
 
     __tablename__ = 'interests'
 
-    interest_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text, nullable=False, unique=True)
-    students = db.relationship('Student', backref='interest_to_match') # calling student.interest_to_match will return all the interest this student prefers to be matched with
 
     def __init__(self, interest_name):
         self.interest_name = interest_name
 
     def __repr__(self):
-        return f"This is the interest of {self.interest_name} with the interest ID of {self.interest_id}."
+        return f"Interest: {self.interest_id}. {self.interest_name}"
 
 
-student_interest_record = db.Table('student_interest_record',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('interest_id', db.Integer, db.ForeignKey('interests.interest_id'), primary_key=True)
+student_interests = db.Table('student_interests',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+                             )
+
+student_primary_interests = db.Table('prim_time',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
 )
 
+student_secondary_interests  = db.Table('sec_time',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+)
+
+
+class Cohort(db.Model):
+    """This table is used to store all MCIT Online courses
+    Course id is the actual MCIT online course ID number.
+    There are several relationships between this table and the Student table."""
+    # how do we input data to this table?
+    # for reference why I commented out students: https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+    # see using backref
+
+    __tablename__ = 'cohorts'
+
+    # id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Text, primary_key=True, nullable=False) # not sure if we can just use course_id as primary key here
+    cohort_name = db.Column(db.Text, nullable=False)
+    # students = db.relationship('Student', backref='course_to_match') # calling student.course_to_match will return all the course this student prefers to be matched with
+
+    def __init__(self, course_id, course_name):
+        self.id = id
+        self.cohort_name = cohort_name
+
+    def __repr__(self):
+        return f" {self.id} - {self.cohort_name} "
+
+
+cohorts = db.Table('cohort',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('cohort_id', db.Integer, db.ForeignKey('cohorts.id'), primary_key=True)
+)
 
 class TimePreference(db.Model):
     """
@@ -166,7 +212,43 @@ class TimePreference(db.Model):
         the toString method of the Student class
         :return: a String that includes the time preference.
         """
-        return f"Time preference: {self.time} "
+        return f"Time preference: {self.id}. {self.time}"
+
+student_primary_time_preference = db.Table('prim_interest',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
+)
+
+student_secondary_time_preference  = db.Table('sec_interest',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
+
+)
+
+
+
+class NetworkingGoal(db.Model):
+    """This table is used to store the all networking goals for
+    students to choose from for their PennChats meetings.
+    Currently contains only two goals: match by class, match by interest.
+    There are two many to one relationships between this table and the WeeklySignUp table."""
+    # how do we input data to this table?
+
+    __tablename__ = 'networking_goals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    networking_goal = db.Column(db.Text, nullable=False, unique=True)
+
+    def __init__(self, networking_goal):
+        self.networking_goal = networking_goal
+
+    def __repr__(self):
+        return f" Networking Goal: {self.id}. {self.networking_goal}"
+
+networking_goals = db.Table('networking_goal',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('course_id', db.Integer, db.ForeignKey('networking_goals.id'), primary_key=True)
+)
 
 
 
@@ -191,26 +273,3 @@ class TimePreference(db.Model):
 
   #  def __repr__(self):
       #  return f"This is the time option of {self.time_option} with the time ID of {self.time_id}."
-
-
-class NetworkingGoal(db.Model):
-    """This table is used to store the all networking goals for
-    students to choose from for their PennChats meetings.
-    Currently contains only two goals: match by class, match by interest.
-    There are two many to one relationships between this table and the WeeklySignUp table."""
-    # how do we input data to this table?
-
-    __tablename__ = 'networking_goals'
-
-    networking_goal_id = db.Column(db.Integer, primary_key=True)
-    networking_goal = db.Column(db.Text, nullable=False, unique=True)
-
-    # many to one relationships
-    prim_goal_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.prime_networking_goal_id', backref='primegoal') # calling WeeklySignUp.primegoal will refer to the primary goal associated with the form
-    sec_goal_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.sec_networking_goal_id', backref='secgoal') # calling WeeklySignUp.secgoal will refer to the secondary goal preference associated with the form
-
-    def __init__(self, networking_goal):
-        self.networking_goal = networking_goal
-
-    def __repr__(self):
-        return f"This is the networking goal of {self.networking_goal} with the ID of {self.networking_goal_id}."

@@ -9,7 +9,7 @@ from pennchatsproject import db
 # from werkzeug.security import generate_password_hash, check_password_hash
 # from pennchatsproject.models import Student
 from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm
-#from pennchatsproject.students.forms import *
+from pennchatsproject.students.forms import *
 
 
 students = Blueprint('students', __name__)
@@ -22,7 +22,7 @@ def register():
 
     if form.validate_on_submit():
         student = Student(email=form.email.data,
-                          # username=form.username.data,
+                          username=form.username.data,
                           student_id=form.student_id.data,
                           password=form.password.data)
 
