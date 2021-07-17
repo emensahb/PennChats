@@ -70,15 +70,6 @@ def logout():
     flash("You have successfully logged out.")
     return redirect(url_for('core.index'))
 
-
-@students.route('/test_profile')
-def test_profile():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        student = Student(email=form.email.data)
-    return render_template("test_profile.html", form=form)
-
-
 # example profile page
 @students.route('/create_profile')
 def create_profile():
@@ -98,9 +89,9 @@ def create_profile():
         student.sec_interest = form.secondary_interest.data
         student.class_to_match = form.primary_class.data  # just using primary class for now
 
-        # student.current_classes
-        # student.classes_taken
-        # student.interests
+        student.current_classes = form.current_classes
+        student.classes_taken = form.classes_checkboxes
+        student.interests = form.
 
         db.session.commit()
         # maybe want to take them to url for editing profile
