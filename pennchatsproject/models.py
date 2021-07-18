@@ -21,7 +21,8 @@ class Student(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
-    student_id = db.Column(db.Integer, unique=True) # not sure if we can just use student_id as primary key here.
+    # not sure if we can just use student_id as primary key here.
+    student_id = db.Column(db.Integer, unique=True)
     password_hash = db.Column(db.String(128))
     firstname = db.Column(db.Text)
     lastname = db.Column(db.Text)
@@ -31,19 +32,26 @@ class Student(db.Model, UserMixin):
     bio = db.Column(db.Text)
     cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
-    #profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
+    profile_image = db.Column(
+        db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
-    current_courses = db.relationship('Course', secondary='current_courses_record', backref='current_students')
-    past_courses = db.relationship('Course', secondary='past_courses_record', backref='past_students')
-    interests = db.relationship('Interest', secondary='student_interest_record', backref='all_students')
+    current_courses = db.relationship(
+        'Course', secondary='current_courses_record', backref='current_students')
+    past_courses = db.relationship(
+        'Course', secondary='past_courses_record', backref='past_students')
+    interests = db.relationship(
+        'Interest', secondary='student_interest_record', backref='all_students')
 
     # many to one relationships
-    weekly_signups = db.relationship('WeeklySignUp', backref='student') # calling weekly_signups.student will refer to the student associated with the weekly signup form
+    # calling weekly_signups.student will refer to the student associated with the weekly signup form
+    weekly_signups = db.relationship('WeeklySignUp', backref='student')
 
     # one to many relatinoships
-    course_id_to_match = db.Column(db.Integer, db.ForeignKey('courses.id')) #one to many, use course table
-    interest_id_to_match = db.Column(db.Integer, db.ForeignKey('interests.interest_id')) #one to many, use interest table twice
+    course_id_to_match = db.Column(db.Integer, db.ForeignKey(
+        'courses.id'))  # one to many, use course table
+    interest_id_to_match = db.Column(db.Integer, db.ForeignKey(
+        'interests.interest_id'))  # one to many, use interest table twice
 
     def __init__(self, email, username, student_id, password):
         self.username = username
@@ -69,16 +77,22 @@ class WeeklySignUp(db.Model):
     week_meet = db.Column(db.Text)
 
     # one to many relationships
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey(
+        'students.id'), nullable=False)
 
-    prime_time_id = db.Column(db.Integer, db.ForeignKey('time_options.time_id'), nullable=False)
-    sec_time_id = db.Column(db.Integer, db.ForeignKey('time_options.time_id'), nullable=False)
+    prime_time_id = db.Column(db.Integer, db.ForeignKey(
+        'time_options.time_id'), nullable=False)
+    sec_time_id = db.Column(db.Integer, db.ForeignKey(
+        'time_options.time_id'), nullable=False)
 
-    prime_networking_goal_id = db.Column(db.Integer, db.ForeignKey('networking_goals.networking_goal_id'), nullable=False)
-    sec_networking_goal_id = db.Column(db.Integer, db.ForeignKey('networking_goals.networking_goal_id'), nullable=False)
+    prime_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
+        'networking_goals.networking_goal_id'), nullable=False)
+    sec_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
+        'networking_goals.networking_goal_id'), nullable=False)
 
     def __init__(self, week_meet, student_id, prime_time_id, sec_time_id, prime_networking_goal_id, sec_networking_goal_id):
-        self.week_meet = week_meet # need to figure out how to best time stamp WeeklySignUp Forms
+        # need to figure out how to best time stamp WeeklySignUp Forms
+        self.week_meet = week_meet
         self.student_id = student_id
         self.prime_time_id = prime_time_id
         self.sec_time_id = sec_time_id
@@ -98,9 +112,11 @@ class Course(db.Model):
     __tablename__ = 'courses'
 
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Text, unique=True, nullable=False) # not sure if we can just use course_id as primary key here
+    # not sure if we can just use course_id as primary key here
+    course_id = db.Column(db.Text, unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
-    students = db.relationship('Student', backref='course_to_match') # calling student.course_to_match will return all the course this student prefers to be matched with
+    # calling student.course_to_match will return all the course this student prefers to be matched with
+    students = db.relationship('Student', backref='course_to_match')
 
     def __init__(self, course_id, course_name):
         self.course_id = course_id
@@ -109,15 +125,20 @@ class Course(db.Model):
     def __repr__(self):
         return f"This is the course of {self.course_name} with the course ID of {self.course_id}."
 
+
 current_courses_record = db.Table('current_courses_record',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.id'), primary_key=True)
-)
+                                  db.Column('student_id', db.Integer, db.ForeignKey(
+                                      'students.id'), primary_key=True),
+                                  db.Column('course_id', db.Integer, db.ForeignKey(
+                                      'courses.id'), primary_key=True)
+                                  )
 
 past_courses_record = db.Table('past_courses_record',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.id'), primary_key=True)
-)
+                               db.Column('student_id', db.Integer, db.ForeignKey(
+                                   'students.id'), primary_key=True),
+                               db.Column('course_id', db.Integer, db.ForeignKey(
+                                   'courses.id'), primary_key=True)
+                               )
 
 
 class Interest(db.Model):
@@ -130,7 +151,8 @@ class Interest(db.Model):
 
     interest_id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text, nullable=False, unique=True)
-    students = db.relationship('Student', backref='interest_to_match') # calling student.interest_to_match will return all the interest this student prefers to be matched with
+    # calling student.interest_to_match will return all the interest this student prefers to be matched with
+    students = db.relationship('Student', backref='interest_to_match')
 
     def __init__(self, interest_name):
         self.interest_name = interest_name
@@ -138,10 +160,13 @@ class Interest(db.Model):
     def __repr__(self):
         return f"This is the interest of {self.interest_name} with the interest ID of {self.interest_id}."
 
+
 student_interest_record = db.Table('student_interest_record',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
-    db.Column('interest_id', db.Integer, db.ForeignKey('interests.interest_id'), primary_key=True)
-)
+                                   db.Column('student_id', db.Integer, db.ForeignKey(
+                                       'students.id'), primary_key=True),
+                                   db.Column('interest_id', db.Integer, db.ForeignKey(
+                                       'interests.interest_id'), primary_key=True)
+                                   )
 
 
 class TimeOption(db.Model):
@@ -156,8 +181,12 @@ class TimeOption(db.Model):
     time_option = db.Column(db.Text, nullable=False, unique=True)
 
     # many to one relationships
-    prim_time_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.prime_time_id', backref='primetime') # calling WeeklySignUp.primetime will refer to the primary time preference associated with the form
-    sec_time_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sectime') # calling WeeklySignUp.sectime will refer to the secondary time preference associated with the form
+    # calling WeeklySignUp.primetime will refer to the primary time preference associated with the form
+    prim_time_signups = db.relationship(
+        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_time_id', backref='primetime')
+    # calling WeeklySignUp.sectime will refer to the secondary time preference associated with the form
+    sec_time_signups = db.relationship(
+        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sectime')
 
     def __init__(self, time):
         self.time = time
@@ -179,8 +208,12 @@ class NetworkingGoal(db.Model):
     networking_goal = db.Column(db.Text, nullable=False, unique=True)
 
     # many to one relationships
-    prim_goal_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.prime_networking_goal_id', backref='primegoal') # calling WeeklySignUp.primegoal will refer to the primary goal associated with the form
-    sec_goal_signups = db.relationship('WeeklySignUp', foreign_keys='WeeklySignUp.sec_networking_goal_id', backref='secgoal') # calling WeeklySignUp.secgoal will refer to the secondary goal preference associated with the form
+    # calling WeeklySignUp.primegoal will refer to the primary goal associated with the form
+    prim_goal_signups = db.relationship(
+        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_networking_goal_id', backref='primegoal')
+    # calling WeeklySignUp.secgoal will refer to the secondary goal preference associated with the form
+    sec_goal_signups = db.relationship(
+        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_networking_goal_id', backref='secgoal')
 
     def __init__(self, networking_goal):
         self.networking_goal = networking_goal
