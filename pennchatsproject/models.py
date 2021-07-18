@@ -44,7 +44,7 @@ class Student(db.Model, UserMixin):
     networking_goal = db.relationship('NetworkingGoal', secondary='networking_goals', backref='weekly_signup')
     prim_time = db.relationship('TimePreference', secondary='student_primary_time_preferences', backref='student')
     sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='student')
-    #####next week end fiedls####
+    ##### next week end fields  ####
 
     prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='student')
     sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student')
@@ -75,7 +75,7 @@ class WeeklySignUp(db.Model):
 
     __tablename__ = 'weekly_signups'
     id = db.Column(db.Integer, primary_key=True)
-    week_meet = db.Column(db.Text) # time stamp for when student submits week meet form
+    week_meet = db.Column(db.Text)  # time stamp for when student submits week meet form
     student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
 
     def __init__(self, week_meet):
@@ -109,9 +109,10 @@ class Class(db.Model):
     __tablename__ = 'classes'
 
     # id = db.Column(db.Integer, primary_key=True)
-    class_id = db.Column(db.Integer, primary_key=True, nullable=False) # not sure if we can just use course_id as primary key here
+    class_id = db.Column(db.Integer, primary_key=True, nullable=False)
     class_name = db.Column(db.Text, nullable=False)
-    # students = db.relationship('Student', backref='course_to_match') # calling student.course_to_match will return all the course this student prefers to be matched with
+    # students = db.relationship('Student', backref='course_to_match')
+    # calling student.course_to_match will return all the course this student prefers to be matched with
 
     def __init__(self, class_id, class_name):
         self.class_id = class_id
@@ -123,15 +124,15 @@ class Class(db.Model):
 
 current_classes = db.Table('current_classes',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.course_id'), primary_key=True)
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
 
-courses_taken = db.Table('classes_taken',
+classes_taken = db.Table('classes_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.course_id'), primary_key=True)
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
 
-courses_to_match = db.Table('class_to_match',
+class_to_match = db.Table('class_to_match',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
@@ -176,17 +177,19 @@ class Cohort(db.Model):
     Course id is the actual MCIT online course ID number.
     There are several relationships between this table and the Student table."""
     # how do we input data to this table?
-    # for reference why I commented out students: https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+    # for reference why I commented out students:
+    # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
     # see using backref
 
     __tablename__ = 'cohorts'
 
     # id = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.Text, primary_key=True, nullable=False) # not sure if we can just use course_id as primary key here
+    id = db.Column(db.Text, primary_key=True, nullable=False)
     cohort_name = db.Column(db.Text, nullable=False)
-    # students = db.relationship('Student', backref='course_to_match') # calling student.course_to_match will return all the course this student prefers to be matched with
+    # students = db.relationship('Student', backref='course_to_match')
+    # calling student.course_to_match will return all the course this student prefers to be matched with
 
-    def __init__(self, course_id, course_name):
+    def __init__(self, id, cohort_name):
         self.id = id
         self.cohort_name = cohort_name
 

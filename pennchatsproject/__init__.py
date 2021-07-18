@@ -3,6 +3,8 @@
 # to be worked on between Audra, Efua and Jimmy
 
 import os
+
+import sqlalchemy
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -18,13 +20,17 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
+# sqlalchemy.engine.url.URL.create('postgresql+psycopg2', username='postgres', password='Bqac4KJ^nVLVeqM0Uw', host='localhost', port=5432, database='common')
+
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:pbNdO#cdxtskP7Da9d7@@localhost/pennchats'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Jf_CSAx^ld192@localhost/pennchats'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:CW72Ec#EdIHpoFsOGrtf@localhost/pennchats'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:Jf_CSAx^ld192@localhost/pennchats'
 app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-Migrate(app, db)
+migrate = Migrate(app, db)
+
+
 
 
 #####################################

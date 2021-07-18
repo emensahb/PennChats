@@ -70,6 +70,7 @@ def logout():
     flash("You have successfully logged out.")
     return redirect(url_for('core.index'))
 
+
 # example profile page
 @students.route('/create_profile')
 def create_profile():
@@ -91,7 +92,7 @@ def create_profile():
 
         student.current_classes = form.current_classes
         student.classes_taken = form.classes_checkboxes
-        student.interests = form.
+        student.interests = form.other_interests
 
         db.session.commit()
         # maybe want to take them to url for editing profile
@@ -113,7 +114,7 @@ def next_week():
 
 
 
-# #thank you
+# # thank you
 # @students.route('/thank_you')
 # def thank_you():
 #     return 'Thanks for signing up!'
