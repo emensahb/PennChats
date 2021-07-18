@@ -20,7 +20,6 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
-# sqlalchemy.engine.url.URL.create('postgresql+psycopg2', username='postgres', password='Bqac4KJ^nVLVeqM0Uw', host='localhost', port=5432, database='common')
 
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:CW72Ec#EdIHpoFsOGrtf@localhost/pennchats'
@@ -29,8 +28,6 @@ app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-
 
 
 #####################################

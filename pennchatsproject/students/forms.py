@@ -51,8 +51,10 @@ class MultipleCheckboxField(SelectMultipleField):
 class ProfileForm(FlaskForm):
 
     # Class list
-    class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
-                  'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
+    #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
+                  # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
+
+    class_list = [x.class_id for x in Class.query.all()] # Gets the list of classes from the DB
 
     # create value/label pairs (should both be str for name of class)
     class_tuples = [(x, x) for x in class_list]
@@ -99,10 +101,11 @@ class ProfileForm(FlaskForm):
     )
 
     # Interest list
-    interest_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
-                     'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
-                     'Networking & Computer Systems', 'Project Management', 'Software Development']
+    # interest_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
+                     # 'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
+                     # 'Networking & Computer Systems', 'Project Management', 'Software Development']
 
+    interest_list = [x.interest_name for x in Interest.query.all()]  # Gets the list of classes from the DB
     # create value/label pairs (should both be str for name of class)
     interest_tuples = [(x, x) for x in interest_list]
 
@@ -123,16 +126,19 @@ class ProfileForm(FlaskForm):
     cohort = SelectField(
         'Cohort',
         [DataRequired()],
-        choices=[
-            ('Spring 2018', 'Spring 2018'),
-            ('Fall 2018', 'Fall 2018'),
-            ('Spring 2019', 'Spring 2019'),
-            ('Fall 2019', 'Fall 2019'),
-            ('Spring 2020', 'Spring 2020'),
-            ('Fall 2020', 'Fall 2020'),
-            ('Spring 2021', 'Spring 2021'),
-            ('Fall 2021', 'Fall 2021'),
-        ]
+
+        choices=[x.cohort_name for x in Cohort.query.all()]
+
+        #choices=[
+           # ('Spring 2018', 'Spring 2018'),
+           # ('Fall 2018', 'Fall 2018'),
+           # ('Spring 2019', 'Spring 2019'),
+           # ('Fall 2019', 'Fall 2019'),
+           # ('Spring 2020', 'Spring 2020'),
+           # ('Fall 2020', 'Fall 2020'),
+           # ('Spring 2021', 'Spring 2021'),
+           # ('Fall 2021', 'Fall 2021'),
+        #]
     )
 
     linkedin = StringField('LinkedIn', validators=[URL()])
@@ -144,33 +150,42 @@ class ProfileForm(FlaskForm):
 # Next week meet form
 class NextWeekForm(FlaskForm):
     matching = SelectField(  # Networking Goal
-        'Please choose your preference in being matched',
+        'I would like to be matched by: ',
         [DataRequired()],
-        choices=[
-            ('classes', 'I would like to be matched by class.'),  # should classes be ranked?
-            ('interest', 'I would like to be matched by interest'),
-        ]
+        choices=[x.networking_goal for x in NetworkingGoal.query.all()]
+
+       # choices=[
+          #  ('classes', 'class.'),  # should classes be ranked?
+           # ('interest', 'interest'),
+       # ]
     )
 
     primary_time = SelectField(  # Next week
         'First meeting time preference',
         [DataRequired()],
-        choices=[
-            ('morning', 'Morning: 9am ET'),  # should classes be ranked?
-            ('afternoon', 'Afternoon: 3pm ET'),
-            ('evening', 'Evening: 7pm ET'),
-            ('overnight', 'Overnight: 1am ET'),
-        ]
+
+        choices=[x.time for x in TimePreference.query.all()]
+
+        #choices=[
+         #   ('morning', 'Morning: 9am ET'),  # should classes be ranked?
+          #  ('afternoon', 'Afternoon: 3pm ET'),
+          #  ('evening', 'Evening: 7pm ET'),
+          #  ('overnight', 'Overnight: 1am ET'),
+       # ]
     )
 
     secondary_time = SelectField(  # Next week
         'Second meeting time preference',
         [DataRequired()],
-        choices=[
-            ('morning', 'Morning: 9am ET'),  # should classes be ranked?
-            ('afternoon', 'Afternoon: 3pm ET'),
-            ('evening', 'Evening: 7pm ET'),
-            ('overnight', 'Overnight: 1am ET'),
-            ])
+
+        choices=[x.time for x in TimePreference.query.all()]
+
+        # choices=[
+        #    ('morning', 'Morning: 9am ET'),  # should classes be ranked?
+         #   ('afternoon', 'Afternoon: 3pm ET'),
+         #   ('evening', 'Evening: 7pm ET'),
+         #   ('overnight', 'Overnight: 1am ET'),
+         #   ]
+        )
 
     match = SubmitField("Match me for next week's chat!")

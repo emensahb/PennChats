@@ -31,27 +31,28 @@ class Student(db.Model, UserMixin):
     linkedin = db.Column(db.Text)
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
-
     # many to many relationships
     current_classes = db.relationship('Class', secondary='current_classes', backref='student')
-    classes_taken = db.relationship('Class', secondary='classes_taken', backref='student')
+    classes_taken = db.relationship('Class', secondary='classes_taken', backref='students')
     interests = db.relationship('Interest', secondary='student_interests', backref='student')
 
     # Many to one relationships
-    cohort = db.Column(db.Text)
+
 
     # next week
-    networking_goal = db.relationship('NetworkingGoal', secondary='networking_goals', backref='weekly_signup')
+    next_week = db.relationship('WeeklySignUp', backref='student')
+
+    cohort = db.relationship('Cohort', secondary='student_cohorts', backref='student')
+    networking_goal = db.relationship('NetworkingGoal', secondary='student_networking_goals', backref='student')
     prim_time = db.relationship('TimePreference', secondary='student_primary_time_preferences', backref='student')
-    sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='student')
+    sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='students')
     ##### next week end fields  ####
 
-    prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='student')
-    sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student')
-    class_to_match = db.relationship('Class', secondary='class_to_match', backref='student')
+    prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='students')
+    sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student_sec')
+    class_to_match = db.relationship('Class', secondary='class_to_match', backref='student_match')
 
     # Whether they are participating in the weekly meeting or not
-
     def __init__(self, email, username, student_id, password):
         self.username = username
         self.student_id = student_id
@@ -75,18 +76,18 @@ class WeeklySignUp(db.Model):
 
     __tablename__ = 'weekly_signups'
     id = db.Column(db.Integer, primary_key=True)
-    week_meet = db.Column(db.Text)  # time stamp for when student submits week meet form
+    next_week = db.Column(db.Text)  # time stamp for when student submits week meet form
     student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
 
-    def __init__(self, week_meet):
-        self.week_meet = week_meet
+    def __init__(self, next_week):
+        self.next_week = next_week
 
     def __repr__(self):
         """
         the toString method of the Student class
         :return: a String that includes the student's name and email.
         """
-        return f"We we're talking about {self.week_meet}"
+        return f"Meetings for the week starting: {self.next_week}"
 
     # if we want to know the number of students participating this week
     def count_students(self):
@@ -122,12 +123,12 @@ class Class(db.Model):
         return f" {self.class_id} - {self.class_name} "
 
 
-current_classes = db.Table('current_classes',
+current_class = db.Table('current_classes',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
 
-classes_taken = db.Table('classes_taken',
+class_taken = db.Table('classes_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
@@ -153,20 +154,20 @@ class Interest(db.Model):
         self.interest_name = interest_name
 
     def __repr__(self):
-        return f"Interest: {self.interest_id}. {self.interest_name}"
+        return f"Interest: {self.id}. {self.interest_name}"
 
 
-student_interests = db.Table('student_interests',
+student_interest = db.Table('student_interests',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
                              )
 
-student_primary_interests = db.Table('prim_time',
+student_primary_interest = db.Table('student_primary_interests',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
 )
 
-student_secondary_interests  = db.Table('sec_time',
+student_secondary_interest = db.Table('student_secondary_interests',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
 )
@@ -184,7 +185,7 @@ class Cohort(db.Model):
     __tablename__ = 'cohorts'
 
     # id = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.Text, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     cohort_name = db.Column(db.Text, nullable=False)
     # students = db.relationship('Student', backref='course_to_match')
     # calling student.course_to_match will return all the course this student prefers to be matched with
@@ -197,10 +198,11 @@ class Cohort(db.Model):
         return f" {self.id} - {self.cohort_name} "
 
 
-cohorts = db.Table('cohort',
+cohort = db.Table('student_cohorts',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('cohort_id', db.Integer, db.ForeignKey('cohorts.id'), primary_key=True)
 )
+
 
 class TimePreference(db.Model):
     """
@@ -222,17 +224,17 @@ class TimePreference(db.Model):
         """
         return f"Time preference: {self.id}. {self.time}"
 
-student_primary_time_preference = db.Table('prim_interest',
+
+student_primary_time_preference = db.Table('student_primary_time_preferences',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
 )
 
-student_secondary_time_preference  = db.Table('sec_interest',
+student_secondary_time_preference = db.Table('student_secondary_time_preferences',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
 
 )
-
 
 
 class NetworkingGoal(db.Model):
@@ -253,9 +255,11 @@ class NetworkingGoal(db.Model):
     def __repr__(self):
         return f" Networking Goal: {self.id}. {self.networking_goal}"
 
-networking_goals = db.Table('networking_goal',
+
+student_networking_goal = db.Table('student_networking_goals',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('networking_goals.id'), primary_key=True)
+    db.Column('networking_goal_id', db.Integer, db.ForeignKey('networking_goals.id'), primary_key=True)
+
 )
 
 
