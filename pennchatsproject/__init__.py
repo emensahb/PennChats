@@ -21,6 +21,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
 
+
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres://tgaklhtynkryrk:65d07c4409fc9e936b7d195279c1258b0cdfe78282fc445a2e4fcf2f6ef49356@ec2-54-83-82-187.compute-1.amazonaws.com:5432/d8sv9jdoccv88c'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres://glqxwvunhpxhng:c0204ac6aa93d5a3ee38d477a38776ad91cca092daf7261d02c4d828fbed19f1@ec2-23-23-164-251.compute-1.amazonaws.com:5432/dac2t4avknpb9t'
