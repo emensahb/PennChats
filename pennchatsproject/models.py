@@ -14,15 +14,13 @@ class Student(db.Model, UserMixin):
     nullable=False means it will be compulsory to set the value for that column.
     index=True indicates that the column will be indexed.
     There is a many to many relationship between student and current courses,
-    past courses, interests, and groups."""
+    past courses, interests, and meetings."""
 
     __tablename__ = 'students'
 
-    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, primary_key=True, unique=True)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
-    # not sure if we can just use student_id as primary key here.
-    student_id = db.Column(db.Integer, unique=True)
     password_hash = db.Column(db.String(128))
     firstname = db.Column(db.Text)
     lastname = db.Column(db.Text)
@@ -42,14 +40,16 @@ class Student(db.Model, UserMixin):
         'Course', secondary='past_courses_record', backref='past_students')
     interests = db.relationship(
         'Interest', secondary='student_interest_record', backref='all_students')
+    meetings = db.relationship(
+        'Meeting', secondary='groupings', backref='student')
 
     # many to one relationships
-    # calling weekly_signups.student will refer to the student associated with the weekly signup form
     weekly_signups = db.relationship('WeeklySignUp', backref='student')
+    # calling weekly_signups.student will refer to the student associated with the weekly signup form
 
     # one to many relatinoships
     course_id_to_match = db.Column(db.Integer, db.ForeignKey(
-        'courses.id'))  # one to many, use course table
+        'courses.course_id'))  # one to many, use course table
     interest_id_to_match = db.Column(db.Integer, db.ForeignKey(
         'interests.interest_id'))  # one to many, use interest table twice
 
@@ -78,7 +78,7 @@ class WeeklySignUp(db.Model):
 
     # one to many relationships
     student_id = db.Column(db.Integer, db.ForeignKey(
-        'students.id'), nullable=False)
+        'students.student_id'), nullable=False)
 
     prime_time_id = db.Column(db.Integer, db.ForeignKey(
         'time_options.time_id'), nullable=False)
@@ -111,12 +111,10 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    id = db.Column(db.Integer, primary_key=True)
-    # not sure if we can just use course_id as primary key here
-    course_id = db.Column(db.Text, unique=True, nullable=False)
+    course_id = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
-    # calling student.course_to_match will return all the course this student prefers to be matched with
     students = db.relationship('Student', backref='course_to_match')
+    # calling student.course_to_match will return the course this student prefers to be matched with
 
     def __init__(self, course_id, course_name):
         self.course_id = course_id
@@ -125,19 +123,19 @@ class Course(db.Model):
     def __repr__(self):
         return f"This is the course of {self.course_name} with the course ID of {self.course_id}."
 
-
+# many to many relatinoship association tables
 current_courses_record = db.Table('current_courses_record',
                                   db.Column('student_id', db.Integer, db.ForeignKey(
-                                      'students.id'), primary_key=True),
+                                      'students.student_id'), primary_key=True),
                                   db.Column('course_id', db.Integer, db.ForeignKey(
-                                      'courses.id'), primary_key=True)
+                                      'courses.course_id'), primary_key=True)
                                   )
 
 past_courses_record = db.Table('past_courses_record',
                                db.Column('student_id', db.Integer, db.ForeignKey(
-                                   'students.id'), primary_key=True),
+                                   'students.student_id'), primary_key=True),
                                db.Column('course_id', db.Integer, db.ForeignKey(
-                                   'courses.id'), primary_key=True)
+                                   'courses.course_id'), primary_key=True)
                                )
 
 
@@ -145,14 +143,13 @@ class Interest(db.Model):
     """This table is used to store all interests we plan to provide as options for students to choose from
     when they fill out their user profile.
     There is a many to many relationship between this table and the student table."""
-    # how do we input data to this table?
 
     __tablename__ = 'interests'
 
     interest_id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text, nullable=False, unique=True)
-    # calling student.interest_to_match will return all the interest this student prefers to be matched with
     students = db.relationship('Student', backref='interest_to_match')
+    # calling student.interest_to_match will return all the interest this student prefers to be matched with
 
     def __init__(self, interest_name):
         self.interest_name = interest_name
@@ -160,10 +157,10 @@ class Interest(db.Model):
     def __repr__(self):
         return f"This is the interest of {self.interest_name} with the interest ID of {self.interest_id}."
 
-
+# many to many association table
 student_interest_record = db.Table('student_interest_record',
                                    db.Column('student_id', db.Integer, db.ForeignKey(
-                                       'students.id'), primary_key=True),
+                                       'students.student_id'), primary_key=True),
                                    db.Column('interest_id', db.Integer, db.ForeignKey(
                                        'interests.interest_id'), primary_key=True)
                                    )
@@ -220,3 +217,31 @@ class NetworkingGoal(db.Model):
 
     def __repr__(self):
         return f"This is the networking goal of {self.networking_goal} with the ID of {self.networking_goal_id}."
+
+
+class Meeting(db.Model):
+    """This table describes all the meetings that has been set up.
+    The final output of the matching algorithm will be a list of Meeting objects.
+    There is a many-to-many relationship between this table and the Student table."""
+    # how do we input data to this table?
+
+    __tablename__ = 'meetings'
+
+    meeting_id = db.Column(db.Integer, primary_key=True)
+    time_id = db.Column(db.Integer)
+    course_id = db.Column(db.Integer)
+    interest_id = db.Column(db.Integer)
+
+    def __init__(self, time_id, course_id=None, interest_id=None):
+        self.group = group
+        self.time_id = time_id # could potentially add one to many relationship
+        self.course_id = course_id
+        self.interest_id = interest_id
+
+# many to many association table
+groupings = db.Table('groupings',
+                     db.Column('student_id', db.Integer, db.ForeignKey(
+                         'students.student_id'), primary_key=True),
+                     db.Column('meeting_id', db.Integer, db.ForeignKey(
+                         'meetings.meeting_id'), primary_key=True)
+                     )
