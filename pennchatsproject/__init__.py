@@ -3,7 +3,7 @@
 # to be worked on between Audra, Efua and Jimmy
 
 import os
-import re
+# import re
 
 import sqlalchemy
 from flask import Flask
@@ -23,9 +23,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
 #SQLALCHEMY_DATABASE_URI = os.environ.get('postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid?sslmode=require').replace('postgres://', 'postgresql://')
-SQLALCHEMY_DATABASE_URI = "postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid"
+SQLALCHEMY_DATABASE_URI = os.getenv("postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid")
 if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
-    SQLALCHEMY_DATABASE_URI=SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
 # uri = os.getenv("postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid")  # or other relevant config var
 # if uri.startswith("postgres://"):
  #   uri = uri.replace("postgres://", "postgresql://", 1)
