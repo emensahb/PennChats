@@ -22,8 +22,8 @@ class Student(db.Model, UserMixin):
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    firstname = db.Column(db.Text)
-    lastname = db.Column(db.Text)
+    first_name = db.Column(db.Text)
+    last_name = db.Column(db.Text)
     city = db.Column(db.Text)
     state = db.Column(db.Text)
     country = db.Column(db.Text)
@@ -41,17 +41,19 @@ class Student(db.Model, UserMixin):
     interests = db.relationship(
         'Interest', secondary='student_interest_record', backref='all_students')
     meetings = db.relationship(
-        'Meeting', secondary='groupings', backref='student')
+        'Meeting', secondary='groupings', backref='students')
 
     # many to one relationships
     weekly_signups = db.relationship('WeeklySignUp', backref='student')
     # calling weekly_signups.student will refer to the student associated with the weekly signup form
 
     # one to many relatinoships
+    cohort = db.Column(db.String, db.ForeignKey(
+        'cohorts.cohort_name'))  # one to many, use cohort table
     course_id_to_match = db.Column(db.Integer, db.ForeignKey(
         'courses.course_id'))  # one to many, use course table
     interest_id_to_match = db.Column(db.Integer, db.ForeignKey(
-        'interests.interest_id'))  # one to many, use interest table twice
+        'interests.interest_id'))  # one to many, use interest table
 
     def __init__(self, email, username, student_id, password):
         self.username = username
@@ -73,18 +75,16 @@ class WeeklySignUp(db.Model):
 
     __tablename__ = 'weekly_signups'
 
-    weekly_signup_id = db.Column(db.Integer, primary_key=True)
+    signup_id = db.Column(db.Integer, primary_key=True)
     week_meet = db.Column(db.Text)
 
     # one to many relationships
     student_id = db.Column(db.Integer, db.ForeignKey(
         'students.student_id'), nullable=False)
-
     prime_time_id = db.Column(db.Integer, db.ForeignKey(
         'time_options.time_id'), nullable=False)
     sec_time_id = db.Column(db.Integer, db.ForeignKey(
         'time_options.time_id'), nullable=False)
-
     prime_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
         'networking_goals.networking_goal_id'), nullable=False)
     sec_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
@@ -113,6 +113,8 @@ class Course(db.Model):
 
     course_id = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
+
+    # many to one relationships
     students = db.relationship('Student', backref='course_to_match')
     # calling student.course_to_match will return the course this student prefers to be matched with
 
@@ -142,12 +144,15 @@ past_courses_record = db.Table('past_courses_record',
 class Interest(db.Model):
     """This table is used to store all interests we plan to provide as options for students to choose from
     when they fill out their user profile.
-    There is a many to many relationship between this table and the student table."""
+    There is a many to many relationship and a many to one relationship with 
+    this table and the Student table."""
 
     __tablename__ = 'interests'
 
     interest_id = db.Column(db.Integer, primary_key=True)
     interest_name = db.Column(db.Text, nullable=False, unique=True)
+
+    # many to one relationship
     students = db.relationship('Student', backref='interest_to_match')
     # calling student.interest_to_match will return all the interest this student prefers to be matched with
 
@@ -164,6 +169,25 @@ student_interest_record = db.Table('student_interest_record',
                                    db.Column('interest_id', db.Integer, db.ForeignKey(
                                        'interests.interest_id'), primary_key=True)
                                    )
+
+
+class Cohort(db.Model):
+    """This table is used to store all cohorts that exists in MCIT Online.
+    The table will then be queried to provide options for students to fill out
+    their personal profiles.
+    There is a one to many relationship between this table and the student table."""
+
+    __tablename__ = 'cohorts'
+
+    cohort_name = db.Column(db.Text, , primary_key=True, nullable=False)
+    students = db.relationship('Student', backref='belong_cohort')
+    # calling student.belong_cohort will return the  this student prefers to be matched with
+
+    def __init__(self, cohort_name):
+        self.cohort_name = cohort_name
+
+    def __repr__(self):
+        return f"This is the cohort of {self.cohort_name}."
 
 
 class TimeOption(db.Model):
@@ -185,8 +209,8 @@ class TimeOption(db.Model):
     sec_time_signups = db.relationship(
         'WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sectime')
 
-    def __init__(self, time):
-        self.time = time
+    def __init__(self, time_option):
+        self.time_option = time_option
 
     def __repr__(self):
         return f"This is the time option of {self.time_option} with the time ID of {self.time_id}."
@@ -234,7 +258,7 @@ class Meeting(db.Model):
 
     def __init__(self, time_id, course_id=None, interest_id=None):
         self.group = group
-        self.time_id = time_id # could potentially add one to many relationship
+        self.time_id = time_id  # could potentially add one to many relationship
         self.course_id = course_id
         self.interest_id = interest_id
 

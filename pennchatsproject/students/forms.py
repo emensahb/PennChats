@@ -4,13 +4,13 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from datetime import datetime
 
 from flask_login import current_user
-from pennchatsproject.models import Student
+from pennchatsproject.models import *
 
 
 class MultipleCheckboxField(SelectMultipleField):
@@ -32,7 +32,7 @@ class RegistrationForm(FlaskForm):
         'pass_confirm', message='Passwords must match!')])
     pass_confirm = PasswordField(
         'Confirm Password', validators=[DataRequired()])
-    submit = SubmitField('Register!')
+    submit = SubmitField('Register')
 
     def validate_email(self, email):
         """this function will check to see if the given email has already been registered."""
@@ -52,109 +52,121 @@ class RegistrationForm(FlaskForm):
 
 
 class ProfileForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    username = StringField('Username', validators=[DataRequired()])
-    student_id = StringField('Student ID', validators=[DataRequired()])
-    firstname = StringField('First Name')
-    lastname = StringField('Last Name')
-    city = StringField('City')
-    state = StringField('State')
-    country = StringField('Country')
-    cohort = StringField('Cohort')
-    bio = StringField('Bio')
-    linkedin = StringField('LinkedIn Link')
-    profile_picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])
-                                                                      submit=SubmitField(
-                                                                          'Update Profile')
 
-                                                                      #Course list
-                                                                      course_list=['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596',
-                                                                                   'CIS515', 'CIS521', 'CIS547', 'CIS549', 'CIS550', 'CIS581',
-                                                                                   'CIS520', 'CIS582', 'ESE542']
+    first_name = StringField('First Name', validators = [DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State/Province', validators=[DataRequired()])
+    country = StringField('Country/Territory', validators=[DataRequired()])
+    linkedin = StringField('LinkedIn', validators=[URL()])
+    bio = StringField('Brief Bio (optional)')
 
-                                                                      # create value/label pairs (should both be str for name of course)
-                                                                      course_tuples=[
-                                                                          (x, x) for x in course_list]
-
-                                                                      # Interest list
-                                                                      interest_labels=['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
-                                                                                       'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
-                                                                                       'Networking & Computer Systems', 'Project Management', 'Software Development']
-
-                                                                      # Interest values (interest_ids)
-                                                                      interest_values=['1', '2', '3',
-                                                                                       '4', '5', '6', '7',
-                                                                                       '8', '9', '10']
-
-                                                                      # create value/label pairs (zipping them together, and making them a tuple)
-                                                                      # did this because interest name cannot be passed as interest_id
-                                                                      interest_tuples=tuple(
-                                                                          zip(interest_labels, interest_values))
-
-                                                                      # many to many relationships
-                                                                      current_courses=MultipleCheckboxField(
-            'What courses are you currently taking?', choices=course_tuples)
-        past_courses=MultipleCheckboxField(
-            'What courses have you taken?', choices=course_tuples)
-        interests=MultipleCheckboxField(
-            'What are your interests?', choices=interest_tuples)
-
-        # one to many relatinoships
-        course_id_to_match=SelectField(
-        'Preferred course for matching',
-        [DataRequired()],
-        choices=course_tuples,
+    # Class
+    #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
+                  # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
+    class_list = [x.course_id for x in Course.query.all()] # Gets the list of courses from the DB
+    # create value/label pairs (should both be str for name of class)
+    class_tuples = [(x, x) for x in class_list]
+    # current courses
+    current_courses = MultipleCheckboxField('Current Courses', choices=class_tuples)
+    # past courses
+    past_courses = MultipleCheckboxField('Past Courses', choices=class_tuples)
+    # preferred course to be matched on
+    course_id_to_match = SelectField(
+        'Preferred course to be matched with',
+        validators=[DataRequired()],
+        choices=class_tuples,
     )
 
-        interest_id_to_match=SelectField(
-        'Preferred interest for matching',
-        [DataRequired()],
-        choices=interst_tuples,
+    # Interest
+    # interest_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
+                     # 'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
+                     # 'Networking & Computer Systems', 'Project Management', 'Software Development']
+    interest_id_list = [x.interest_id for x in Interest.query.all()]
+    interest_name_list = [y.interest_name for y in Interest.query.all()]
+    # create value/label pairs (should both be str for name of interest)
+    interest_tuples = list(map(lambda x, y:(x,y), interest_id_list, interest_name_list))
+    interests = MultipleCheckboxField('Interests', choices=interest_tuples)
+    # preferred interest to be matched on
+    interest_id_to_match = SelectField(
+        'Preferred interest to be matched with',
+        validators=[DataRequired()],
+        choices=interest_tuples,
     )
 
-        def validate_email(self, email):
-        """this function will check to see if the given email has already been registered."""
-        if Student.query.filter_by(email=self.email.data).first():
-            raise ValidationError('This email has already been registered.')
+    # Cohort
+    #choices=[
+       # ('Spring 2018', 'Spring 2018'),
+       # ('Fall 2018', 'Fall 2018'),
+       # ('Spring 2019', 'Spring 2019'),
+       # ('Fall 2019', 'Fall 2019'),
+       # ('Spring 2020', 'Spring 2020'),
+       # ('Fall 2020', 'Fall 2020'),
+       # ('Spring 2021', 'Spring 2021'),
+       # ('Fall 2021', 'Fall 2021'),
+    #]
+    cohort_list = [x.cohort_name for x in Cohort.query.all()] # Gets the list of courses from the DB
+    # create value/label pairs (should both be str for name of cohort)
+    cohort_tuples = [(x, x) for x in cohort_list]
+    cohort = MultipleCheckboxField('Cohort', choices=cohort_tuples)
 
-        def validate_username(self, username):
-        """this function will check to see if the given username has already been registered."""
-        if Student.query.filter_by(username=self.username.data).first():
-            raise ValidationError('This username is already taken.')
-
-        def validate_student_id(self, student_id):
-        """this function will check to see if the given student_id has already been registered."""
-        if Student.query.filter_by(student_id=self.student_id.data).first():
-            raise ValidationError(
-                'This student ID has already been registered.')
+    # Submit
+    submit = SubmitField('Update Profile')
 
 
-        class NextWeekForm(FlaskForm):
+class WeeklySignUpForm(FlaskForm):
 
-        # week_meet list
-        week_meet_list=['Aug 2', 'Aug 9', 'Aug 16',
-                        'Aug 23', 'Aug 30', 'Sept 6', 'Sept 13',
-                        'Sept 20', 'Sept 27']
-
-        # week_meet values (week_meet_ids)
-        # week_meet_values = ['1', '2', '3',
-        #                  '4', '5', '6', '7',
-        #                  '8', '9', '10']
-
-        # create value/label pairs (should both be str for week_meet)
-        week_meet_tuples=[(x, x) for x in week_meet_list]
-
-        # week_meet = DateTimeField('Week Meet', format='%Y-%m-%dT%H:%M:%S', default=datetime.today, validators=[DataRequired()])
-
-        week_meet=SelectField(
-        'Preferred week for matching',
-        [DataRequired()],
+    # week_meet list (hard-code for now)
+    week_meet_list=['Aug 2', 'Aug 9', 'Aug 16',
+                    'Aug 23', 'Aug 30', 'Sept 6', 'Sept 13',
+                    'Sept 20', 'Sept 27']
+    # create value/label pairs (should both be str for week_meet)
+    week_meet_tuples=[(x, x) for x in week_meet_list]
+    # week_meet = DateTimeField('Week Meet', format='%Y-%m-%dT%H:%M:%S', default=datetime.today, validators=[DataRequired()])
+    week_meet = SelectField(
+        'Select the week you would like to meet for PennChats',
+        validators=[DataRequired()],
         choices=week_meet_tuples,
     )
 
-        prime_time=SelectField('Ideal time', validators=[DataRequired()])
-        sec_time=SelectField('Secondary time', validators=[DataRequired(), NotEqualTo(
-            'prime_time', message='Secondary time must be different from Ideal time.')])
-        networking_goal=SelectField(
-            'Matching Preference', validators=[DataRequired()])
-        submit=SubmitField('Sign Up')
+    # Prime Time & Sec Time
+    # time_list = ['Morning: 9am ET', 'Afternoon: 3pm ET', 'Evening: 7pm ET',
+                     # 'Overnight: 1am ET']
+    time_id_list = [x.time_id for x in TimeOption.query.all()]
+    time_option_list = [y.time_option for y in TimeOption.query.all()]
+    # create value/label pairs (should both be str for name of interest)
+    time_tuples = list(map(lambda x, y:(x,y), time_id_list, time_option_list))
+    prime_time_id = SelectField(
+        'Ideal Time to meet',
+        validators=[DataRequired()],
+        choices=time_tuples,
+    )
+    sec_time_id = SelectField(
+        'Alternative Time to meet',
+        validators=[DataRequired(), 
+        NotEqualTo('prime_time_id', 
+        message='Alternative time must be different.')],
+        choices=time_tuples,
+    )
+
+    # Prime Goal & Sec Goal
+    # goals_list = ['Match by Course', 'Match by Interest']
+    goal_id_list = [x.networking_goal_id for x in NetworkingGoal.query.all()]
+    goal_name_list = [y.networking_goal for y in NetworkingGoal.query.all()]
+    # create value/label pairs (should both be str for name of goal)
+    goal_tuples = list(map(lambda x, y:(x,y), goal_id_list, goal_name_list))
+    prime_networking_goal_id = SelectField(
+        'Networking Goal',
+        validators=[DataRequired()],
+        choices=goal_tuples,
+    )
+    sec_networking_goal_id = SelectField(
+        'Alternative Goal',
+        validators=[DataRequired(), 
+        NotEqualTo('prime_networking_goal_id', 
+        message='Alternative goal must be different.')],
+        choices=goal_tuples,
+    )
+
+    # Submit
+    submit=SubmitField('Sign Up for PennChats')
