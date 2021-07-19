@@ -73,12 +73,12 @@ def student_id_list_into_student_list(student_id_list):
     return student_list
 
 
-def form_finder(week_meet, student_id=None):
+def form_finder(meeting_week, student_id=None):
     """This is a helper function to query the forms by a given week.
     Returns a list of forms"""
 
     signup_forms_list = WeeklySignUp.query.filter_by(
-                        week_meet=week_meet, student_id=student_id).all()
+                        next_week=meeting_week, student_id=student_id).all()
 
     return signup_forms_list
 

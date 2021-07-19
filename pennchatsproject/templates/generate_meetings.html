@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} Generate Meetings {% endblock %}
+
+{% block head %} Generate Meetings {% endblock %}
+
+{% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+    <form method="POST" style="padding:5px;">
+        <!-- Select Meeting Week Field -->
+        {{ form.hidden_tag() }}
+        {{ form.meeting_week.label }}
+        {{ form.meeting_week() }}
+        <br>
+
+        <!-- Submit Field -->
+        {{ form.submit() }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}
