@@ -111,7 +111,8 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    course_id = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
+    course_id = db.Column(db.Text, primary_key=True,
+                          unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
 
     # many to one relationships
@@ -124,6 +125,7 @@ class Course(db.Model):
 
     def __repr__(self):
         return f"This is the course of {self.course_name} with the course ID of {self.course_id}."
+
 
 # many to many relatinoship association tables
 current_courses_record = db.Table('current_courses_record',
@@ -161,6 +163,7 @@ class Interest(db.Model):
 
     def __repr__(self):
         return f"This is the interest of {self.interest_name} with the interest ID of {self.interest_id}."
+
 
 # many to many association table
 student_interest_record = db.Table('student_interest_record',
@@ -261,6 +264,7 @@ class Meeting(db.Model):
         self.time_id = time_id  # could potentially add one to many relationship
         self.course_id = course_id
         self.interest_id = interest_id
+
 
 # many to many association table
 groupings = db.Table('groupings',

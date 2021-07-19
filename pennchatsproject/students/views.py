@@ -123,11 +123,12 @@ def sign_up():
 @students.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
-#
-# #account
-# @students.route('/account')
-# def member_area():
-#     return render_template("account.html")
+
+#account
+@students.route('/account')
+@login_required
+def member_area():
+    return render_template("account.html")
 #
 # #<username> profile page
 # @students.route("/name/<name>")
