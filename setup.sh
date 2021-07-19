@@ -1,1 +1,1 @@
-postgres://ligldbmcpkfngq:4cbb9bdeb6f805166c3253045a293e647f2a0e57833b2556969d507b3978ba82@ec2-35-169-188-58.compute-1.amazonaws.com:5432/da4d2os5qmroqc
+postgresql+psycopg2://postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid
