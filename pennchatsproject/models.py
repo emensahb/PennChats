@@ -1,4 +1,4 @@
-from pennchatsproject import db, login_manager
+from pennchatsproject import db, login_manager, app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
