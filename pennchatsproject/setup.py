@@ -53,7 +53,7 @@ db.session.add_all([tp1, tp2, tp3, tp4, ng1, ng2, c1, c2, c3, c4, c5, c6, c7, c8
                     i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, cht1, cht2, cht3, cht4, cht5, cht6])
 
 # db.session.add_all([cht5, cht6])
-# db.session.commit()
+db.session.commit()
 
 # time_preferences = TimePreference.query.all()
 # networking_goals = NetworkingGoal.query.all()
