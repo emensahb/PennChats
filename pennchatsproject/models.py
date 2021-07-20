@@ -28,7 +28,6 @@ class Student(db.Model, UserMixin):
     state = db.Column(db.Text)
     country = db.Column(db.Text)
     bio = db.Column(db.Text)
-    cohort = db.Column(db.Text)
     linkedin = db.Column(db.Text)
     profile_image = db.Column(
         db.String(64), nullable=False, default='default_profile.png')
@@ -76,9 +75,10 @@ class WeeklySignUp(db.Model):
     __tablename__ = 'weekly_signups'
 
     signup_id = db.Column(db.Integer, primary_key=True)
-    week_meet = db.Column(db.Text)
 
     # one to many relationships
+    meeting_week_name = db.Column(db.String, db.ForeignKey(
+        'meeting_weeks.week_meet_name'), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey(
         'students.student_id'), nullable=False)
     prime_time_id = db.Column(db.Integer, db.ForeignKey(
@@ -90,9 +90,9 @@ class WeeklySignUp(db.Model):
     sec_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
         'networking_goals.networking_goal_id'), nullable=False)
 
-    def __init__(self, week_meet, student_id, prime_time_id, sec_time_id, prime_networking_goal_id, sec_networking_goal_id):
+    def __init__(self, meeting_week_name, student_id, prime_time_id, sec_time_id, prime_networking_goal_id, sec_networking_goal_id):
         # need to figure out how to best time stamp WeeklySignUp Forms
-        self.week_meet = week_meet
+        self.meeting_week_name = meeting_week_name
         self.student_id = student_id
         self.prime_time_id = prime_time_id
         self.sec_time_id = sec_time_id
@@ -100,7 +100,29 @@ class WeeklySignUp(db.Model):
         self.sec_networking_goal_id = sec_networking_goal_id
 
     def __repr__(self):
-        return f"WeeklySignUp Form: time stamp: {self.week_meet}, {self.student_id}, prime time pref ID: {self.prime_time_id}, the sec time pref ID: {self.sec_time_id}, prime goal ID: {self.prime_networking_goal_id}, sec goal ID: {self.sec_networking_goal_id}."
+        return f"WeeklySignUp Form: time stamp: {self.meeting_week_name}, {self.student_id}, prime time pref ID: {self.prime_time_id}, the sec time pref ID: {self.sec_time_id}, prime goal ID: {self.prime_networking_goal_id}, sec goal ID: {self.sec_networking_goal_id}."
+
+
+class WeekMeet(db.Model):
+    """This table will store all the available weeks that students to sign up 
+    for PennChats. The table will be queried to provide options for students to 
+    fill out their WeeklySignUp forms.
+    There is a many to one relationship between this table and the WeeklySignUp 
+    table."""
+
+    __tablename__ = 'meeting_weeks'
+
+    week_meet_name = db.Column(db.Text, primary_key=True, nullable=False)
+
+    # many to one relationship
+    weekly_signups = db.relationship('WeeklySignUp', backref='week_meet')
+    # WeeklySignUp.week_meet will return the week that the signup form is for
+
+    def __init__(self, week_meet_name):
+        self.week_meet_name = week_meet_name
+
+    def __repr__(self):
+        return f"This is the meeting week of {self.week_meet_name}."
 
 
 class Course(db.Model):
@@ -182,9 +204,9 @@ class Cohort(db.Model):
 
     __tablename__ = 'cohorts'
 
-    cohort_name = db.Column(db.Text, , primary_key=True, nullable=False)
+    cohort_name = db.Column(db.Text, primary_key=True, nullable=False)
     students = db.relationship('Student', backref='belong_cohort')
-    # calling student.belong_cohort will return the  this student prefers to be matched with
+    # calling student.belong_cohort will return the cohort object of this student
 
     def __init__(self, cohort_name):
         self.cohort_name = cohort_name
@@ -205,12 +227,12 @@ class TimeOption(db.Model):
     time_option = db.Column(db.Text, nullable=False, unique=True)
 
     # many to one relationships
-    # calling WeeklySignUp.primetime will refer to the primary time preference associated with the form
+    # calling WeeklySignUp.prime_time will refer to the primary time preference associated with the form
     prim_time_signups = db.relationship(
-        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_time_id', backref='primetime')
-    # calling WeeklySignUp.sectime will refer to the secondary time preference associated with the form
+        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_time_id', backref='prime_time')
+    # calling WeeklySignUp.sec_time will refer to the secondary time preference associated with the form
     sec_time_signups = db.relationship(
-        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sectime')
+        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sec_time')
 
     def __init__(self, time_option):
         self.time_option = time_option
@@ -232,12 +254,12 @@ class NetworkingGoal(db.Model):
     networking_goal = db.Column(db.Text, nullable=False, unique=True)
 
     # many to one relationships
-    # calling WeeklySignUp.primegoal will refer to the primary goal associated with the form
+    # calling WeeklySignUp.prime_goal will refer to the primary goal associated with the form
     prim_goal_signups = db.relationship(
-        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_networking_goal_id', backref='primegoal')
-    # calling WeeklySignUp.secgoal will refer to the secondary goal preference associated with the form
+        'WeeklySignUp', foreign_keys='WeeklySignUp.prime_networking_goal_id', backref='prime_goal')
+    # calling WeeklySignUp.sec_goal will refer to the secondary goal preference associated with the form
     sec_goal_signups = db.relationship(
-        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_networking_goal_id', backref='secgoal')
+        'WeeklySignUp', foreign_keys='WeeklySignUp.sec_networking_goal_id', backref='sec_goal')
 
     def __init__(self, networking_goal):
         self.networking_goal = networking_goal
@@ -248,7 +270,7 @@ class NetworkingGoal(db.Model):
 
 class Meeting(db.Model):
     """This table describes all the meetings that has been set up.
-    The final output of the matching algorithm will be a list of Meeting objects.
+    A final output of the matching algorithm will be a list of Meeting objects.
     There is a many-to-many relationship between this table and the Student table."""
     # how do we input data to this table?
 
@@ -259,14 +281,18 @@ class Meeting(db.Model):
     course_id = db.Column(db.Integer)
     interest_id = db.Column(db.Integer)
 
-    def __init__(self, time_id, course_id=None, interest_id=None):
-        self.group = group
-        self.time_id = time_id  # could potentially add one to many relationship
+    # one to many relationship
+    meeting_week_name = db.Column(db.String, db.ForeignKey(
+        'meeting_weeks.week_meet_name'), nullable=False)
+
+    def __init__(self, meeting_week_name, time_id, course_id=None, interest_id=None):
+        self.meeting_week_name = meeting_week_name
+        self.time_id = time_id
         self.course_id = course_id
         self.interest_id = interest_id
 
     def __repr__(self):
-        return f"Meeting instance. ID: {self.meeting_id}, time_id: {self.time_id}, associated students: {self.students}."
+        return f"Meeting instance. ID: {self.meeting_id}, meeting week: {self.meeting_week_name}, time_id: {self.time_id}, associated students: {self.students}."
 
 
 # many to many association table
@@ -276,3 +302,25 @@ groupings = db.Table('groupings',
                      db.Column('meeting_id', db.Integer, db.ForeignKey(
                          'meetings.meeting_id'), primary_key=True)
                      )
+
+
+class UnmatchedStudents(db.Model):
+    """This table records all the students who were not able to be matched.
+    A final output of the matching algorithm will be a list of UnmatchedStudnets
+    objects."""
+
+    __tablename__ = 'unmatched_students'
+
+    student_id = db.Column(db.Integer, primary_key=True, unique=True)
+    email = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    first_name = db.Column(db.Text)
+    last_name = db.Column(db.Text)
+
+    def __init__(self, student_id, email, first_name, last_name):
+        self.student_id = student_id
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+
+    def __repr__(self):
+        return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}."

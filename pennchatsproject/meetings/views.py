@@ -15,6 +15,7 @@ meetings = Blueprint('meetings', __name__)
 
 
 # generate meetings
+# accessible only by admins by typing extension
 @meetings.route('/generate', methods=["POST", "GET"])
 def generate():
     form = GenerateMeetingForm()
@@ -28,14 +29,20 @@ def generate():
         for meeting in matched_meetings:
             db.session.add(meeting)
         for student in unmatched_students:
-            db.session.add(student)
-        # commit new meeting and student object to session
+            student_id = student.student_id
+            email = student.email
+            first_name = student.first_name
+            last_name = student.last_name
+            unmatched_student = UnmatchedStudents(student_id, email, first_name, last_name)
+            db.session.add(unmatched_student)
+        # commit new meeting and unmatched_student objects to session
         db.session.commit()
         return redirect(url_for('meetings.results'))
     
     return render_template("generate_meeting.html")
 
 # view results
+# accessible only by admins by typing extension
 @meetings.route('/results/<int:week_meet_id>')
 def results(week_meet):
     

@@ -35,8 +35,8 @@ def match_students(week_meet):
                 meeting.students.append(student)
             # print test
             print("New meeting formed: " + meeting)
-            # commit new Meeting object to database
-            db.session.commit()
+            # # commit new Meeting object to database - should I do it here?
+            # db.session.commit()
             # append Meeting object to list of matched meetings
             matched_meetings.append(meeting)
 
