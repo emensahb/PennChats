@@ -1,4 +1,4 @@
-from pennchatsproject.models import *
+from pennchatsproject.models import Course, TimePreference, NetworkingGoal, Interest, Cohort
 ############################################
 #   CREATE ALL THE TABLES IN THE MODEL     #
 ############################################
