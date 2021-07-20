@@ -8,16 +8,17 @@
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
     <form method="POST" style="padding:5px;">
-        <!-- Select Meeting Week Field -->
+        <!-- Email Field -->
         {{ form.hidden_tag() }}
-        {{ form.meeting_week.label }}
-        {{ form.meeting_week() }}
+        {{ form.week_meet.label }}:
+        {{ form.week_meet }}
         <br>
 
         <!-- Submit Field -->
-        {{ form.submit() }}
+        {{ form.submit }}
     </form>
   </div>
 </div>
+
 
 {% endblock %}
