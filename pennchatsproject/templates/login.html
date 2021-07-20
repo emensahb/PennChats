@@ -5,21 +5,28 @@
 {% block head %} Login {% endblock %}
 
 {% block content %}
+
+{% from "_formhelpers.html" import render_field %}
+
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
     <form method="POST" style="padding:5px;">
         <!-- Email Field -->
         {{ form.hidden_tag() }}
-        {{ form.email.label }}
-        {{ form.email() }}
+        {{ render_field(form.email) }}
+<!--        {{ form.email.label }}-->
+<!--        {{ form.email() }}-->
         <br>
 
         <!-- Password Field -->
-        {{ form.password.label }}:
-        {{ form.password() }}
+        {{ render_field(form.password) }}
+
+<!--        {{ form.password.label }}:-->
+<!--        {{ form.password() }}-->
         <br>
 
         <!-- Submit Field -->
+<!--        {{ render_field(form.submit) }}-->
         {{ form.submit() }}
     </form>
   </div>
