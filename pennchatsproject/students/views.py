@@ -11,7 +11,7 @@ from pennchatsproject import db
 from pennchatsproject.models import *
 from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm, NextWeekForm
 # from pennchatsproject.students.forms import *
-from pennchatsproject.setup import *
+# from pennchatsproject.setup import *
 
 
 students = Blueprint('students', __name__)
