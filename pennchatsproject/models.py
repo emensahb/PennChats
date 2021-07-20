@@ -128,7 +128,7 @@ current_class = db.Table('current_classes',
                           db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
 
-class_taken = db.Table('classs_taken',
+class_taken = db.Table('classes_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
 )
