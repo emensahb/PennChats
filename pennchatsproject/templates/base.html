@@ -15,10 +15,10 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> #}
+<!--    {# <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> #}-->
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/jpg" href="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"/>
@@ -46,23 +46,38 @@
 
   <div class="container"><h2>{% block heading %} {% endblock %}</h2></div>
 
-  <ul class='nav'>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('core.index') }}">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('core.info') }}">About Us</a>
-    </li>
-      {% if current_user.is_authenticated %}
-      <li class="nav-link"><a href="{{url_for('students.logout')}}">Log Out</a></li>
-      <li class="nav-link"><a href="#">Sign Up for Next Week</a></li>
-      <li class="nav-link"><a href="#">Meetings</a></li>
-      {% else %}
-      <li class="nav-link"><a href="{{url_for('students.login')}}">Log In</a></li>
-      <li class="nav-link"><a href="{{url_for('students.register')}}">Register</a></li>
-      {% endif %}
+<!-- Navbar -->
+<nav class="nav nav-fill">
 
-  </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="{{ url_for('core.index') }}">Home</a>
+            <a class="nav-item nav-link" href="{{ url_for('core.info') }}">About Us</a>
+            {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{url_for('students.logout')}}">Log Out</a>
+                <a class="nav-link" href="#">Sign Up for Next Week</a>
+                <a class="nav-link" href="#">Meetings</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{{url_for('students.login')}}">Log In</a>
+                <a class="nav-link nav-link" href="{{url_for('students.register')}}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!--            {% if current_user.is_authenticated %}-->
+<!--                <li class="nav-link"><a href="{{url_for('students.logout')}}">Log Out</a></li>-->
+<!--                <li class="nav-link"><a href="#">Sign Up for Next Week</a></li>-->
+<!--                <li class="nav-link"><a href="#">Meetings</a></li>-->
+<!--            {% else %}-->
+<!--                <li class="nav-link"><a href="{{url_for('students.login')}}">Log In</a></li>-->
+<!--                <li class="nav-link"><a href="{{url_for('students.register')}}">Register</a></li>-->
+<!--            {% endif %}-->
+
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+
 
   <!--    <img-->
   <!--            src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->
