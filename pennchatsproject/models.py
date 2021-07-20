@@ -33,7 +33,7 @@ class Student(db.Model, UserMixin):
 
     # many to many relationships
     current_classes = db.relationship('Class', secondary='current_classes', backref='student')
-    classes_taken = db.relationship('Class', secondary='classes_taken', backref='students')
+    classes_taken = db.relationship('Class', secondary='classes_taken', backref='student')
     interests = db.relationship('Interest', secondary='student_interests', backref='student')
 
     # Many to one relationships
@@ -304,7 +304,8 @@ cht3 = Cohort(3, "Spring 2020")
 cht4 = Cohort(4, "Fall 2020")
 cht5 = Cohort(5, "Spring 2021")
 cht6 = Cohort(6, "Fall 2021")
-#db.create_all()
+
+db.create_all()
 db.session.add_all([tp1, tp2, tp3, tp4, ng1, ng2, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10,
                     i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, cht1, cht2, cht3, cht4, cht5, cht6])
 
