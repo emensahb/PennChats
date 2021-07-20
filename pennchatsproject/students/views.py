@@ -8,14 +8,13 @@ from pennchatsproject import db
 # from werkzeug.security import generate_password_hash, check_password_hash
 from pennchatsproject.models import *
 from pennchatsproject.students.forms import *
-from pennchatsproject.setup import *
 # from pennchatsproject.students.picture_handler import add_profile_pic
 
 
 students = Blueprint('students', __name__)
 
 
-#register
+# register
 @students.route('/register', methods=["POST", "GET"])
 def register():
     form = RegistrationForm()
@@ -33,7 +32,7 @@ def register():
 
     return render_template("register.html", form=form)
 
-#login
+# login
 @students.route('/login', methods=["POST", "GET"])
 def login():
     form = LoginForm()
@@ -55,7 +54,7 @@ def login():
 
     return render_template("login.html", form=form)
 
-#logout
+# logout
 @students.route('/logout')
 @login_required
 def logout():
@@ -119,18 +118,18 @@ def sign_up():
 
     return render_template("weekly_signup.html", form=form)
 
-#thank you
+# thank you
 @students.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
 
-#account
+# account
 @students.route('/account')
 @login_required
 def member_area():
     return render_template("account.html")
 #
-# #<username> profile page
+# # <username> profile page
 # @students.route("/name/<name>")
 # def get_user_name(name):
 #     return render_template("get_user_name.html", name = name)

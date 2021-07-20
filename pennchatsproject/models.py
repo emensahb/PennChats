@@ -33,7 +33,7 @@ class Student(db.Model, UserMixin):
     profile_image = db.Column(
         db.String(64), nullable=False, default='default_profile.png')
 
-    # many to many relationships
+    # many to many relationships - back references
     current_courses = db.relationship(
         'Course', secondary='current_courses_record', backref='current_students')
     past_courses = db.relationship(
@@ -264,6 +264,9 @@ class Meeting(db.Model):
         self.time_id = time_id  # could potentially add one to many relationship
         self.course_id = course_id
         self.interest_id = interest_id
+
+    def __repr__(self):
+        return f"Meeting instance. ID: {self.meeting_id}, time_id: {self.time_id}, associated students: {self.students}."
 
 
 # many to many association table

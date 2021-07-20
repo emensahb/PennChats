@@ -128,7 +128,7 @@ class WeeklySignUpForm(FlaskForm):
     week_meet_tuples = [(x, x) for x in week_meet_list]
     # week_meet = DateTimeField('Week Meet', format='%Y-%m-%dT%H:%M:%S', default=datetime.today, validators=[DataRequired()])
     week_meet = SelectField(
-        'Select the week you would like to meet for PennChats',
+        'Which week you would like to meet for PennChats? (Please do not submit more than one form for the same week)'
         validators=[DataRequired()],
         choices=week_meet_tuples,
     )
