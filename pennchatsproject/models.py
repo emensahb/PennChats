@@ -107,7 +107,7 @@ class Class(db.Model):
     # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
     # see using backref
 
-    __tablename__ = 'classess'
+    __tablename__ = 'classes'
 
     # id = db.Column(db.Integer, primary_key=True)
     class_id = db.Column(db.Integer, primary_key=True, nullable=False)
