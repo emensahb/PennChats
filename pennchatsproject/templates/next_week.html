@@ -6,16 +6,18 @@
 
 {% block content %}
 
-<form class="form form-horizontal" action="{{url_for('create_profile')}}" method="POST" role="form">
+{% from "_formhelpers.html" import render_field %}
+
+<form class="form form-horizontal" method="POST" role="form">
 
     <!-- Primary Time Field -->
-    {{ form.primary_time.label }}:
-    {{ form.primary_time }}
+    {{ form.prime_time_id.label }}:
+    {{ form.prime_time_id }}
     <br>
 
     <!-- Secondary Time Field -->
-    {{ form.secondary_time.label }}:
-    {{ form.secondary_time }}
+    {{ form.secondarytime.label }}:
+    {{ form.secondarytime }}
     <br>
 
     <!-- Matching Field -->
