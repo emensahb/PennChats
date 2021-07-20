@@ -123,9 +123,9 @@ class Course(db.Model):
         return f" {self.course_id} - {self.course_name} "
 
 
-current_course = db.Table('current_classes',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
+current_course = db.Table('current_courses',
+                          db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+                          db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
 )
 
 course_taken = db.Table('courses_taken',
