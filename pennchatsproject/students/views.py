@@ -5,13 +5,9 @@
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
-from pennchatsproject import db
-# from werkzeug.security import generate_password_hash, check_password_hash
-# from pennchatsproject.models import Student
 from pennchatsproject.models import *
 from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm, NextWeekForm
-# from pennchatsproject.students.forms import *
-# from pennchatsproject.setup import *
+
 
 
 students = Blueprint('students', __name__)
