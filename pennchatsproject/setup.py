@@ -3,7 +3,7 @@ from pennchatsproject.models import Course, TimePreference, NetworkingGoal, Inte
 #   CREATE ALL THE TABLES IN THE MODEL     #
 ############################################
 
-db.create_all()
+
 
 # time preferences options
 tp1 = TimePreference("Morning: 9am ET")

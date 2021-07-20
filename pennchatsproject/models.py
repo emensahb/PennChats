@@ -263,7 +263,7 @@ student_networking_goal = db.Table('student_networking_goals',
 )
 
 
-
+db.create_all()
 
 # class TimeOption(db.Model):
 """This table is used to store all available time slots for
