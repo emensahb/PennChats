@@ -68,6 +68,7 @@ def logout():
     return redirect(url_for('core.index'))
 
 
+
 # example profile page
 @students.route('/create_profile')
 def create_profile():
@@ -110,16 +111,21 @@ def next_week():
 
 
 
+#thank you
+@students.route('/thank_you')
+def thank_you():
+    return render_template('thank_you.html')
 
-# # thank you
-# @students.route('/thank_you')
-# def thank_you():
-#     return 'Thanks for signing up!'
-#
-# #account
-# @students.route('/account')
-# def member_area():
-#     return render_template("account.html")
+#account
+@students.route('/account')
+def account():
+    return render_template("account.html")
+
+#logout
+@students.route('/logout_message')
+def logout_message():
+    return render_template("logout.html")
+
 #
 # #edit profile
 # @students.route('/account/<name>')
