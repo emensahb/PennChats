@@ -1,1 +1,1 @@
-web: gunicorn app:penchatsproject
+web: gunicorn app:app

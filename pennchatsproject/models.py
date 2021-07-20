@@ -32,8 +32,8 @@ class Student(db.Model, UserMixin):
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
-    current_classes = db.relationship('Class', secondary='current_classes', backref='student')
-    classes_taken = db.relationship('Class', secondary='classes_taken', backref='students')
+    current_courses = db.relationship('Course', secondary='current_courses', backref='student')
+    courses_taken = db.relationship('Course', secondary='courses_taken', backref='students')
     interests = db.relationship('Interest', secondary='student_interests', backref='student')
 
     # Many to one relationships
@@ -50,7 +50,7 @@ class Student(db.Model, UserMixin):
 
     prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='students')
     sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student_sec')
-    class_to_match = db.relationship('Class', secondary='class_to_match', backref='student_match')
+    course_to_match = db.relationship('Course', secondary='courses_to_match', backref='student_match')
 
     # Whether they are participating in the weekly meeting or not
     def __init__(self, email, username, student_id, password):
@@ -98,7 +98,7 @@ class WeeklySignUp(db.Model):
         return student_count
 
 
-class Class(db.Model):
+class Course(db.Model):
     """This table is used to store all MCIT Online courses
     class id is the actual MCIT online course ID number.
     There are several relationships between this table and the Student table."""
@@ -107,35 +107,35 @@ class Class(db.Model):
     # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
     # see using backref
 
-    __tablename__ = 'classes'
+    __tablename__ = 'courses'
 
     # id = db.Column(db.Integer, primary_key=True)
-    class_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    class_name = db.Column(db.Text, nullable=False)
+    course_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    course_name = db.Column(db.Text, nullable=False)
     # students = db.relationship('Student', backref='course_to_match')
     # calling student.course_to_match will return all the course this student prefers to be matched with
 
-    def __init__(self, class_id, class_name):
-        self.class_id = class_id
-        self.class_name = class_name
+    def __init__(self, course_id, course_name):
+        self.course_id = course_id
+        self.course_name = course_name
 
     def __repr__(self):
-        return f" {self.class_id} - {self.class_name} "
+        return f" {self.course_id} - {self.course_name} "
 
 
-current_class = db.Table('current_classes',
+current_course = db.Table('current_classes',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
 )
 
-class_taken = db.Table('classes_taken',
+course_taken = db.Table('courses_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
 )
 
-class_to_match = db.Table('class_to_match',
+course_to_match = db.Table('courses_to_match',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+    db.Column('course_id', db.Integer, db.ForeignKey('courses.course_id'), primary_key=True)
 )
 
 

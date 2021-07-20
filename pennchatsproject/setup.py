@@ -18,16 +18,16 @@ ng2 = NetworkingGoal("interest")
 
 
 # classes
-c1 = Class(591, "Intro to Software Development")
-c2 = Class(592, "Math Foundations of Computer Science")
-c3 = Class(593, "Intro to Computer Systems")
-c4 = Class(594, "Data Structures and Software Design")
-c5 = Class(595, "Computer Systems Programming")
-c6 = Class(596, "Algorithms & Computation")
-c7 = Class(515, "Fundamentals of Linear Algebra & Optimization")
-c8 = Class(547, "Software Analysis")
-c9 = Class(549, "Wireless Communication for Mobile Networks")
-c10 = Class(581, "Computer Vision & Computational Photography")
+c1 = Course(591, "Intro to Software Development")
+c2 = Course(592, "Math Foundations of Computer Science")
+c3 = Course(593, "Intro to Computer Systems")
+c4 = Course(594, "Data Structures and Software Design")
+c5 = Course(595, "Computer Systems Programming")
+c6 = Course(596, "Algorithms & Computation")
+c7 = Course(515, "Fundamentals of Linear Algebra & Optimization")
+c8 = Course(547, "Software Analysis")
+c9 = Course(549, "Wireless Communication for Mobile Networks")
+c10 = Course(581, "Computer Vision & Computational Photography")
 
 # interests
 i1 = Interest("Artificial Intelligence & Machine Learning")
