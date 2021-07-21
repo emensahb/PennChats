@@ -32,8 +32,8 @@ class Student(db.Model, UserMixin):
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
-    current_classes = db.relationship('Class', secondary='current_classes', backref='student')
-    classes_taken = db.relationship('Class', secondary='classes_taken', backref='student')
+    # current_classes = db.relationship('Class', secondary='current_classes', backref='student')
+    # classes_taken = db.relationship('Class', secondary='classes_taken', backref='student')
     interests = db.relationship('Interest', secondary='student_interests', backref='student')
 
     # Many to one relationships
@@ -48,9 +48,9 @@ class Student(db.Model, UserMixin):
     sec_time = db.relationship('TimePreference', secondary='student_secondary_time_preferences', backref='students')
     ##### next week end fields  ####
 
-    prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='students')
-    sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student_sec')
-    class_to_match = db.relationship('Class', secondary='classes_to_match', backref='student_match')
+    # prim_interest = db.relationship('Interest', secondary='student_primary_interests', backref='students')
+    # sec_interest = db.relationship('Interest', secondary='student_secondary_interests', backref='student_sec')
+    # class_to_match = db.relationship('Class', secondary='classes_to_match', backref='student_match')
 
     # Whether they are participating in the weekly meeting or not
     def __init__(self, email, username, student_id, password):
@@ -123,20 +123,46 @@ class Class(db.Model):
         return f" {self.class_id} - {self.class_name} "
 
 
-current_class = db.Table('current_classes',
-                          db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-                          db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
-)
+class StudentClass(db.Model):
+    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
+    """
+    An Association table between students and classes
+    """
 
-class_taken = db.Table('classes_taken',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
-)
+    # Ensures that table will be named students in plural vs singular like the model name
 
-class_to_match = db.Table('classes_to_match',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
-)
+    __tablename__ = 'student_classes'
+    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
+    class_id = db.Column(db.Integer, db.ForeignKey("classes.class_id"), primary_key=True)
+    status = db.Column(db.Text)  # enrolled/taken/
+    class_match = db.Column(db.Text)  # class to match on
+
+    def __init__(self, next_week):
+        self.next_week = next_week
+
+    def __repr__(self):
+        """
+        the toString method of the Student class
+        :return: a String that includes the student's name and email.
+        """
+        return f"Meetings for the week starting: {self.next_week}"
+
+
+
+# current_class = db.Table('current_classes',
+#                          db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#                          db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+#)
+
+#class_taken = db.Table('classes_taken',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+#)
+
+# class_to_match = db.Table('classes_to_match',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)
+#)
 
 
 class Interest(db.Model):
@@ -157,20 +183,51 @@ class Interest(db.Model):
         return f"Interest: {self.id}. {self.interest_name}"
 
 
-student_interest = db.Table('student_interests',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
-                             )
+# student_interest = db.Table('student_interests',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+ #                            )
 
-student_primary_interest = db.Table('student_primary_interests',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
-)
+# student_primary_interest = db.Table('student_primary_interests',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+ #   db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+#)
 
-student_secondary_interest = db.Table('student_secondary_interests',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
-)
+# student_secondary_interest = db.Table('student_secondary_interests',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+ #   db.Column('interest_id', db.Integer, db.ForeignKey('interests.id'), primary_key=True)
+# )
+
+
+class StudentInterest(db.Model):
+    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
+    """
+    A list of students who are signed up to chat this week
+    """
+
+    # Ensures that table will be named students in plural vs singular like the model name
+
+    __tablename__ = 'student_interests'
+    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
+    interest_id = db.Column(db.Integer, db.ForeignKey("classes.class_id"), primary_key=True)
+    primary_interest = db.Column(db.Text, nullable=False, unique=True)
+    secondary_interest = db.Column(db.Text, nullable=False, unique=True)
+
+
+#    status = db.Column(db.Text)  # enrolled/taken/nullable
+#    match = db.Column(db.Text)  # class to match on (y/n)
+
+ #   def __init__(self, next_week):
+#        self.next_week = next_week
+
+    def __repr__(self):
+        """
+        the toString method of the Student class
+        :return: a String that includes the student's name and email.
+        """
+        return f"Meetings for the week starting: {self.next_week}"
+
+
 
 
 class Cohort(db.Model):
@@ -225,16 +282,34 @@ class TimePreference(db.Model):
         return f"Time preference: {self.id}. {self.time}"
 
 
-student_primary_time_preference = db.Table('student_primary_time_preferences',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
-)
+#student_primary_time_preference = db.Table('student_primary_time_preferences',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
+#)
 
-student_secondary_time_preference = db.Table('student_secondary_time_preferences',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
 
-)
+# student_secondary_time_preference = db.Table('student_secondary_time_preferences',
+#    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+#    db.Column('time_id', db.Integer, db.ForeignKey('time_preferences.id'), primary_key=True)
+
+#)
+
+
+class StudentTimePreference(db.Model):
+    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
+    """
+    A list of students who are signed up to chat this week
+    """
+
+    # Ensures that table will be named students in plural vs singular like the model name
+
+    __tablename__ = 'student_time_preferences'
+    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
+    interest_id = db.Column(db.Integer, db.ForeignKey("classes.class_id"), primary_key=True)
+    prim_time = db.Column(db.Text, nullable=False, unique=True)
+    sec_time = db.Column(db.Text, nullable=False, unique=True)
+
+
 
 
 class NetworkingGoal(db.Model):
@@ -261,6 +336,8 @@ student_networking_goal = db.Table('student_networking_goals',
     db.Column('networking_goal_id', db.Integer, db.ForeignKey('networking_goals.id'), primary_key=True)
 
 )
+
+
 
 tp1 = TimePreference("Morning: 9am ET")
 tp2 = TimePreference("Afternoon: 3pm ET")
