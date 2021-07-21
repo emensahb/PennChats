@@ -3,7 +3,7 @@
 # this will include all the forms Audra has in her forms.py file
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
 from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
@@ -59,7 +59,7 @@ class ProfileForm(FlaskForm):
     state = StringField('State/Province', validators=[DataRequired()])
     country = StringField('Country/Territory', validators=[DataRequired()])
     linkedin = StringField('LinkedIn', validators=[URL()])
-    bio = StringField('Brief Bio (optional)')
+    bio = TextAreaField('Brief Bio (optional)')
 
     # Class
     #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',

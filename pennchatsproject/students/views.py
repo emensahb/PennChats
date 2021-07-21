@@ -90,8 +90,19 @@ def edit_profile():
         return redirect(url_for('students.account'))
 
     elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.city.data = current_user.city
+        form.state.data = current_user.state
+        form.country.data = current_user.country
+        form.linkedin.data = current_user.linkedin
+        form.bio.data = current_user.bio
+        form.current_courses.data = current_user.current_courses
+        form.past_courses.data = current_user.past_courses
+        form.course_id_to_match.data = current_user.course_id_to_match
+        form.interests.data = current_user.interests
+        form.interest_id_to_match.data = current_user.interest_id_to_match
+        form.cohort.data = current_user.cohort
 
     return render_template('edit_profile.html', form=form)
 

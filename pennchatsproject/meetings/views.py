@@ -33,6 +33,7 @@ def generate():
             email = student.email
             first_name = student.first_name
             last_name = student.last_name
+            # initialize unmatched student object
             unmatched_student = UnmatchedStudents(student_id, email, first_name, last_name)
             db.session.add(unmatched_student)
         # commit new meeting and unmatched_student objects to session

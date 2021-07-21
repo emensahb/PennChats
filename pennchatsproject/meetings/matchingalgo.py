@@ -2,7 +2,7 @@ from pennchatsproject.models import *
 from pennchatsproject import db
 
 
-def match_students(week_meet):
+def match_students(meeting_week_name):
     """This is the main function that contains the logic of
     the easy version algorithm, helper funtions are called in this function.
     To be called after all students have submitted their forms for the 
@@ -16,7 +16,7 @@ def match_students(week_meet):
     unmatched_students = []
 
     # read the forms by calling the form finder helper function
-    forms = form_finder(week_meet)
+    forms = form_finder(meeting_week_name)
 
     # sort by primary time selection by calling helper function
     prim_time_dict = sort_into_dict(forms, 'prime_time_id')
@@ -27,7 +27,7 @@ def match_students(week_meet):
         # if list size is greater than one
         if len(val) > 1:
             # initialize a Meeting object with the time_id stored in the key
-            meeting = Meeting(key)
+            meeting = Meeting(meeting_week_name, key)
             # call the student_id_list_into_student_list helper function
             student_list = student_id_list_into_student_list(val)
             # for each student in list, create association to meeting
@@ -59,7 +59,7 @@ def form_finder(week_meet, student_id=None):
     Returns a list of forms"""
 
     signup_forms_list = WeeklySignUp.query.filter_by(
-                        week_meet=week_meet, student_id=student_id).all()
+                        meeting_week_name=week_meet, student_id=student_id).all()
 
     return signup_forms_list
 
@@ -92,8 +92,8 @@ def sort_into_dict(signup_forms_list, criteria_id):
 
     # iterate thru each criteria_id of the set, initialize a tuple of
     # (criteria_id, []), and append to empty list
-    for criteria_id in criteria_id_set:
-        criteria_tuples_list.append((criteria_id, []))
+    for criteria_id_item in criteria_id_set:
+        criteria_tuples_list.append((criteria_id_item, []))
 
     # print test
     print("Here is a list of tuples with empty lists: " + criteria_tuples_list)
