@@ -116,7 +116,8 @@ class WeekMeet(db.Model):
 
     # many to one relationship
     weekly_signups = db.relationship('WeeklySignUp', backref='week_meet')
-    # WeeklySignUp.week_meet will return the week that the signup form is for
+    meetings = db.relationship('Meeting', backref='week_meet')
+    unmatched_students = db.relationship('Meeting', backref='week_meet')
 
     def __init__(self, week_meet_name):
         self.week_meet_name = week_meet_name
@@ -316,11 +317,16 @@ class UnmatchedStudents(db.Model):
     first_name = db.Column(db.Text)
     last_name = db.Column(db.Text)
 
-    def __init__(self, student_id, email, first_name, last_name):
+    # one to many relationship
+    meeting_week_name = db.Column(db.String, db.ForeignKey(
+        'meeting_weeks.week_meet_name'), nullable=False)
+
+    def __init__(self, meeting_week_name, student_id, email, first_name, last_name):
+        self.meeting_week_name = meeting_week_name
         self.student_id = student_id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
 
     def __repr__(self):
-        return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}."
+        return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}. Unmatched week: {self.meeting_week_name}"

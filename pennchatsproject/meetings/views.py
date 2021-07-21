@@ -34,7 +34,7 @@ def generate():
             first_name = student.first_name
             last_name = student.last_name
             # initialize unmatched student object
-            unmatched_student = UnmatchedStudents(student_id, email, first_name, last_name)
+            unmatched_student = UnmatchedStudents(week_meet, student_id, email, first_name, last_name)
             db.session.add(unmatched_student)
         # commit new meeting and unmatched_student objects to session
         db.session.commit()
@@ -44,9 +44,13 @@ def generate():
 
 # view results
 # accessible only by admins by typing extension
-@meetings.route('/results/<int:week_meet_id>')
-def results(week_meet):
+# currently showing all existing meetings and unmatched students, filter func
+# to be added in future updates
+@meetings.route('/results')
+def results():
     
     # use some query language to grab specific meetings and unmatched students
+    meetings = Meeting.query.all()
+    unmatched_students = UnmatchedStudents.query.all()
     
-    return render_template('results.html')
+    return render_template('results.html', meetings=meetings, unmatched_students=unmatched_students)
