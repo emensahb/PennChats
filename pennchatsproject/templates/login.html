@@ -8,8 +8,8 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-<div style="text-align: center;">
-  <div style="display: inline-block; text-align: left;">
+<div class="jumbotron">
+
     <form method="POST" style="padding:5px;">
         <!-- Email Field -->
         {{ form.hidden_tag() }}
@@ -29,7 +29,6 @@
 <!--        {{ render_field(form.submit) }}-->
         {{ form.submit() }}
     </form>
-  </div>
 </div>
 
 

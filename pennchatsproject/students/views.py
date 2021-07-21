@@ -92,7 +92,7 @@ def logout_message():
 # def edit_profile(name):
 #     return 'edit profile'
 #
-# #<username> profile page
-# @students.route("/name/<name>")
-# def get_user_name(name):
-#     return render_template("get_user_name.html", name = name)
+#<username> profile page
+@students.route("/name/<name>")
+def get_user_name(name):
+    return render_template("get_user_name.html", name = name)
