@@ -158,7 +158,7 @@ class StudentInterest(db.Model):
 
     __tablename__ = 'student_interests'
     student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
-    interest_id = db.Column(db.Integer, db.ForeignKey("interests.interest_id"), primary_key=True)
+    interest_id = db.Column(db.Integer, db.ForeignKey("interests.id"), primary_key=True)
     primary_interest = db.Column(db.Text, nullable=False, primary_key=True)  # True/False
     secondary_interest = db.Column(db.Text, nullable=False, primary_key=True)  # True/False
 
