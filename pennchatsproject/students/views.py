@@ -87,7 +87,7 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        return redirect(url_for('students.account'))
+        return redirect(url_for('core.index'))
 
     elif request.method == 'GET':
         form.first_name.data = current_user.first_name
@@ -134,13 +134,8 @@ def sign_up():
 def thank_you():
     return render_template('thank_you.html')
 
-# account
-@students.route('/account')
-@login_required
-def member_area():
-    return render_template("account.html")
-#
-# # <username> profile page
-# @students.route("/name/<name>")
-# def get_user_name(name):
-#     return render_template("get_user_name.html", name = name)
+# <username> profile page
+@students.route("/<username>")
+def student_profile(username):
+    student = Student.query.filter_by(username=username).first_or_404()
+    return render_template("student_profile.html", student=student)

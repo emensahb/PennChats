@@ -29,7 +29,7 @@
             <td>{{ meeting.time_id }}</td>
             <td>
               {% for student in meeting.students %}
-                <!-- <a href="{{ url_for('students.get_user_name', name=meeting.student.username) }}">{{ student.first_name }} {{ student.last_name }}</a> -->
+                <!-- <a href="{{ url_for('students.get_user_name', username=meeting.student.username) }}">{{ student.first_name }} {{ student.last_name }}</a> -->
                 <a href="#">{{ student.first_name }} {{ student.last_name }}</a>
               {% endfor %}
             </td>
