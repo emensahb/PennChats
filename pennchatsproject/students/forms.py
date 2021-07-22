@@ -3,8 +3,8 @@
 # this will include all the forms Audra has in her forms.py file
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipleField, widgets
+from wtforms.validators import DataRequired, Email, EqualTo, URL #NotEqualTo
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from datetime import datetime
@@ -98,18 +98,18 @@ class ProfileForm(FlaskForm):
     )
 
     # Cohort
-    #choices=[
-    # ('Spring 2018', 'Spring 2018'),
-    # ('Fall 2018', 'Fall 2018'),
-    # ('Spring 2019', 'Spring 2019'),
-    # ('Fall 2019', 'Fall 2019'),
-    # ('Spring 2020', 'Spring 2020'),
-    # ('Fall 2020', 'Fall 2020'),
-    # ('Spring 2021', 'Spring 2021'),
-    # ('Fall 2021', 'Fall 2021'),
-    #]
+    cohort_list=[
+    ('Spring 2018', 'Spring 2018'),
+    ('Fall 2018', 'Fall 2018'),
+    ('Spring 2019', 'Spring 2019'),
+    ('Fall 2019', 'Fall 2019'),
+    ('Spring 2020', 'Spring 2020'),
+    ('Fall 2020', 'Fall 2020'),
+    ('Spring 2021', 'Spring 2021'),
+    ('Fall 2021', 'Fall 2021'),
+    ]
     # Gets the list of courses from the DB
-    cohort_list = [x.cohort_name for x in Cohort.query.all()]
+    # cohort_list = [x.cohort_name for x in Cohort.query.all()]
     # create value/label pairs (should both be str for name of cohort)
     cohort_tuples = [(x, x) for x in cohort_list]
     cohort = MultipleCheckboxField('MCIT Cohort', choices=cohort_tuples)
@@ -124,20 +124,22 @@ class WeeklySignUpForm(FlaskForm):
     week_meet_list = ['Aug 2', 'Aug 9', 'Aug 16',
                       'Aug 23', 'Aug 30', 'Sept 6', 'Sept 13',
                       'Sept 20', 'Sept 27']
+    # week_meet_list = [x.week_meet_name for x in WeekMeet.query.all()]
     # create value/label pairs (should both be str for week_meet)
     week_meet_tuples = [(x, x) for x in week_meet_list]
     # week_meet = DateTimeField('Week Meet', format='%Y-%m-%dT%H:%M:%S', default=datetime.today, validators=[DataRequired()])
     week_meet = SelectField(
-        'Which week you would like to meet for PennChats? (Please do not submit more than one form for the same week)'
+        'Which week you would like to meet for PennChats? (Please do not submit more than one form for the same week)',
         validators=[DataRequired()],
         choices=week_meet_tuples,
     )
 
     # Prime Time & Sec Time
-    # time_list = ['Morning: 9am ET', 'Afternoon: 3pm ET', 'Evening: 7pm ET',
-    # 'Overnight: 1am ET']
-    time_id_list = [x.time_id for x in TimeOption.query.all()]
-    time_option_list = [y.time_option for y in TimeOption.query.all()]
+    time_id_list = [1, 2, 3, 4]
+    time_option_list = ['Morning: 9am ET', 'Afternoon: 3pm ET', 'Evening: 7pm ET',
+    'Overnight: 1am ET']
+    # time_id_list = [x.time_id for x in TimeOption.query.all()]
+    # time_option_list = [y.time_option for y in TimeOption.query.all()]
     # create value/label pairs (should both be str for name of interest)
     time_tuples = list(
         map(lambda x, y: (x, y), time_id_list, time_option_list))
@@ -148,9 +150,8 @@ class WeeklySignUpForm(FlaskForm):
     )
     sec_time_id = SelectField(
         'Alternative Time to meet',
-        validators=[DataRequired(),
-                    NotEqualTo('prime_time_id',
-                               message='Alternative time must be different.')],
+        validators=[DataRequired()],
+                    # NotEqualTo('prime_time_id', message='Alternative time must be different.')],
         choices=time_tuples,
     )
 
@@ -167,9 +168,8 @@ class WeeklySignUpForm(FlaskForm):
     )
     sec_networking_goal_id = SelectField(
         'Alternative Goal',
-        validators=[DataRequired(),
-                    NotEqualTo('prime_networking_goal_id',
-                               message='Alternative goal must be different.')],
+        validators=[DataRequired()],
+                    # NotEqualTo('prime_networking_goal_id', message='Alternative goal must be different.')],
         choices=goal_tuples,
     )
 

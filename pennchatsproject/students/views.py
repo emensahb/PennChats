@@ -143,7 +143,7 @@ def my_meetings():
     all_meetings = Meeting.query.all()
     for meeting in all_meetings:
         for student in meeting.students:
-            if student_id = student.student_id:
+            if student_id == student.student_id:
                 meetings.append(meeting)
     
     return render_template("my_meetings.html", meetings=meetings)

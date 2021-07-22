@@ -3,8 +3,8 @@
 # meetings
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
+from wtforms import SubmitField, SelectField
+from wtforms.validators import DataRequired
 from wtforms import ValidationError
 from flask_login import current_user
 from pennchatsproject.models import *

@@ -18,6 +18,18 @@ n1 = NetworkingGoal("Match by Course")
 n2 = NetworkingGoal("Match by Interest")
 
 
+# week meet
+w1 = WeekMeet("Aug 2")
+w2 = WeekMeet("Aug 9")
+w3 = WeekMeet("Aug 16")
+w4 = WeekMeet("Aug 23")
+w5 = WeekMeet("Aug 30")
+w6 = WeekMeet("Sept 6")
+w7 = WeekMeet("Sept 13")
+w8 = WeekMeet("Sept 20")
+w9 = WeekMeet("Sept 27")
+
+
 # courses
 c1 = Course("CIT591", "Intro to Software Development")
 c2 = Course("CIT592", "Math Foundations of Computer Science")
@@ -60,7 +72,8 @@ co6 = Cohort("Fall 2021")
 
 db.session.add_all([t1, t2, t3, t4, n1, n2, c1, c2, c3, c4, c5, c6, c7, c8, c9,
                     c10, c11, c12, c13, c14, i1, i2, i3, i4, i5, i6, i7, i8, i9,
-                    i10, co1, co2, co3, co4, co5, co6])
+                    i10, co1, co2, co3, co4, co5, co6, w1, w2, w3, w4, w5, w6, 
+                    w7, w8, w9])
 db.session.commit()
 
 time_options = TimeOption.query.all()
@@ -68,9 +81,11 @@ time_options = TimeOption.query.all()
 # interests = Interest.query.all()
 # cohorts = Cohort.query.all()
 # courses = Course.query.all()
+# week_meets = WeekMeet.query.all()
 # 
 print(time_options)
 # print(networking_goals)
 # print(interests)
 # print(cohorts)
 # print(courses)
+# print(week_meets)
