@@ -6,9 +6,10 @@
 
 {% block content %}
 
-{% from "_formhelpers.html" import render_field %}
 
-<form class="form form-horizontal" method="POST" role="form">
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+    <form method="POST" style="padding:5px;">
 
     <!-- Primary Time Field -->
     {{ form.prime_time_id.label }}:
@@ -28,5 +29,7 @@
     <!-- Submit Field -->
     {{ form.match }}
 </form>
+  </div>
+    </div>
 
 {% endblock %}
