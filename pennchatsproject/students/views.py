@@ -133,9 +133,26 @@ def sign_up():
 @students.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
+    
+# my meetings
+@students.route('/my_meetings')
+@login_required
+def my_meetings():
+    student_id = current_user.student_id
+    meetings = []
+    all_meetings = Meeting.query.all()
+    for meeting in all_meetings:
+        for student in meeting.students:
+            if student_id = student.student_id:
+                meetings.append(meeting)
+    
+    return render_template("my_meetings.html", meetings=meetings)
 
 # <username> profile page
 @students.route("/<username>")
 def student_profile(username):
     student = Student.query.filter_by(username=username).first_or_404()
-    return render_template("student_profile.html", student=student)
+    return render_template("student_profile.html", student=student,
+                            interests=student.interests,
+                            current_courses=student.current_courses,
+                            past_courses=student.past_courses)

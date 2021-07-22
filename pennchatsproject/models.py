@@ -29,8 +29,8 @@ class Student(db.Model, UserMixin):
     country = db.Column(db.Text)
     bio = db.Column(db.Text)
     linkedin = db.Column(db.Text)
-    profile_image = db.Column(
-        db.String(64), nullable=False, default='default_profile.png')
+    # profile_image = db.Column(
+    #     db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships - back references
     current_courses = db.relationship(

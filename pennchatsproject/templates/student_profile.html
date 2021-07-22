@@ -6,23 +6,57 @@
 
 <div class="container">
   <div align='center'>
-    <h2></h2>
+    <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+    <p>{{ student.bio }}</p>
+    <p>{{ student.city }} {{ student.state }} {{ student.country }}</p>
+    <p>{{ student.email }}</p>
+    MCIT Online Cohort: {{ student.cohort }}
+    LinkedIn: <a href="{{ student.linkedin }}"></a>
+    Interests: {% for interest in interests %} {{interest.interest_name}}, {% endfor %} 
+    <br>
     
+    <h3>Current Courses</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Course ID</th>
+          <th scope="col">Course Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in current_courses %} 
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ course.course_id }}</td>
+            <td>{{ course.course_name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    
+    <h3>Past Courses</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Course ID</th>
+          <th scope="col">Course Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in past_courses %} 
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ course.course_id }}</td>
+            <td>{{ course.course_name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
   </div>
-  
-</div>
-
-<h2>Profile: {{name}}</h2>
-<h3>Email: {{email}}</h3>
-
-<div style="text-align: center;">
-    <div style="display: inline-block; text-align: left;">
-        <p>[Bio text] <br>
-            Current classes: <br>
-            Interests: <br>
-            Preferred time(s) to meet:
-        </p>
-    </div>
 </div>
 
 {% endblock %}

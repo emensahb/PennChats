@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %} Results {% endblock %}
+{% block title %} My Meetings {% endblock %}
 
-{% block head %} Results {% endblock %}
+{% block head %} My Meetings {% endblock %}
 
 {% block content %}
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
-    
 
-    <h2>Matched Meetings</h2>
+    <h2>Matched Meetings for {{current_user.first_name}} {{current_user.last_name}}</h2>
     
     <table class="table">
       <thead>
@@ -30,7 +29,7 @@
             <td>
               {% for student in meeting.students.items() %}
               {# {% for student in meeting.students %} #}
-                <!-- <a href="#">{{ student.first_name }} {{ student.last_name }}</a> -->
+                {# <a href="#">{{ student.first_name }} {{ student.last_name }}</a> #}
                 <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }}</a>
               {% endfor %}
             </td>
@@ -39,32 +38,7 @@
       </tbody>
     </table>
     
-    <h2>Unmatched Students</h2>
-    
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Meeting Week</th>
-          <th scope="col">Student</th>
-          <th scope="col">Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for student in unmatched_students.items() %} 
-          <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ student.meeting_week_name }}</td>
-            <td><a href="#">{{ student.first_name }} {{ student.last_name }}</a></td>
-            <td>{{ student.email }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-
   </div>
 </div>
-
 
 {% endblock %}
