@@ -1,4 +1,5 @@
 from pennchatsproject.models import *
+from pennchatsproject import db
 ############################################
 #   CREATE ALL THE TABLES IN THE MODEL     #
 ############################################
@@ -63,13 +64,13 @@ db.session.add_all([t1, t2, t3, t4, n1, n2, c1, c2, c3, c4, c5, c6, c7, c8, c9,
 db.session.commit()
 
 time_options = TimeOption.query.all()
-networking_goals = NetworkingGoal.query.all()
-interests = Interest.query.all()
-cohorts = Cohort.query.all()
-courses = Course.query.all()
-
+# networking_goals = NetworkingGoal.query.all()
+# interests = Interest.query.all()
+# cohorts = Cohort.query.all()
+# courses = Course.query.all()
+# 
 print(time_options)
-print(networking_goals)
-print(interests)
-print(cohorts)
-print(courses)
+# print(networking_goals)
+# print(interests)
+# print(cohorts)
+# print(courses)
