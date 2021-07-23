@@ -58,8 +58,9 @@ def form_finder(week_meet, student_id=None):
     """This is a helper function to query the forms by a given week.
     Returns a list of forms"""
 
-    signup_forms_list = WeeklySignUp.query.filter_by(
-                        meeting_week_name=week_meet, student_id=student_id).all()
+    signup_forms_list = []
+    # signup_forms_list = WeeklySignUp.query.filter_by(
+    #                     meeting_week_name=week_meet, student_id=student_id).all()
 
     return signup_forms_list
 
@@ -129,7 +130,7 @@ def student_id_list_into_student_list(student_id_list):
     # iterate through each student_id stored in the list
     for student_id in student_id_list:
         # read and grab the student object from the student table
-        student = Student.query.get(student_id)
+        # student = Student.query.get(student_id)
         # print test
         print("Queried student: " + student)
         # append the student object to the return list

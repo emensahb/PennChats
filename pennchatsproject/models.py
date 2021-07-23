@@ -18,7 +18,7 @@ class Student(db.Model, UserMixin):
 
     __tablename__ = 'students'
 
-    student_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    student_id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
@@ -47,12 +47,9 @@ class Student(db.Model, UserMixin):
     # calling weekly_signups.student will refer to the student associated with the weekly signup form
 
     # one to many relatinoships
-    cohort = db.Column(db.Text, db.ForeignKey(
-        'cohorts.cohort_name'))  # one to many, use cohort table
-    course_id_to_match = db.Column(db.Integer, db.ForeignKey(
-        'courses.course_id'))  # one to many, use course table
-    interest_id_to_match = db.Column(db.Integer, db.ForeignKey(
-        'interests.interest_id'))  # one to many, use interest table
+    cohort = db.Column(db.Text, db.ForeignKey('cohorts.cohort_name'))
+    course_id_to_match = db.Column(db.Text, db.ForeignKey('courses.course_id'))
+    interest_id_to_match = db.Column(db.Integer, db.ForeignKey('interests.interest_id'))
 
     def __init__(self, email, username, student_id, password):
         self.email = email
@@ -134,7 +131,7 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    course_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    course_id = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
 
     # many to one relationships
@@ -153,14 +150,14 @@ class Course(db.Model):
 current_courses_record = db.Table('current_courses_record',
                                   db.Column('student_id', db.Integer, db.ForeignKey(
                                       'students.student_id'), primary_key=True),
-                                  db.Column('course_id', db.Integer, db.ForeignKey(
+                                  db.Column('course_id', db.Text, db.ForeignKey(
                                       'courses.course_id'), primary_key=True)
                                   )
 
 past_courses_record = db.Table('past_courses_record',
                                db.Column('student_id', db.Integer, db.ForeignKey(
                                    'students.student_id'), primary_key=True),
-                               db.Column('course_id', db.Integer, db.ForeignKey(
+                               db.Column('course_id', db.Text, db.ForeignKey(
                                    'courses.course_id'), primary_key=True)
                                )
 
@@ -205,7 +202,7 @@ class Cohort(db.Model):
     __tablename__ = 'cohorts'
 
     cohort_name = db.Column(db.Text, primary_key=True, nullable=False)
-    
+
     # many to one relationship
     students = db.relationship('Student', backref='belong_to_cohort')
     # calling student.belong_cohort will return the cohort object of this student

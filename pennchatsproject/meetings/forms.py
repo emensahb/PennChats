@@ -18,7 +18,7 @@ class GenerateMeetingForm(FlaskForm):
     #                   'Sept 20', 'Sept 27']
     week_meet_tuples = [(x, x) for x in week_meet_list]
     week_meet = SelectField(
-        'Select week to match students'
+        'Select week to match students',
         validators=[DataRequired()],
         choices=week_meet_tuples,
     )
