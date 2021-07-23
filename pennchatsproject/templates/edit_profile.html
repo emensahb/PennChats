@@ -7,7 +7,8 @@
 {% block content %}
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
-    <form method="POST" style="padding:5px;">
+    <h2>The current user first name is: {{current_user.first_name}}</h2>
+    <form method="POST" action = "" style="padding:5px;">
         {{ form.hidden_tag() }}
         <!-- First Name Field -->
         {{ form.first_name.label }}:
@@ -41,12 +42,12 @@
         
         <!-- LinkedIn Field -->
         {{ form.linkedin.label }}:
-        {{ form.linked }}
+        {{ form.linkedin }}
         <br>
         
         <!-- Current Courses Field -->
-        {{ form.currect_courses.label }}:
-        {{ form.past_courses }}
+        {{ form.current_courses.label }}:
+        {{ form.current_courses }}
         <br>
         
         <!-- Past Courses Field -->

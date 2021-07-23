@@ -113,7 +113,7 @@ class ProfileForm(FlaskForm):
     cohort_list = [x.cohort_name for x in Cohort.query.all()]
     # create value/label pairs (should both be str for name of cohort)
     cohort_tuples = [(x, x) for x in cohort_list]
-    cohort = MultipleCheckboxField('MCIT Cohort', choices=cohort_tuples)
+    cohort = SelectField('MCIT Cohort', choices=cohort_tuples)
 
     # Submit
     submit = SubmitField('Update Profile')

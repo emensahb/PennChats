@@ -60,6 +60,9 @@ class Student(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def get_id(self):
+        return self.student_id
+
     def __repr__(self):
         return f"Registered student: {self.username}, {self.student_id}, and {self.email}."
 
@@ -226,12 +229,11 @@ class TimeOption(db.Model):
     time_option = db.Column(db.Text, nullable=False, unique=True)
 
     # many to one relationships
-    # calling WeeklySignUp.prime_time will refer to the primary time preference associated with the form
     prim_time_signups = db.relationship(
         'WeeklySignUp', foreign_keys='WeeklySignUp.prime_time_id', backref='prime_time')
-    # calling WeeklySignUp.sec_time will refer to the secondary time preference associated with the form
     sec_time_signups = db.relationship(
         'WeeklySignUp', foreign_keys='WeeklySignUp.sec_time_id', backref='sec_time')
+    meetings = db.relationship('Meeting', backref='meet_time')
 
     def __init__(self, time_option):
         self.time_option = time_option
@@ -276,13 +278,14 @@ class Meeting(db.Model):
     __tablename__ = 'meetings'
 
     meeting_id = db.Column(db.Integer, primary_key=True)
-    time_id = db.Column(db.Integer)
+
+    # one to many relationships
+    meeting_week_name = db.Column(db.Text, db.ForeignKey('meeting_weeks.week_meet_name'), nullable=False)
+    time_id = db.Column(db.Integer, db.ForeignKey('time_options.time_id'), nullable=False)
+
+    # one to many relationships to be added
     course_id = db.Column(db.Integer)
     interest_id = db.Column(db.Integer)
-
-    # one to many relationship
-    meeting_week_name = db.Column(db.Text, db.ForeignKey(
-        'meeting_weeks.week_meet_name'), nullable=False)
 
     def __init__(self, meeting_week_name, time_id, course_id=None, interest_id=None):
         self.meeting_week_name = meeting_week_name
