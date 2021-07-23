@@ -2,10 +2,21 @@
 
 {% block title %} Profile {% endblock %}
 
-{% block head %} {% endblock %}
+{% block heading %} {% endblock %}
 
 {% block content %}
 
 <h2>Profile: {{name}}</h2>
+<h3>Email: {{email}}</h3>
+
+<div style="text-align: center;">
+    <div style="display: inline-block; text-align: left;">
+        <p>[Bio text] <br>
+            Current classes: <br>
+            Interests: <br>
+            Preferred time(s) to meet:
+        </p>
+    </div>
+</div>
 
 {% endblock %}

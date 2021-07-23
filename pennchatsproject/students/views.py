@@ -32,6 +32,7 @@ def register():
 
     return render_template("register.html", form=form)
 
+
 # login
 @students.route('/login', methods=["POST", "GET"])
 def login():
@@ -42,9 +43,9 @@ def login():
         student = Student.query.filter_by(email=form.email.data).first()
 
         if student.check_password(form.password.data) and student is not None:
-            #log in the user by calling in the login_user method
+            # log in the user by calling in the login_user method
             login_user(student)
-            #flash a msg with the following message
+            # flash a msg with the following message
             flash('You have logged in successfully!')
             # if a user was trying to visit a page that requires a log, flask saves that URL as 'next'
             next = request.args.get('next')
@@ -54,6 +55,7 @@ def login():
 
     return render_template("login.html", form=form)
 
+
 # logout
 @students.route('/logout')
 @login_required
@@ -62,6 +64,7 @@ def logout():
     flash("You have successfully logged out.")
     return redirect(url_for('core.index'))
 
+
 # update profile page
 @students.route('/edit_profile', methods=["POST", "GET"])
 @login_required
@@ -69,9 +72,8 @@ def edit_profile():
     form = ProfileForm()
 
     if form.validate_on_submit():
-        # print(form)
 
-        current_user.first_name = form.first_name.data
+        # current_user.username = form.username.data
         current_user.last_name = form.last_name.data
         current_user.city = form.city.data
         current_user.state = form.state.data
@@ -87,7 +89,7 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        return redirect(url_for('students.account'))
+        # return redirect(url_for('students.edit_profile'))
 
     elif request.method == 'GET':
         form.first_name.data = current_user.first_name
@@ -105,6 +107,7 @@ def edit_profile():
         form.cohort.data = current_user.cohort
 
     return render_template('edit_profile.html', form=form)
+
 
 # sign up-for next week's chat
 @students.route('/sign_up', methods=["POST", "GET"])
@@ -129,18 +132,33 @@ def sign_up():
 
     return render_template("weekly_signup.html", form=form)
 
+
 # thank you
 @students.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
 
-# account
-@students.route('/account')
+
+# my meetings
+@students.route('/my_meetings')
 @login_required
-def member_area():
-    return render_template("account.html")
-#
-# # <username> profile page
-# @students.route("/name/<name>")
-# def get_user_name(name):
-#     return render_template("get_user_name.html", name = name)
+def my_meetings():
+    student_id = current_user.student_id
+    meetings = []
+    all_meetings = Meeting.query.all()
+    for meeting in all_meetings:
+        for student in meeting.students:
+            if student_id == student.student_id:
+                meetings.append(meeting)
+
+    return render_template("my_meetings.html", meetings=meetings)
+
+
+# <username> profile page
+@students.route("/<username>")
+def student_profile(username):
+    student = Student.query.filter_by(username=username).first_or_404()
+    return render_template("student_profile.html", student=student,
+                           interests=student.interests,
+                           current_courses=student.current_courses,
+                           past_courses=student.past_courses)

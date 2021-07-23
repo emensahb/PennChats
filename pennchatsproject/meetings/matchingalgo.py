@@ -58,6 +58,7 @@ def form_finder(week_meet, student_id=None):
     """This is a helper function to query the forms by a given week.
     Returns a list of forms"""
 
+    signup_forms_list = []
     signup_forms_list = WeeklySignUp.query.filter_by(
                         meeting_week_name=week_meet, student_id=student_id).all()
 

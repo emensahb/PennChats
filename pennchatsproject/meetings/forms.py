@@ -3,8 +3,8 @@
 # meetings
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
+from wtforms import SubmitField, SelectField
+from wtforms.validators import DataRequired
 from wtforms import ValidationError
 from flask_login import current_user
 from pennchatsproject.models import *
@@ -18,7 +18,7 @@ class GenerateMeetingForm(FlaskForm):
     #                   'Sept 20', 'Sept 27']
     week_meet_tuples = [(x, x) for x in week_meet_list]
     week_meet = SelectField(
-        'Select week to match students'
+        'Select week to match students',
         validators=[DataRequired()],
         choices=week_meet_tuples,
     )

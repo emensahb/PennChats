@@ -3,8 +3,8 @@
 # this will include all the forms Audra has in her forms.py file
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipileField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, NotEqualTo, URL
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipleField, widgets
+from wtforms.validators import DataRequired, Email, EqualTo, URL
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from datetime import datetime
@@ -53,6 +53,7 @@ class RegistrationForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
 
+    # username = StringField('Username')
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
@@ -62,8 +63,8 @@ class ProfileForm(FlaskForm):
     bio = TextAreaField('Brief Bio (optional)')
 
     # Class
-    #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
-    # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
+    # class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
+    #               'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
     # Gets the list of courses from the DB
     class_list = [x.course_id for x in Course.query.all()]
     # create value/label pairs (should both be str for name of class)
@@ -81,9 +82,10 @@ class ProfileForm(FlaskForm):
     )
 
     # Interest
-    # interest_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
-    # 'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
-    # 'Networking & Computer Systems', 'Project Management', 'Software Development']
+    # interest_name_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
+    #                       'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
+    #                       'Networking & Computer Systems', 'Project Management', 'Software Development']
+    # interest_id_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     interest_id_list = [x.interest_id for x in Interest.query.all()]
     interest_name_list = [y.interest_name for y in Interest.query.all()]
     # create value/label pairs (should both be str for name of interest)
@@ -98,21 +100,21 @@ class ProfileForm(FlaskForm):
     )
 
     # Cohort
-    #choices=[
-    # ('Spring 2018', 'Spring 2018'),
-    # ('Fall 2018', 'Fall 2018'),
-    # ('Spring 2019', 'Spring 2019'),
-    # ('Fall 2019', 'Fall 2019'),
-    # ('Spring 2020', 'Spring 2020'),
-    # ('Fall 2020', 'Fall 2020'),
-    # ('Spring 2021', 'Spring 2021'),
-    # ('Fall 2021', 'Fall 2021'),
-    #]
+    # cohort_list = [
+    #     ('Spring 2018', 'Spring 2018'),
+    #     ('Fall 2018', 'Fall 2018'),
+    #     ('Spring 2019', 'Spring 2019'),
+    #     ('Fall 2019', 'Fall 2019'),
+    #     ('Spring 2020', 'Spring 2020'),
+    #     ('Fall 2020', 'Fall 2020'),
+    #     ('Spring 2021', 'Spring 2021'),
+    #     ('Fall 2021', 'Fall 2021'),
+    # ]
     # Gets the list of courses from the DB
     cohort_list = [x.cohort_name for x in Cohort.query.all()]
     # create value/label pairs (should both be str for name of cohort)
     cohort_tuples = [(x, x) for x in cohort_list]
-    cohort = MultipleCheckboxField('MCIT Cohort', choices=cohort_tuples)
+    cohort = SelectField('MCIT Cohort', choices=cohort_tuples)
 
     # Submit
     submit = SubmitField('Update Profile')
@@ -121,21 +123,23 @@ class ProfileForm(FlaskForm):
 class WeeklySignUpForm(FlaskForm):
 
     # week_meet list (hard-code for now)
-    week_meet_list = ['Aug 2', 'Aug 9', 'Aug 16',
-                      'Aug 23', 'Aug 30', 'Sept 6', 'Sept 13',
-                      'Sept 20', 'Sept 27']
+    # week_meet_list = ['Aug 2', 'Aug 9', 'Aug 16',
+    #                   'Aug 23', 'Aug 30', 'Sept 6', 'Sept 13',
+    #                   'Sept 20', 'Sept 27']
+    week_meet_list = [x.week_meet_name for x in WeekMeet.query.all()]
     # create value/label pairs (should both be str for week_meet)
     week_meet_tuples = [(x, x) for x in week_meet_list]
     # week_meet = DateTimeField('Week Meet', format='%Y-%m-%dT%H:%M:%S', default=datetime.today, validators=[DataRequired()])
     week_meet = SelectField(
-        'Which week you would like to meet for PennChats? (Please do not submit more than one form for the same week)'
+        'Which week you would like to meet for PennChats? (Please do not submit more than one form for the same week)',
         validators=[DataRequired()],
         choices=week_meet_tuples,
     )
 
     # Prime Time & Sec Time
-    # time_list = ['Morning: 9am ET', 'Afternoon: 3pm ET', 'Evening: 7pm ET',
-    # 'Overnight: 1am ET']
+    # time_id_list = [1, 2, 3, 4]
+    # time_option_list = ['Morning: 9am ET', 'Afternoon: 3pm ET', 'Evening: 7pm ET',
+    #                     'Overnight: 1am ET']
     time_id_list = [x.time_id for x in TimeOption.query.all()]
     time_option_list = [y.time_option for y in TimeOption.query.all()]
     # create value/label pairs (should both be str for name of interest)
@@ -148,14 +152,13 @@ class WeeklySignUpForm(FlaskForm):
     )
     sec_time_id = SelectField(
         'Alternative Time to meet',
-        validators=[DataRequired(),
-                    NotEqualTo('prime_time_id',
-                               message='Alternative time must be different.')],
+        validators=[DataRequired()],
         choices=time_tuples,
     )
 
     # Prime Goal & Sec Goal
-    # goals_list = ['Match by Course', 'Match by Interest']
+    # goal_id_list = [1, 2]
+    # goal_name_list = ['Match by Course', 'Match by Interest']
     goal_id_list = [x.networking_goal_id for x in NetworkingGoal.query.all()]
     goal_name_list = [y.networking_goal for y in NetworkingGoal.query.all()]
     # create value/label pairs (should both be str for name of goal)
@@ -167,9 +170,7 @@ class WeeklySignUpForm(FlaskForm):
     )
     sec_networking_goal_id = SelectField(
         'Alternative Goal',
-        validators=[DataRequired(),
-                    NotEqualTo('prime_networking_goal_id',
-                               message='Alternative goal must be different.')],
+        validators=[DataRequired()],
         choices=goal_tuples,
     )
 
