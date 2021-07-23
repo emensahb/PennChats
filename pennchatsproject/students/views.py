@@ -66,15 +66,14 @@ def logout():
 
 
 # update profile page
-@students.route('/edit_profile', methods=["GET", "POST"])
+@students.route('/edit_profile', methods=["POST", "GET"])
 @login_required
 def edit_profile():
     form = ProfileForm()
 
     if form.validate_on_submit():
-        print(form)
 
-        current_user.first_name = form.first_name.data
+        # current_user.username = form.username.data
         current_user.last_name = form.last_name.data
         current_user.city = form.city.data
         current_user.state = form.state.data
@@ -90,7 +89,7 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        return redirect(url_for('core.index'))
+        # return redirect(url_for('students.edit_profile'))
 
     elif request.method == 'GET':
         form.first_name.data = current_user.first_name

@@ -53,6 +53,7 @@ class RegistrationForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
 
+    # username = StringField('Username')
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])

@@ -7,9 +7,14 @@
 {% block content %}
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
-    <h2>The current user first name is: {{current_user.first_name}}</h2>
+    <h2>The current username is: {{current_user.username}}</h2>
     <form method="POST" action = "" style="padding:5px;">
         {{ form.hidden_tag() }}
+        {# <!-- Username Field -->
+        {{ form.username.label }}
+        {{ form.username }}
+        <br> #}
+        
         <!-- First Name Field -->
         {{ form.first_name.label }}:
         {{ form.first_name }}
@@ -76,7 +81,7 @@
         <br>
 
         <!-- Submit Field -->
-        {{ form.submit }}
+        {{ form.submit() }}
     </form>
   </div>
 </div>
