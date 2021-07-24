@@ -20,9 +20,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
 SQLALCHEMY_DATABASE_URL = 'postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid?sslmode=require'
+app.config[SQLALCHEMY_DATABASE_URL]
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
-app.config[SQLALCHEMY_DATABASE_URL] = 'postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid'
+# app.config[SQLALCHEMY_DATABASE_URL] = 'postgres://keecnygaavjarb:8edfaa4d280ecb61d741a959c94f9a9b0653181c3e3776efffcb1160e7b79a32@ec2-35-168-145-180.compute-1.amazonaws.com:5432/d7tnpd055lbiid'
 # app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:CW72Ec#EdIHpoFsOGrtf@localhost/pennchats'
 
