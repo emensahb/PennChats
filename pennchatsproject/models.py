@@ -165,7 +165,10 @@ class_taken = db.Table('student_classes_taken',
 
 
 class MatchedClass(db.Model):
-    """The list if classes the student wants to match on"""
+    """
+    The list if classes the student wants to match on
+    Many to many
+    """
 
     __tablename__ = 'matched_classes'
 
@@ -227,7 +230,7 @@ class PrimaryInterest(db.Model):
     An association table between Primary Interest and students
     """
 
-    __tablename__ = 'primary_interest'
+    __tablename__ = 'primary_interests'
 
     primary_interest_id = db.Column(db.Integer, primary_key=True, nullable=False)
     primary_interest = db.Column(db.Text, nullable=False)
@@ -444,3 +447,7 @@ class UnmatchedStudents(db.Model):
     def __repr__(self):
         return f"Unmatched student: {self.firstname} {self.lastname}, {self.student_id}, and {self.email}. Unmatched week: {self.week_of_meeting_name}"
 
+db.create_all()
+
+
+db.session.commit()
