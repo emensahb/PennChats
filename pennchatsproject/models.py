@@ -435,4 +435,4 @@ class UnmatchedStudents(db.Model):
 db.create_all()
 
 
-# db.session.commit()
+db.session.commit()
