@@ -54,29 +54,29 @@ class ProfileForm(FlaskForm):
     #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
                   # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
 
-    class_list = [x.class_id for x in Class.query.all()]  # Gets the list of classes from the DB
+    matched_class_list = [x.id for x in MatchedClass.query.all()]  # Gets the list of classes from the DB
 
     # create value/label pairs (should both be str for name of class)
-    class_tuples = [(x, x) for x in class_list]
+    matched_class_tuples = [(x, x) for x in matched_class_list]
 
     # first choice class
     primary_class = SelectField(
         'First choice class (for matching)',
         [DataRequired()],
-        choices=class_tuples,
+        choices=matched_class_tuples,
     )
 
     # second choice class
     secondary_class = SelectField(
         'Second choice class (for matching)',
         [DataRequired()],
-        choices=class_tuples,
+        choices=matched_class_tuples,
     )
 
     # create checkboxes for classes
-    classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=class_tuples)
+    classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=matched_class_tuples)
 
-    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_tuples)
+    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=matched_class_tuples)
 
     first_name = StringField('First Name', validators = [InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])
@@ -105,22 +105,28 @@ class ProfileForm(FlaskForm):
                      # 'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
                      # 'Networking & Computer Systems', 'Project Management', 'Software Development']
 
-    interest_list = [x.interest_name for x in Interest.query.all()]  # Gets the list of classes from the DB
+    primary_interest_list = [x.interest_name for x in PrimaryInterest.query.all()]  # Gets the list of classes from the DB
     # create value/label pairs (should both be str for name of class)
-    interest_tuples = [(x, x) for x in interest_list]
+    primary_interest_tuples = [(x, x) for x in primary_interest_list]
 
     primary_interest = SelectField(
         'Primary interest',
         [DataRequired()],
-        choices=interest_tuples,
+        choices=primary_interest_tuples,
     )
 
+    secondary_interest_list = [x.interest_name for x in SecondaryInterest.query.all()]  # Gets the list of classes from the DB
+    # create value/label pairs (should both be str for name of class)
+    secondary_interest_tuples = [(x, x) for x in secondary_interest_list]
     secondary_interest = SelectField(
         'Secondary interest',
         [DataRequired()],
-        choices=interest_tuples,
+        choices=secondary_interest_tuples,
     )
 
+    interest_list = [x.interest_name for x in Interest.query.all()]  # Gets the list of classes from the DB
+    # create value/label pairs (should both be str for name of class)
+    interest_tuples = [(x, x) for x in interest_list]
     other_interests = MultipleCheckboxField('Additional Interests', choices=interest_tuples)
 
     cohort = SelectField(
@@ -148,7 +154,7 @@ class ProfileForm(FlaskForm):
 
 
 # Next week meet form
-class NextWeekForm(FlaskForm):
+class WeekOfMeetingForm(FlaskForm):
     matching = SelectField(  # Networking Goal
         'I would like to be matched by: ',
         [DataRequired()],
