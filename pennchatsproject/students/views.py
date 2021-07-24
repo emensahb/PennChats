@@ -6,7 +6,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 from pennchatsproject.models import *
-from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm, WeekOfMeetingForm
+from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm, NextWeek
 
 
 students = Blueprint('students', __name__)
@@ -98,7 +98,7 @@ def create_profile():
 # sign up-for next week's chat
 @students.route('/next_week')
 def next_week():
-    form = WeekOfMeetingForm()
+    form = NextWeek()
     if form.validate_on_submit():
         student = Student.query.filter_by(email=form.email.data).first()
         student.networking_goal = form.matching.data

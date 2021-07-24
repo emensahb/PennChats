@@ -432,7 +432,3 @@ class UnmatchedStudents(db.Model):
         return f"Unmatched student: {self.firstname} {self.lastname}, {self.student_id}, and {self.email}. Unmatched week: {self.week_of_meeting_name}"
 
 
-db.create_all()
-
-
-db.session.commit()

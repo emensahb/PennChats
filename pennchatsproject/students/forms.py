@@ -154,7 +154,7 @@ class ProfileForm(FlaskForm):
 
 
 # Next week meet form
-class WeekOfMeetingForm(FlaskForm):
+class NextForm(FlaskForm):
     matching = SelectField(  # Networking Goal
         'I would like to be matched by: ',
         [DataRequired()],
