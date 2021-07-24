@@ -19,7 +19,6 @@ class Student(db.Model, UserMixin):
     past courses, interests, and groups."""
 
     __tablename__ = 'students'
-
     student_id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
@@ -31,21 +30,26 @@ class Student(db.Model, UserMixin):
     country = db.Column(db.Text)
     bio = db.Column(db.Text)
     linkedin = db.Column(db.String)
-    cohort = db.relationship('Cohort', secondary='student_cohorts', backref='student')
+
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
-    class_enrolled = db.relationship('ClassEnrolled', secondary='student_classes_enrolled', backref='student')
-    class_taken = db.relationship('ClassTaken', secondary='student_classes_taken', backref='student')
-    matched_class = db.relationship('MatchedClass', secondary='student_matched_classes', backref='student')
+    class_enrolled = db.relationship('ClassEnrolled', secondary='students_classes_enrolled', backref='student')
+    class_taken_id = db.relationship('ClassTaken', secondary='students_classes_taken', backref='student')
+    matched_class = db.relationship('MatchedClass', secondary='students_matched_classes', backref='student')
 
     # other interests on form
-    interests = db.relationship('Interest', secondary='student_interests', backref='student')
-    matched_interest = db.relationship('MatchedInterest', secondary='student_matched_interests', backref='student')
+    interests = db.relationship('Interest', secondary='students_interests', backref='student')
+    matched_interest = db.relationship('MatchedInterest', secondary='students_matched_interests', backref='student')
 
-    networking_goal = db.relationship('NetworkingGoal', secondary='student_networking_goals', backref='student')
+    # One to many
+    cohort = db.relationship('Cohort', backref='student')
+    cohort_id = db.Column('cohort_id', db.Integer, db.ForeignKey('cohorts.id'))
+    networking_goal = db.relationship('NetworkingGoal', backref='student')
+    networking_goal_id = db.Column('networking_goal_id', db.Integer, db.ForeignKey('networking_goals.id'))
 
-    weekly_signup = db.relationship('WeeklySignUp', backref='student')
+    weekly_signup = db.relationship('WeeklySignUp', secondary='students_weekly_signups', backref='student')
+    weekly_signup_id = db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'))
     # meetings = db.relationship('Meeting', backref='week_of_meeting')
 
     def __init__(self, email, username, student_id, password):
@@ -62,20 +66,21 @@ class Student(db.Model, UserMixin):
 
 
 class WeeklySignUp(db.Model):
-    # should be an edit sheet that will pull in from last week and when they hit submit repopulates
     """
     A list of students who are signed up to chat this week
     """
     __tablename__ = 'weekly_signups'
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
+    student_id = db.relationship("Student", backref='student')
 
-    week_of_meeting = db.Column(db.String, db.ForeignKey('week_of_meetings.week_of_meeting_name'), nullable=False)
-    primary_time = db.Column(db.Integer, db.ForeignKey('primary_time_preferences.primary_time_preference_id'), nullable=False)
-    secondary_time = db.Column(db.Integer, db.ForeignKey('secondary_time_preferences.secondary_time_preference_id'), nullable=False)
+    week_of_meeting = db.relationship("WeekOfMeeting", backref='weekly_signup')
+    week_of_meeting_name = db.Column('week_of_meeting_name', db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
 
-    primary_interest = db.Column(db.Integer, db.ForeignKey('primary_interests.primary_interest_id'), nullable=False)
-    secondary_interest = db.Column(db.Integer, db.ForeignKey('secondary_interests.secondary_interest_id'), nullable=False)
+    primary_time = db.relationship("PrimaryTimePreference", secondary='weekly_signups_primary_time_preferences', backref='weekly_signup')
+    secondary_time = db.relationship("SecondaryTimePreference", secondary='weekly_signups_secondary_time_preferences', backref='weekly_signup')
+
+    primary_interest = db.relationship("PrimaryInterest", secondary='weekly_signups_primary_interests', backref='weekly_signup')
+    secondary_interest = db.relationship("SecondaryInterest", secondary='weekly_signups_secondary_interests', backref='weekly_signup')
 
     def __init__(self, week_of_meeting):
         self.week_of_meeting = week_of_meeting
@@ -92,6 +97,12 @@ class WeeklySignUp(db.Model):
         return student_count
 
 
+student_weekly_signup = db.Table('students_weekly_signups',
+    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
+    db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True)
+)
+
+
 class WeekOfMeeting(db.Model):
     """This table will store all the available weeks that students to sign up
         for PennChats. The table will be queried to provide options for students to
@@ -106,7 +117,7 @@ class WeekOfMeeting(db.Model):
     # many to one relationship
     # weekly_signups = db.relationship('WeeklySignUp', backref='week_of_meeting')
     # meetings = db.relationship('Meeting', backref='week_of_meeting')
-    # 0lunmatched_students = db.relationship('UnmatchedStudents', backref='week_of_meeting')
+    # unmatched_students = db.relationship('UnmatchedStudents', backref='week_of_meeting')
 
     def __init__(self, week_of_meeting_name):
         self.week_of_meeting_name = week_of_meeting_name
@@ -123,20 +134,20 @@ class ClassEnrolled(db.Model):
 
     __tablename__ = 'classes_enrolled'
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    class_enrolled_id = db.Column(db.Integer, primary_key=True, nullable=False)
     class_enrolled_name = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, class_enrolled_name):
-        self.id = id
+    def __init__(self, class_enrolled_id, class_enrolled_name):
+        self.class_enrolled_id = class_enrolled_id
         self.class_enrolled_name = class_enrolled_name
 
     def __repr__(self):
-        return f" {self.id} - {self.class_enrolled_name} "
+        return f" Class enrolled: {self.class_enrolled_id} - {self.class_enrolled_name} "
 
 
-class_enrolled = db.Table('student_classes_enrolled',
+student_class_enrolled = db.Table('students_classes_enrolled',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_enrolled_id', db.Integer, db.ForeignKey('classes_enrolled.id'), primary_key=True)
+    db.Column('class_enrolled_id', db.Integer, db.ForeignKey('classes_enrolled.class_enrolled_id'), primary_key=True)
 )
 
 
@@ -146,21 +157,20 @@ class ClassTaken(db.Model):
     """
 
     __tablename__ = 'classes_taken'
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    class_taken_id = db.Column(db.Integer, primary_key=True, nullable=False)
     class_taken_name = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, class_taken_name):
-        self.id = id
+    def __init__(self, class_taken_id, class_taken_name):
+        self.class_taken_id = class_taken_id
         self.class_taken_name = class_taken_name
 
     def __repr__(self):
-        return f" {self.id} - {self.class_taken_name} "
+        return f" Class taken: {self.class_taken_id} - {self.class_taken_name} "
 
 
-class_taken = db.Table('student_classes_taken',
+student_classes_taken = db.Table('students_classes_taken',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('class_taken_id', db.Integer, db.ForeignKey('classes_taken.id'), primary_key=True)
+    db.Column('class_taken_id', db.Integer, db.ForeignKey('classes_taken.class_taken_id'), primary_key=True)
 )
 
 
@@ -172,20 +182,20 @@ class MatchedClass(db.Model):
 
     __tablename__ = 'matched_classes'
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    matched_class_id = db.Column(db.Integer, primary_key=True, nullable=False)
     matched_class_name = db.Column(db.Text, nullable=False)
 
-    def __init__(self, id, matched_class_name):
-        self.id = id
+    def __init__(self, matched_class_id, matched_class_name):
+        self.matched_class_id = matched_class_id
         self.matched_class_name = matched_class_name
 
     def __repr__(self):
-        return f" {self.id} - {self.matched_class_name} "
+        return f" {self.matched_class_id} - {self.matched_class_name} "
 
 
-matched_class = db.Table('student_matched_classes',
+student_matched_class = db.Table('students_matched_classes',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('matched_class_id', db.Integer, db.ForeignKey('matched_classes.id'), primary_key=True)
+    db.Column('matched_class_id', db.Integer, db.ForeignKey('matched_classes.matched_class_id'), primary_key=True)
 )
 
 
@@ -196,9 +206,8 @@ class Interest(db.Model):
     # how do we input data to this table?
 
     __tablename__ = 'interests'
-
     id = db.Column(db.Integer, primary_key=True)
-    interest_name = db.Column(db.Text, nullable=False, unique=True)
+    interest_name = db.Column(db.Text, nullable=False, primary_key=True)
 
     def __init__(self, interest_name):
         self.interest_name = interest_name
@@ -212,7 +221,7 @@ class StudentInterest(db.Model):
     An association table between students and interests
     """
 
-    __tablename__ = 'student_interests'
+    __tablename__ = 'students_interests'
     student_id = db.Column(db.Integer, db.ForeignKey("students.student_id"), primary_key=True)
     interest_id = db.Column(db.Integer, db.ForeignKey("interests.id"), primary_key=True)
 
@@ -231,21 +240,19 @@ class PrimaryInterest(db.Model):
     """
 
     __tablename__ = 'primary_interests'
+    primary_interest_id = db.Column(db.Integer, primary_key=True)
+    primary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    primary_interest_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    primary_interest = db.Column(db.Text, nullable=False)
-
-    def __init__(self, primary_interest_id, primary_interest_name):
-        self.primary_interest_id = primary_interest_id
+    def __init__(self, primary_interest_name):
         self.primary_interest_name = primary_interest_name
 
     def __repr__(self):
-        return f" Primary Interest:{self.primary_interest_id} - {self.primary_intereste_name}"
+        return f" Primary Interest:{self.primary_interest_name}"
 
 
-primary_interest = db.Table('weekly_signup_primary_interests',
-    db.Column('weekly_signup', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True),
-    db.Column('primary_interest', db.Integer,db.ForeignKey('primary_interests.primary_interest_id'),primary_key=True)
+weekly_signup_primary_interest = db.Table('weekly_signups_primary_interests',
+    db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True),
+    db.Column('primary_interest_id', db.Integer, db.ForeignKey('primary_interests.primary_interest_id'), primary_key=True)
 )
 
 
@@ -253,21 +260,19 @@ class SecondaryInterest(db.Model):
     """The secondary interests students have chosen"""
 
     __tablename__ = 'secondary_interests'
+    id = db.Column(db.Integer, primary_key=True)
+    secondary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    secondary_interest_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    secondary_interest_name = db.Column(db.Text, nullable=False)
-
-    def __init__(self, secondary_interest_id, secondary_interest_name):
-        self.secondary_interest_id = secondary_interest_id
-        self.ssecondary_interest_name = secondary_interest_name
+    def __init__(self, secondary_interest_name):
+        self.secondary_interest_name = secondary_interest_name
 
     def __repr__(self):
-        return f" Secondary Interest: {self.secondary_interest_id} - {self.secondary_interest_name} "
+        return f" Secondary Interest: {self.id} - {self.secondary_interest_name} "
 
 
-secondary_interest = db.Table('weekly_signup_secondary_interests',
+weekly_signup_secondary_interest = db.Table('weekly_signups_secondary_interests',
     db.Column('weekly_signup', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True),
-    db.Column('secondary_interest', db.Integer, db.ForeignKey('secondary_interests.secondary_interest_id'), primary_key=True)
+    db.Column('secondary_interest', db.Integer, db.ForeignKey('secondary_interests.id'), primary_key=True)
 )
 
 
@@ -275,21 +280,19 @@ class MatchedInterest(db.Model):
     """The list if interest the student wants to match on"""
 
     __tablename__ = 'matched_interests'
+    id = id = db.Column(db.Integer, primary_key=True)
+    matched_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    matched_interest_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    matched_interest_name = db.Column(db.Text, nullable=False)
-
-    def __init__(self, matched_interest_id, matched_interest_name):
-        self.matched_interest_id = matched_interest_id
+    def __init__(self, matched_interest_name):
         self.matched_interest_name = matched_interest_name
 
     def __repr__(self):
-        return f" {self.matched_interest_id} - {self.matched_interest_name} "
+        return f" {self.id} - {self.matched_interest_name} "
 
 
-matched_interest = db.Table('student_matched_interests',
+student_matched_interest = db.Table('students_matched_interests',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('matched_interest_id', db.Integer, db.ForeignKey('matched_interests.matched_interest_id'), primary_key=True)
+    db.Column('matched_interest_id', db.Integer, db.ForeignKey('matched_interests.id'), primary_key=True)
 )
 
 
@@ -297,22 +300,14 @@ class Cohort(db.Model):
     """This is a list of cohorts ever to exist on MCIT Online"""
 
     __tablename__ = 'cohorts'
+    id = db.Column(db.Integer, primary_key=True)
+    cohort_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    cohort_name = db.Column(db.Text, nullable=False)
-
-    def __init__(self, id, cohort_name):
-        self.id = id
+    def __init__(self, cohort_name):
         self.cohort_name = cohort_name
 
     def __repr__(self):
-        return f" {self.id} - {self.cohort_name} "
-
-
-cohort = db.Table('student_cohorts',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('cohort_id', db.Integer, db.ForeignKey('cohorts.id'), primary_key=True)
-)
+        return f"{self.id} - {self.cohort_name} "
 
 
 class PrimaryTimePreference(db.Model):
@@ -324,20 +319,19 @@ class PrimaryTimePreference(db.Model):
 
     __tablename__ = 'primary_time_preferences'
 
-    primary_time_preference_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    primary_time_preference_name = db.Column(db.Text, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    primary_time_preference_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    def __init__(self, primary_time_preference_id, primary_time_preference_name):
-        self.primary_time_preference_id = primary_time_preference_id
+    def __init__(self, primary_time_preference_name):
         self.primary_time_preference_name = primary_time_preference_name
 
     def __repr__(self):
-        return f" Primary Time Preference: {self.primary_time_preference_id} - {self.primary_time_preference_name} "
+        return f" Primary Time Preference: {self.id} - {self.primary_time_preference_name} "
 
 
-primary_time_preference = db.Table('weekly_signup_primary_time_preferences',
+weekly_signup_primary_time_preference = db.Table('weekly_signups_primary_time_preferences',
     db.Column('weekly_signup', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True),
-    db.Column('primary_time_preference', db.Integer,db.ForeignKey('primary_time_preferences.primary_time_preference_id'),primary_key=True)
+    db.Column('primary_time_preference', db.Integer, db.ForeignKey('primary_time_preferences.id'), primary_key=True)
 )
 
 
@@ -346,20 +340,19 @@ class SecondaryTimePreference(db.Model):
 
     __tablename__ = 'secondary_time_preferences'
 
-    secondary_time_preference_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    secondary_time_preference_name = db.Column(db.Text, nullable=False)
+    id = id = db.Column(db.Integer, primary_key=True)
+    secondary_time_preference_name = db.Column(db.Text, primary_key=True, nullable=False)
 
-    def __init__(self, secondary_time_preference_id, secondary_time_preference_name):
-        self.secondary_time_preference_id = secondary_time_preference_id
+    def __init__(self, secondary_time_preference_name):
         self.secondary_time_preference_name = secondary_time_preference_name
 
     def __repr__(self):
-        return f" Secondary Time Preference: {self.secondary_time_preference_id} - {self.secondary_time_preference_name} "
+        return f" Secondary Time Preference: {self.d} - {self.secondary_time_preference_name} "
 
 
-secondary_time_preference = db.Table('weekly_signup_secondary_time_preferences',
+weekly_signup_secondary_time_preference = db.Table('weekly_signups_secondary_time_preferences',
     db.Column('weekly_signup', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True),
-    db.Column('secondary_time_preference', db.Integer, db.ForeignKey('secondary_time_preferences.secondary_time_preference_id'), primary_key=True)
+    db.Column('secondary_time_preference', db.Integer, db.ForeignKey('secondary_time_preferences.id'), primary_key=True)
 )
 
 
@@ -371,9 +364,8 @@ class NetworkingGoal(db.Model):
     # how do we input data to this table?
 
     __tablename__ = 'networking_goals'
-
     id = db.Column(db.Integer, primary_key=True)
-    networking_goal = db.Column(db.Text, nullable=False, unique=True)
+    networking_goal = db.Column(db.Text, nullable=False, primary_key=True)
 
     def __init__(self, networking_goal):
         self.networking_goal = networking_goal
@@ -382,27 +374,19 @@ class NetworkingGoal(db.Model):
         return f" Networking Goal: {self.id}. {self.networking_goal}"
 
 
-student_networking_goal = db.Table('student_networking_goals',
-    db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
-    db.Column('networking_goal_id', db.Integer, db.ForeignKey('networking_goals.id'), primary_key=True)
-
-)
-
-
 class Meeting(db.Model):
     """This table describes all the meetings that has been set up.
     A final output of the matching algorithm will be a list of Meeting objects.
     There is a many-to-many relationship between this table and the Student table."""
 
     __tablename__ = 'meetings'
-
     id = db.Column(db.Integer, primary_key=True)
     time_id = db.Column(db.Integer)
     course_id = db.Column(db.Integer)
     interest_id = db.Column(db.Integer)
 
     # one to many relationship
-    week_of_meeting = db.Column(db.String, db.ForeignKey('week_of_meetings.week_of_meeting_name'), nullable=False)
+    week_of_meeting = db.Column(db.String, db.ForeignKey('week_of_meetings.week_of_meeting_name'), primary_key=True, nullable=False)
 
     def __init__(self, week_of_meeting, time_id, course_id=None, interest_id=None):
         self.week_of_meeting = week_of_meeting
@@ -447,7 +431,8 @@ class UnmatchedStudents(db.Model):
     def __repr__(self):
         return f"Unmatched student: {self.firstname} {self.lastname}, {self.student_id}, and {self.email}. Unmatched week: {self.week_of_meeting_name}"
 
+
 db.create_all()
 
 
-db.session.commit()
+# db.session.commit()

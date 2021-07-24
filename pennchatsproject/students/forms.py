@@ -170,7 +170,7 @@ class WeekOfMeetingForm(FlaskForm):
         'First meeting time preference',
         [DataRequired()],
 
-        choices=[x.time for x in TimePreference.query.all()]
+        choices=[x.time for x in PrimaryTimePreference.query.all()]
 
         #choices=[
          #   ('morning', 'Morning: 9am ET'),  # should classes be ranked?
@@ -184,7 +184,7 @@ class WeekOfMeetingForm(FlaskForm):
         'Second meeting time preference',
         [DataRequired()],
 
-        choices=[x.time for x in TimePreference.query.all()]
+        choices=[x.time for x in SecondaryTimePreference.query.all()]
 
         # choices=[
         #    ('morning', 'Morning: 9am ET'),  # should classes be ranked?

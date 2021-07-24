@@ -104,7 +104,7 @@ def next_week():
         student.networking_goal = form.matching.data
         student.prim_time = form.primary_time.data
         student.sec_time = form.secondary_time.data
-
+        db.session.commit()
     return render_template("next_week.html", form=form)
 
 
