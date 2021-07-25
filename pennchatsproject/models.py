@@ -19,7 +19,7 @@ class Student(db.Model, UserMixin):
     past courses, interests, and groups."""
 
     __tablename__ = 'students'
-    id = db.Column(db.Integer, primary_key=True)
+    # id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, primary_key=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
@@ -40,9 +40,9 @@ class Student(db.Model, UserMixin):
     interests = db.relationship('Interest', secondary='students_interests', backref='student')
 
     # One to many
-    matched_class = db.relationship('MatchedClass',  backref='student')
-    cohort = db.relationship('Cohort', backref='student')
-    networking_goal = db.relationship('NetworkingGoal', backref='student')
+    matched_class_id = db.Column(db.Integer, db.ForeignKey('matched_classes.matched_class_id'))
+    cohort_name = db.Column(db.String, db.ForeignKey('cohorts.cohort_name'))
+    networking_goal_id = db.Column(db.Integer, db.ForeignKey('networking_goals.id'))
 
     weekly_signup = db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'))
     # meetings = db.relationship('Meeting', backref='week_of_meeting')
@@ -184,7 +184,7 @@ class MatchedClass(db.Model):
 
     matched_class_id = db.Column(db.Integer, primary_key=True, nullable=False)
     matched_class_name = db.Column(db.Text, nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    students = db.relationship('Student', backref='matched_class')
 
     def __init__(self, matched_class_id, matched_class_name):
         self.matched_class_id = matched_class_id
@@ -271,13 +271,13 @@ class Cohort(db.Model):
 
     __tablename__ = 'cohorts'
     cohort_name = db.Column(db.Text, primary_key=True, nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    student = db.relationship('Student', backref='cohort')
 
     def __init__(self, cohort_name):
         self.cohort_name = cohort_name
 
     def __repr__(self):
-        return f"{self.id} - {self.cohort_name} "
+        return f"{self.cohort_name} "
 
 
 class PrimaryTimePreference(db.Model):
@@ -334,7 +334,7 @@ class NetworkingGoal(db.Model):
     __tablename__ = 'networking_goals'
     id = db.Column(db.Integer, primary_key=True)
     networking_goal = db.Column(db.Text, nullable=False, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    student = db.relationship('Student', backref='networking_goal')
 
     def __init__(self, networking_goal):
         self.networking_goal = networking_goal
@@ -475,12 +475,12 @@ si10 = SecondaryInterest("Software Development")
 
 
 # cohort
-cht1 = Cohort("Spring 2019")
-cht2 = Cohort("Fall 2019")
-cht3 = Cohort("Spring 2020")
-cht4 = Cohort("Fall 2020")
-cht5 = Cohort("Spring 2021")
-cht6 = Cohort("Fall 2021")
+# cht1 = Cohort("Spring 2019")
+# cht2 = Cohort("Fall 2019")
+# cht3 = Cohort("Spring 2020")
+# cht4 = Cohort("Fall 2020")
+# cht5 = Cohort("Spring 2021")
+# cht6 = Cohort("Fall 2021")
 
 # networking goals options
 ng1 = NetworkingGoal("class")
@@ -505,7 +505,7 @@ db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # match
 db.session.add_all([i1, i2, i3, i4, i5, i6, i7, i8, i9, i10])  # interests
 db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
 db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
-db.session.add_all([cht1, cht2, cht3, cht4, cht5, cht6])  # cohorts
+# db.session.add_all([cht1, cht2, cht3, cht4, cht5, cht6])  # cohorts
 db.session.add_all([ng1, ng2])
 db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
 db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
