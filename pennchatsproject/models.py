@@ -400,55 +400,6 @@ class UnmatchedStudents(db.Model):
     def __repr__(self):
         return f"Unmatched student: {self.firstname} {self.lastname}, {self.student_id}, and {self.email}. Unmatched week: {self.week_of_meeting_name}"
 
-
-# enrolled classes
-ec1 = ClassEnrolled(591, "Intro to Software Development")
-ec2 = ClassEnrolled(592, "Math Foundations of Computer Science")
-ec3 = ClassEnrolled(593, "Intro to Computer Systems")
-ec4 = ClassEnrolled(594, "Data Structures and Software Design")
-ec5 = ClassEnrolled(595, "Computer Systems Programming")
-ec6 = ClassEnrolled(596, "Algorithms & Computation")
-ec7 = ClassEnrolled(515, "Fundamentals of Linear Algebra & Optimization")
-ec8 = ClassEnrolled(547, "Software Analysis")
-ec9 = ClassEnrolled(549, "Wireless Communication for Mobile Networks")
-ec10 = ClassEnrolled(581, "Computer Vision & Computational Photography")
-
-# taken classes
-tc1 = ClassTaken(591, "Intro to Software Development")
-tc2 = ClassTaken(592, "Math Foundations of Computer Science")
-tc3 = ClassTaken(593, "Intro to Computer Systems")
-tc4 = ClassTaken(594, "Data Structures and Software Design")
-tc5 = ClassTaken(595, "Computer Systems Programming")
-tc6 = ClassTaken(596, "Algorithms & Computation")
-tc7 = ClassTaken(515, "Fundamentals of Linear Algebra & Optimization")
-tc8 = ClassTaken(547, "Software Analysis")
-tc9 = ClassTaken(549, "Wireless Communication for Mobile Networks")
-tc10 = ClassTaken(581, "Computer Vision & Computational Photography")
-
-# Matched classes
-mc1 = MatchedClass(591, "Intro to Software Development")
-mc2 = MatchedClass(592, "Math Foundations of Computer Science")
-mc3 = MatchedClass(593, "Intro to Computer Systems")
-mc4 = MatchedClass(594, "Data Structures and Software Design")
-mc5 = MatchedClass(595, "Computer Systems Programming")
-mc6 = MatchedClass(596, "Algorithms & Computation")
-mc7 = MatchedClass(515, "Fundamentals of Linear Algebra & Optimization")
-mc8 = MatchedClass(547, "Software Analysis")
-mc9 = MatchedClass(549, "Wireless Communication for Mobile Networks")
-mc10 = MatchedClass(581, "Computer Vision & Computational Photography")
-
-# Interests
-i1 = Interest("Artificial Intelligence & Machine Learning")
-i2 = Interest("Blockchain")
-i3 = Interest("Cybersecurity & Cryptography")
-i4 = Interest("Data Science")
-i5 = Interest("Game Design")
-i6 = Interest("Interview Prep")
-i7 = Interest("Mathematics for Computer Science")
-i8 = Interest("Networking & Computer Systems")
-i9 = Interest("Project Management")
-i10 = Interest("Software Development")
-
 # Primary Interests
 pi1 = PrimaryInterest("Artificial Intelligence & Machine Learning")
 pi2 = PrimaryInterest("Blockchain")
@@ -473,18 +424,18 @@ si8 = SecondaryInterest("Networking & Computer Systems")
 si9 = SecondaryInterest("Project Management")
 si10 = SecondaryInterest("Software Development")
 
-
 # cohort
-# cht1 = Cohort("Spring 2019")
-# cht2 = Cohort("Fall 2019")
-# cht3 = Cohort("Spring 2020")
-# cht4 = Cohort("Fall 2020")
-# cht5 = Cohort("Spring 2021")
-# cht6 = Cohort("Fall 2021")
+cht1 = Cohort("Spring 2019")
+cht2 = Cohort("Fall 2019")
+cht3 = Cohort("Spring 2020")
+cht4 = Cohort("Fall 2020")
+cht5 = Cohort("Spring 2021")
+cht6 = Cohort("Fall 2021")
 
 # networking goals options
 ng1 = NetworkingGoal("class")
 ng2 = NetworkingGoal("interest")
+
 
 # Primary Time preference
 ptp1 = PrimaryTimePreference("Morning: 9am ET")
@@ -498,19 +449,16 @@ stp2 = SecondaryTimePreference("Afternoon: 3pm ET")
 stp3 = SecondaryTimePreference("Evening: 7pm ET")
 stp4 = SecondaryTimePreference("Overnight: 1am ET")
 
-db.create_all()
-db.session.add_all([ec1, ec2, ec3, ec4, ec5, ec6, ec7, ec8, ec9, ec10])  # enrolled classes
-db.session.add_all([tc1, tc2, tc3, tc4, tc5, tc6, tc7, tc8, tc9, tc10])  # taken classes
-db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # matched classes
-db.session.add_all([i1, i2, i3, i4, i5, i6, i7, i8, i9, i10])  # interests
-db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
-db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
+# db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # matched classes
+# db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
+# db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
 # db.session.add_all([cht1, cht2, cht3, cht4, cht5, cht6])  # cohorts
-db.session.add_all([ng1, ng2])
-db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
-db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
+# db.session.add_all([ng1, ng2])
+# db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
+# db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
+
 
 
 db.session.commit()
 
-print(ClassEnrolled.query.all())
+print(NetworkingGoal.query.all())
