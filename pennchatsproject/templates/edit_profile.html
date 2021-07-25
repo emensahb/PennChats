@@ -5,87 +5,90 @@
 {% block head %} Edit Profile {% endblock %}
 
 {% block content %}
-<div style="text-align: center;">
-  <div style="display: inline-block; text-align: left;">
-    <h2>The current username is: {{current_user.username}}</h2>
-    <form method="POST" action ="" style="padding:5px;">
-        {{ form.hidden_tag() }}
-        
-        <!-- Username Field -->
-        {{ form.username.label }}
-        {{ form.username }}
-        <br>
-        
-        <!-- First Name Field -->
-        {{ form.first_name.label }}:
-        {{ form.first_name }}
-        <br>
-        
-        <!-- Last Name Field -->
-        {{ form.last_name.label }}:
-        {{ form.last_name }}
-        <br>
 
-        <!-- Cohort Field -->
-        {{ form.cohort.label }}:
-        {{ form.cohort }}
-        <br>
-        
-        <!-- City Field -->
-        {{ form.city.label }}:
-        {{ form.city }}
-        <br>
+<!-- import form template -->
+{% from "_formhelpers.html" import render_field %}
+<div class="jumbotron">
+    <div class="container">
+        <form class="form form-horizontal" action="{{url_for('students.edit_profile')}}" method="POST" role="form">
+            {{ form.hidden_tag() }}
+            <!-- Name row -->
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- Username Field -->
+                    {{ render_field(form.username) }}
+                </div>
+                <div class="col-sm-3">
+                    <!-- First Name Field -->
+                    {{ render_field(form.first_name) }}
+                </div>
+                <div class="col-sm-3">
+                    <!-- Last Name Field -->
+                    {{ render_field(form.last_name) }}<br>
+                </div>
+            </div>
 
-        <!-- State Field -->
-        {{ form.state.label }}:
-        {{ form.state }}
-        <br>
+            <!-- City, state, country row -->
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- City Field -->
+                    {{ render_field(form.city) }}
+                </div>
+                <div class="col-sm-3">
+                    <!-- State Field -->
+                    {{ render_field(form.state) }}<br>
+                </div>
+                <div class="col-sm-3">
+                    <!-- Country Field -->
+                    {{ render_field(form.country) }}<br>
+                </div>
+            </div>
 
-        <!-- Country Field -->
-        {{ form.country.label }}:
-        {{ form.country }}
-        <br>
-        
-        <!-- LinkedIn Field -->
-        {{ form.linkedin.label }}:
-        {{ form.linkedin }}
-        <br>
-        
-        <!-- Current Courses Field -->
-        {{ form.current_courses.label }}:
-        {{ form.current_courses }}
-        <br>
-        
-        <!-- Past Courses Field -->
-        {{ form.past_courses.label }}:
-        {{ form.past_courses }}
-        <br>
-        
-        <!-- Interests Field -->
-        {{ form.interests.label }}:
-        {{ form.interests }}
-        <br>
-        
-        <!-- Course to Match Field -->
-        {{ form.course_id_to_match.label }}:
-        {{ form.course_id_to_match }}
-        <br>
-        
-        <!-- Interest to Match Field -->
-        {{ form.interest_id_to_match.label }}:
-        {{ form.interest_id_to_match }}
-        <br>
-        
-        <!-- Bio Field -->
-        {{ form.bio.label }}:
-        {{ form.bio }}
-        <br>
+            <!-- Primary Class Field -->
+            {{ render_field(form.course_id_to_match) }}<br>
 
-        <!-- Submit Field -->
-        {{ form.submit() }}
-    </form>
-  </div>
+            <!-- Courses row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Class Field -->
+                    {{ render_field(form.past_courses) }}
+                </div>
+                <div class="col-md-6">
+                    <!-- Current Class Field -->
+                    {{ render_field(form.current_courses) }}
+                </div>
+            </div>
+
+            <!-- Primary Interest Field -->
+            {{ render_field(form.interest_id_to_match) }}
+            <br>
+
+            <!-- Interests and cohort row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Interests Field -->
+                    {{ render_field(form.interests) }}
+                </div>
+                <div class="col-md-6">
+                    <!-- Cohort Field -->
+                    {{ render_field(form.cohort) }}<br>
+                </div>
+            </div>
+
+            <!-- LinkedIn Field -->
+            {{ render_field(form.linkedin) }}
+            <br>
+
+            <!-- Bio Field -->
+            {{ render_field(form.bio) }}
+            <br>
+
+            <!-- Submit Field -->
+            {{ form.submit }}
+
+        </div>
+</form>
+
+
 </div>
-
-
 {% endblock %}

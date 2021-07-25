@@ -12,34 +12,28 @@
     <!--Homepage Image -->
     <img alt="Students having a conversation"
          class="img-responsive"
-         src="https://user-images.githubusercontent.com/84137452/125167996-4fb8d780-e171-11eb-8ff6-5efd9d9cc9ff.jpg">
+         src="https://user-images.githubusercontent.com/84137452/125167996-4fb8d780-e171-11eb-8ff6-5efd9d9cc9ff.jpg"
+         style="float:left">
 
     <!-- Intro paragraph -->
-    <h3><center><div>Welcome to Penn Chats! Penn Chats is a platform designed to connect
-        MCIT Online students. Tell us what classes you
-        are taking, your interests, and when you'd like to meet,
-        and we'll match you with a group of 2-5 students for a chat!</div></center></h3>
-
-    <!-- If studnet is signed in -->
-      {% if current_user.is_authenticated %}
-      <!-- Intro paragraph -->
-      <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! What would you like to do?</div></center></h3>
+    <div class="jumbotron">
       
-          <a href="{{url_for('students.sign_up')}}"> <button type="button" class="btn btn-primary">Sign Up for PennChats</button></a>
-
-          <a href="{{url_for('students.edit_profile')}}"> <button type="button" class="btn btn-primary">Edit Profile</button></a>
-
-          <a href="#"> <button type="button" class="btn btn-primary">View My Matches</button>
-    <!-- If studnet is not signed in -->
+      <!-- If studnet is signed in -->
+      {% if current_user.is_authenticated %}
+        <!-- Intro paragraph -->
+        <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! Please ensure you have updated your profile before signing up for PennChats.</div></center></h3>
+      <!-- If studnet is not signed in -->
       {% else %}
       <!-- Signup/Login buttons -->
       <center>
-          <a href="{{url_for('students.register')}}">
-              <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Register</button></a>
-          <a href="{{url_for('students.login')}}">
-              <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>
+          <h1 class="display-4">Welcome to Penn Chats!</h1>
+          <p class="lead">Penn Chats is a platform designed to connect
+          MCIT Online students. Tell us what classes you
+          are taking, your interests, and when you'd like to meet,
+          and we'll match you with a group of 2-5 students for a chat!</p>
       </center>
       {% endif %}
+     </div>
 
 
 {% endblock %}
