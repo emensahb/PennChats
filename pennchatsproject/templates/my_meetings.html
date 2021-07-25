@@ -2,7 +2,7 @@
 
 {% block title %} My Meetings {% endblock %}
 
-{% block head %} My Meetings {% endblock %}
+{% block head %} ooo {% endblock %}
 
 {% block content %}
 <div style="text-align: center;">
@@ -21,13 +21,13 @@
       </thead>
       <tbody>
         {# {% for meeting in meetings %}  #}
-        {% for meeting in meetings.items() %} {# Not sure if we need () after items #}
+        {% for meeting in meetings.items %} {# Not sure if we need () after items #}
           <tr>
             <th scope="row">{{ loop.index }}</th>
             <td>{{ meeting.meeting_week_name }}</td>
             <td>{{ meeting.time_id }}</td>
             <td>
-              {% for student in meeting.students.items() %}
+              {% for student in meeting.students.items %}
               {# {% for student in meeting.students %} #}
                 {# <a href="#">{{ student.first_name }} {{ student.last_name }}</a> #}
                 <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }}</a>

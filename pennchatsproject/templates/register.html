@@ -2,42 +2,37 @@
 
 {% block title %} Register {% endblock %}
 
-{% block head %} Register {% endblock %}
-
 {% block content %}
-<div style="text-align: center;">
-  <div style="display: inline-block; text-align: left;">
+
+{% from "_formhelpers.html" import render_field %}
+
+<div class="jumbotron">
+    <h2>Register</h2>
     <form method="POST" style="padding:5px;">
-        <!-- Email Field -->
         {{ form.hidden_tag() }}
-        {{ form.email.label }}:
-        {{ form.email }}
+        <!-- Email Field -->
+        {{ render_field(form.email) }}
         <br>
 
         <!-- Username Field -->
-        {{ form.username.label }}:
-        {{ form.username }}
+        {{ render_field(form.username) }}
         <br>
 
         <!-- Student_id Field -->
-        {{ form.student_id.label }}:
-        {{ form.student_id }}
+        {{ render_field(form.student_id) }}
         <br>
 
         <!-- Password Field -->
-        {{ form.password.label }}:
-        {{ form.password }}
+        {{ render_field(form.password) }}
         <br>
 
         <!-- Confirm Password Field -->
-        {{ form.pass_confirm.label }}:
-        {{ form.pass_confirm }}
+        {{ render_field(form.pass_confirm) }}
         <br>
 
         <!-- Submit Field -->
         {{ form.submit }}
     </form>
-  </div>
 </div>
 
 

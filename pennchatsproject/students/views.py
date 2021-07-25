@@ -5,10 +5,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 from pennchatsproject import db
-# from werkzeug.security import generate_password_hash, check_password_hash
 from pennchatsproject.models import *
 from pennchatsproject.students.forms import *
-# from pennchatsproject.students.picture_handler import add_profile_pic
 
 
 students = Blueprint('students', __name__)
@@ -22,9 +20,9 @@ def register():
     if form.validate_on_submit():
         student = Student(email=form.email.data,
                           username=form.username.data,
-                          student_id=form.student_id.data,
-                          password=form.password.data)
-
+                          student_id=form.student_id.data
+                          )
+        student.set_password(form.password.data)
         db.session.add(student)
         db.session.commit()
         flash('Thank you for registering!')
@@ -73,7 +71,8 @@ def edit_profile():
 
     if form.validate_on_submit():
 
-        # current_user.username = form.username.data
+        current_user.username = form.username.data
+        current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.city = form.city.data
         current_user.state = form.state.data
@@ -89,9 +88,11 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        # return redirect(url_for('students.edit_profile'))
+        return redirect(url_for('students.edit_profile'))
 
     elif request.method == 'GET':
+
+        form.username.data = current_user.username
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
         form.city.data = current_user.city
@@ -117,12 +118,16 @@ def sign_up():
 
     if form.validate_on_submit():
 
-        form = WeeklySignUp(week_meet=form.week_meet.data,
+        all_signups = WeeklySignUp.query.all()
+        num_of_signups = len(all_signups)
+
+        form = WeeklySignUp(signup_id=1+num_of_signups,
+                            meeting_week_name=form.week_meet.data,
                             student_id=current_user.student_id,
                             prime_time_id=form.prime_time_id.data,
                             sec_time_id=form.sec_time_id.data,
                             prime_networking_goal_id=form.prime_networking_goal_id.data,
-                            sec_networking_goal_id=form.sec_networking_goal_id.data,
+                            sec_networking_goal_id=form.sec_networking_goal_id.data
                             )
 
         db.session.add(form)
