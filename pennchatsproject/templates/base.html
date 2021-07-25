@@ -44,7 +44,7 @@
         </div>
     </div>
 
-  <div class="container"><h2>{% block heading %} {% endblock %}</h2></div>
+  <div class="container"><h2>{% block head %} {% endblock %}</h2></div>
 
   <ul class='nav'>
     <li class="nav-item">
@@ -54,9 +54,10 @@
       <a class="nav-link" href="{{ url_for('core.info') }}">About Us</a>
     </li>
       {% if current_user.is_authenticated %}
+      <li class="nav-link"><a href="{{url_for('students.edit_profile')}}">Edit Profile</a></li>
+      <li class="nav-link"><a href="{{url_for('students.sign_up')}}">Sign Up for Next Week</a></li>
+      <li class="nav-link"><a href="{{url_for('students.my_meetings')}}">My Meetings</a></li>
       <li class="nav-link"><a href="{{url_for('students.logout')}}">Log Out</a></li>
-      <li class="nav-link"><a href="#">Sign Up for Next Week</a></li>
-      <li class="nav-link"><a href="#">Meetings</a></li>
       {% else %}
       <li class="nav-link"><a href="{{url_for('students.login')}}">Log In</a></li>
       <li class="nav-link"><a href="{{url_for('students.register')}}">Register</a></li>
