@@ -120,12 +120,16 @@ def sign_up():
 
     if form.validate_on_submit():
 
-        form = WeeklySignUp(week_meet=form.week_meet.data,
+        all_signups = WeeklySignUp.query.all()
+        num_of_signups = len(all_signups)
+
+        form = WeeklySignUp(signup_id=1+num_of_signups,
+                            meeting_week_name=form.week_meet.data,
                             student_id=current_user.student_id,
                             prime_time_id=form.prime_time_id.data,
                             sec_time_id=form.sec_time_id.data,
                             prime_networking_goal_id=form.prime_networking_goal_id.data,
-                            sec_networking_goal_id=form.sec_networking_goal_id.data,
+                            sec_networking_goal_id=form.sec_networking_goal_id.data
                             )
 
         db.session.add(form)

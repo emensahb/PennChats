@@ -1,6 +1,8 @@
 from pennchatsproject import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Sequence
 
 
 @login_manager.user_loader
@@ -18,7 +20,8 @@ class Student(db.Model, UserMixin):
 
     __tablename__ = 'students'
 
-    student_id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    student_id = db.Column(db.Integer, primary_key=True,
+                           unique=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
@@ -49,7 +52,8 @@ class Student(db.Model, UserMixin):
     # one to many relatinoships
     cohort = db.Column(db.Text, db.ForeignKey('cohorts.cohort_name'))
     course_id_to_match = db.Column(db.Text, db.ForeignKey('courses.course_id'))
-    interest_id_to_match = db.Column(db.Integer, db.ForeignKey('interests.interest_id'))
+    interest_id_to_match = db.Column(
+        db.Integer, db.ForeignKey('interests.interest_id'))
 
     # def __init__(self, email, username, student_id, password):
     #     self.email = email
@@ -77,7 +81,7 @@ class WeeklySignUp(db.Model):
 
     __tablename__ = 'weekly_signups'
 
-    signup_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    signup_id = db.Column(db.Integer, primary_key=True)
 
     # one to many relationships
     meeting_week_name = db.Column(db.Text, db.ForeignKey(
@@ -93,8 +97,9 @@ class WeeklySignUp(db.Model):
     sec_networking_goal_id = db.Column(db.Integer, db.ForeignKey(
         'networking_goals.networking_goal_id'), nullable=False)
 
-    def __init__(self, meeting_week_name, student_id, prime_time_id, sec_time_id, prime_networking_goal_id, sec_networking_goal_id):
+    def __init__(self, signup_id, meeting_week_name, student_id, prime_time_id, sec_time_id, prime_networking_goal_id, sec_networking_goal_id):
         # need to figure out how to best time stamp WeeklySignUp Forms
+        self.signup_id = signup_id
         self.meeting_week_name = meeting_week_name
         self.student_id = student_id
         self.prime_time_id = prime_time_id
@@ -120,7 +125,8 @@ class WeekMeet(db.Model):
     # many to one relationship
     weekly_signups = db.relationship('WeeklySignUp', backref='week_meet')
     meetings = db.relationship('Meeting', backref='week_meet')
-    unmatched_students = db.relationship('UnmatchedStudents', backref='week_meet')
+    unmatched_students = db.relationship(
+        'UnmatchedStudents', backref='week_meet')
 
     def __init__(self, week_meet_name):
         self.week_meet_name = week_meet_name
@@ -137,7 +143,8 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    course_id = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
+    course_id = db.Column(db.Text, primary_key=True,
+                          unique=True, nullable=False)
     course_name = db.Column(db.Text, nullable=False)
 
     # many to one relationships
@@ -283,8 +290,10 @@ class Meeting(db.Model):
     meeting_id = db.Column(db.Integer, primary_key=True)
 
     # one to many relationships
-    meeting_week_name = db.Column(db.Text, db.ForeignKey('meeting_weeks.week_meet_name'), nullable=False)
-    time_id = db.Column(db.Integer, db.ForeignKey('time_options.time_id'), nullable=False)
+    meeting_week_name = db.Column(db.Text, db.ForeignKey(
+        'meeting_weeks.week_meet_name'), nullable=False)
+    time_id = db.Column(db.Integer, db.ForeignKey(
+        'time_options.time_id'), nullable=False)
 
     # one to many relationships to be added
     course_id = db.Column(db.Integer)
