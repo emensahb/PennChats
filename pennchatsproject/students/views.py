@@ -8,7 +8,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from pennchatsproject import db
 #from werkzeug.security import generate_password_hash, check_password_hash
 from pennchatsproject.models import Student
-from pennchatsproject.students.forms import RegistrationForm, LoginForm
+from pennchatsproject.students.forms import RegistrationForm, LoginForm, ProfileForm
 
 
 students = Blueprint('students', __name__)
@@ -86,6 +86,47 @@ def account():
 @students.route('/logout_message')
 def logout_message():
     return render_template("logout.html")
+
+#edit profile
+# @login_required
+@students.route('/edit_profile')
+def edit_profile():
+    form = ProfileForm()
+    # if form.validate_on_submit():
+    #     current_user.firstname = form.first_name.data
+    #     current_user.lastname = form.last_name.data
+    #     current_user.city = form.city.data
+    #     current_user.state = form.state.data
+    #     current_user.country = form.country.data
+    #     current_user.linkedin = form.linkedin.data
+    #     current_user.bio = form.bio.data
+    #     current_user.current_courses = form.current_courses.data
+    #     current_user.past_courses = form.past_courses.data
+    #     current_user.course_id_to_match = form.course_id_to_match.data
+    #     current_user.interests = form.interests.data
+    #     current_user.interest_id_to_match = form.interest_id_to_match.data
+    #     current_user.cohort = form.cohort.data
+    #
+    #     db.session.commit()
+    #     flash('Profile Updated')
+    #     return redirect(url_for('core.index'))
+    #
+    # elif request.method == 'GET':
+    #     form.first_name.data = current_user.first_name
+    #     form.last_name.data = current_user.last_name
+    #     form.city.data = current_user.city
+    #     form.state.data = current_user.state
+    #     form.country.data = current_user.country
+    #     form.linkedin.data = current_user.linkedin
+    #     form.bio.data = current_user.bio
+    #     form.current_courses.data = current_user.current_courses
+    #     form.past_courses.data = current_user.past_courses
+    #     form.course_id_to_match.data = current_user.course_id_to_match
+    #     form.interests.data = current_user.interests
+    #     form.interest_id_to_match.data = current_user.interest_id_to_match
+    #     form.cohort.data = current_user.cohort
+
+    return render_template("edit_profile.html", form=form)
 #
 # #edit profile
 # @students.route('/account/<name>')

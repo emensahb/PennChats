@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %} Edit Profile {% endblock %}
+
+{% block head %} Edit Profile {% endblock %}
+
+{% block content %}
+
+<!-- import form template -->
+{% from "_formhelpers.html" import render_field %}
+<div class="jumbotron">
+    <div class="container">
+        <form class="form form-horizontal" action="{{url_for('students.edit_profile')}}" method="POST" role="form">
+            <!-- Name row -->
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- First Name Field -->
+                    {{ render_field(form.first_name) }}
+                </div>
+                <div class="col-sm-3">
+                    <!-- Last Name Field -->
+                    {{ render_field(form.last_name) }}<br>
+                </div>
+            </div>
+
+            <!-- City, state, country row -->
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- City Field -->
+                    {{ render_field(form.city) }}
+                </div>
+                <div class="col-sm-3">
+                    <!-- State Field -->
+                    {{ render_field(form.state) }}<br>
+                </div>
+                <div class="col-sm-3">
+                    <!-- Country Field -->
+                    {{ render_field(form.country) }}<br>
+                </div>
+            </div>
+
+            <!-- Primary Class Field -->
+            {{ render_field(form.course_id_to_match) }}<br>
+
+            <!-- Courses row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Class Field -->
+                    {{ render_field(form.past_courses) }}
+                </div>
+                <div class="col-md-6">
+                    <!-- Current Class Field -->
+                    {{ render_field(form.current_courses) }}
+                </div>
+            </div>
+
+            <!-- Primary Interest Field -->
+            {{ render_field(form.interest_id_to_match) }}
+            <br>
+
+            <!-- Interests and cohort row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Others Interests Field -->
+                    {{ render_field(form.interests) }}
+                </div>
+                <div class="col-md-6">
+                    <!-- Cohort Field -->
+                    {{ render_field(form.cohort) }}<br>
+                </div>
+            </div>
+
+            <!-- LinkedIn Field -->
+            {{ render_field(form.linkedin) }}
+            <br>
+
+            <!-- Bio Field -->
+            {{ render_field(form.bio) }}
+            <br>
+
+            <!-- Submit Field -->
+            {{ form.submit }}
+
+        </div>
+</form>
+
+
+</div>
+{% endblock %}
