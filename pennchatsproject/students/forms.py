@@ -54,7 +54,7 @@ class ProfileForm(FlaskForm):
     #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
                   # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
 
-    matched_class_list = [x.id for x in MatchedClass.query.all()]  # Gets the list of classes from the DB
+    matched_class_list = [x.matched_class_num for x in MatchedClass.query.all()]  # Gets the list of classes from the DB
 
     # create value/label pairs (should both be str for name of class)
     matched_class_tuples = [(x, x) for x in matched_class_list]
