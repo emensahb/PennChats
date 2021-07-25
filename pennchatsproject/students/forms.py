@@ -3,19 +3,22 @@
 # this will include all the forms Audra has in her forms.py file
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, SelectMultipleField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, URL
-from wtforms import ValidationError
-from flask_wtf.file import FileField, FileAllowed
-from datetime import datetime
-
-from flask_login import current_user
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo  # URL
+from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from pennchatsproject.models import *
 
 
-class MultipleCheckboxField(SelectMultipleField):
-    widget = widgets.ListWidget(prefix_label=False)
-    option_widget = widgets.CheckboxInput()
+def cohort_query():
+    return Cohort.query
+
+
+def interest_query():
+    return Interest.query
+
+
+def course_query():
+    return Course.query
 
 
 class LoginForm(FlaskForm):
@@ -25,6 +28,7 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
     student_id = StringField('Student ID', validators=[DataRequired()])
@@ -53,28 +57,24 @@ class RegistrationForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
 
-    # username = StringField('Username')
+    # Basic Info
+    username = StringField('Username')
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    city = StringField('City', validators=[DataRequired()])
-    state = StringField('State/Province', validators=[DataRequired()])
-    country = StringField('Country/Territory', validators=[DataRequired()])
-    linkedin = StringField('LinkedIn', validators=[URL()])
+    city = StringField('City')
+    state = StringField('State/Province')
+    country = StringField('Country/Territory')
+    linkedin = StringField('LinkedIn')
     bio = TextAreaField('Brief Bio (optional)')
 
-    # Class
-    # class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
-    #               'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
-    # Gets the list of courses from the DB
+    # Course
+    # Gets the list of courses from the DB & create class list to choose
     class_list = [x.course_id for x in Course.query.all()]
-    # create value/label pairs (should both be str for name of class)
     class_tuples = [(x, x) for x in class_list]
-    # current courses
-    current_courses = MultipleCheckboxField(
-        'Current Courses', choices=class_tuples)
-    # past courses
-    past_courses = MultipleCheckboxField('Past Courses', choices=class_tuples)
-    # preferred course to be matched on
+    current_courses = QuerySelectMultipleField(
+        query_factory=course_query, allow_blank=True, get_label='course_id')
+    past_courses = QuerySelectMultipleField(
+        query_factory=course_query, allow_blank=True, get_label='course_id')
     course_id_to_match = SelectField(
         'Preferred course to be matched with',
         validators=[DataRequired()],
@@ -82,17 +82,13 @@ class ProfileForm(FlaskForm):
     )
 
     # Interest
-    # interest_name_list = ['Artificial Intelligence & Machine Learning', 'Blockchain', 'Cybersecurity & Cryptography',
-    #                       'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
-    #                       'Networking & Computer Systems', 'Project Management', 'Software Development']
-    # interest_id_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     interest_id_list = [x.interest_id for x in Interest.query.all()]
     interest_name_list = [y.interest_name for y in Interest.query.all()]
     # create value/label pairs (should both be str for name of interest)
     interest_tuples = list(
         map(lambda x, y: (x, y), interest_id_list, interest_name_list))
-    interests = MultipleCheckboxField('Interests', choices=interest_tuples)
-    # preferred interest to be matched on
+    interests = QuerySelectMultipleField(
+        query_factory=interest_query, allow_blank=True, get_label='interest_name')
     interest_id_to_match = SelectField(
         'Preferred interest to be matched with',
         validators=[DataRequired()],
@@ -100,21 +96,11 @@ class ProfileForm(FlaskForm):
     )
 
     # Cohort
-    # cohort_list = [
-    #     ('Spring 2018', 'Spring 2018'),
-    #     ('Fall 2018', 'Fall 2018'),
-    #     ('Spring 2019', 'Spring 2019'),
-    #     ('Fall 2019', 'Fall 2019'),
-    #     ('Spring 2020', 'Spring 2020'),
-    #     ('Fall 2020', 'Fall 2020'),
-    #     ('Spring 2021', 'Spring 2021'),
-    #     ('Fall 2021', 'Fall 2021'),
-    # ]
-    # Gets the list of courses from the DB
     cohort_list = [x.cohort_name for x in Cohort.query.all()]
-    # create value/label pairs (should both be str for name of cohort)
     cohort_tuples = [(x, x) for x in cohort_list]
     cohort = SelectField('MCIT Cohort', choices=cohort_tuples)
+    # cohort = QuerySelectField(
+    #     query_factory=cohort_query, allow_blank=True, get_label='cohort_name')
 
     # Submit
     submit = SubmitField('Update Profile')

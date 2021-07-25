@@ -51,10 +51,13 @@ class Student(db.Model, UserMixin):
     course_id_to_match = db.Column(db.Text, db.ForeignKey('courses.course_id'))
     interest_id_to_match = db.Column(db.Integer, db.ForeignKey('interests.interest_id'))
 
-    def __init__(self, email, username, student_id, password):
-        self.email = email
-        self.username = username
-        self.student_id = student_id
+    # def __init__(self, email, username, student_id, password):
+    #     self.email = email
+    #     self.username = username
+    #     self.student_id = student_id
+    #     self.password_hash = generate_password_hash(password)
+
+    def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):

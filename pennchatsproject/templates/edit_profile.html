@@ -8,12 +8,13 @@
 <div style="text-align: center;">
   <div style="display: inline-block; text-align: left;">
     <h2>The current username is: {{current_user.username}}</h2>
-    <form method="POST" action = "" style="padding:5px;">
+    <form method="POST" action ="" style="padding:5px;">
         {{ form.hidden_tag() }}
-        {# <!-- Username Field -->
+        
+        <!-- Username Field -->
         {{ form.username.label }}
         {{ form.username }}
-        <br> #}
+        <br>
         
         <!-- First Name Field -->
         {{ form.first_name.label }}:
