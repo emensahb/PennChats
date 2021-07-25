@@ -17,11 +17,17 @@
 
     <!-- Intro paragraph -->
     <div class="jumbotron">
-      
+      <p>It would be nice to have some spacing here.</p>
       <!-- If studnet is signed in -->
       {% if current_user.is_authenticated %}
         <!-- Intro paragraph -->
-        <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! Please ensure you have updated your profile before signing up for PennChats.</div></center></h3>
+        <h2 class="display-4">Welcome to Penn Chats, {{current_user.username}}!</h2>
+        <p class="lead">Penn Chats is a platform designed to connect
+        MCIT Online students. Tell us what classes you
+        are taking, your interests, and when you'd like to meet,
+        and we'll match you with a group of 2-5 students for a chat!</p>
+        <p>Please ensure you have updated your profile before 
+          signing up for PennChats.</p>
       <!-- If studnet is not signed in -->
       {% else %}
       <!-- Signup/Login buttons -->

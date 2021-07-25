@@ -2,31 +2,23 @@
 
 {% block title %} Login {% endblock %}
 
-{% block head %} Login {% endblock %}
-
 {% block content %}
 
 {% from "_formhelpers.html" import render_field %}
 
 <div class="jumbotron">
-
+    <h2>Login</h2>
     <form method="POST" style="padding:5px;">
         <!-- Email Field -->
         {{ form.hidden_tag() }}
         {{ render_field(form.email) }}
-<!--        {{ form.email.label }}-->
-<!--        {{ form.email() }}-->
         <br>
 
         <!-- Password Field -->
         {{ render_field(form.password) }}
-
-<!--        {{ form.password.label }}:-->
-<!--        {{ form.password() }}-->
         <br>
 
         <!-- Submit Field -->
-
         {{ form.submit() }}
     </form>
 </div>

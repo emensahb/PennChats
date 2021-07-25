@@ -2,14 +2,13 @@
 
 {% block title %} Edit Profile {% endblock %}
 
-{% block head %} Edit Profile {% endblock %}
-
 {% block content %}
 
 <!-- import form template -->
 {% from "_formhelpers.html" import render_field %}
 <div class="jumbotron">
     <div class="container">
+        <h2>Profile for {{current_user.username}}</h2>
         <form class="form form-horizontal" action="{{url_for('students.edit_profile')}}" method="POST" role="form">
             {{ form.hidden_tag() }}
             <!-- Name row -->
@@ -58,6 +57,7 @@
                     {{ render_field(form.current_courses) }}
                 </div>
             </div>
+            <br>
 
             <!-- Primary Interest Field -->
             {{ render_field(form.interest_id_to_match) }}
