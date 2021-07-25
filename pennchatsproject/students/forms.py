@@ -54,7 +54,7 @@ class ProfileForm(FlaskForm):
     #class_list = ['CIT591', 'CIT592', 'CIT593', 'CIT594', 'CIT595', 'CIT596', 'CIS515', 'CIS521', 'CIS547', 'CIS549',
                   # 'CIS550', 'CIS581', 'CIS520', 'CIS582', 'ESE542']
 
-    matched_class_list = [x.id for x in MatchedClass.query.all()]  # Gets the list of classes from the DB
+    matched_class_list = [x.matched_class_id for x in MatchedClass.query.all()]  # Gets the list of classes from the DB
 
     # create value/label pairs (should both be str for name of class)
     matched_class_tuples = [(x, x) for x in matched_class_list]
@@ -74,9 +74,13 @@ class ProfileForm(FlaskForm):
     )
 
     # create checkboxes for classes
-    classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=matched_class_tuples)
+    class_taken_list = [x.class_taken_id for x in ClassTaken.query.all()]  # Gets the list of classes from the DB
+    class_taken_tuples = [(x, x) for x in class_taken_list]
+    classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=class_taken_tuples)
 
-    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=matched_class_tuples)
+    class_enrolled_list = [x.class_enrolled_id for x in ClassEnrolled.query.all()]  # Gets the list of classes from the DB
+    class_enrolled_tuples = [(x, x) for x in class_enrolled_list]
+    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_enrolled_list)
 
     first_name = StringField('First Name', validators = [InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])
