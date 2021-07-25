@@ -239,7 +239,7 @@ class PrimaryInterest(db.Model):
     __tablename__ = 'primary_interests'
     primary_interest_id = db.Column(db.Integer, primary_key=True)
     primary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
-    primary_interest = db.relationship("PrimaryInterest", backref='student')
+    students = db.relationship('Student', backref='primary_interest')
 
     def __init__(self, primary_interest_name):
         self.primary_interest_name = primary_interest_name
@@ -263,7 +263,7 @@ class SecondaryInterest(db.Model):
     __tablename__ = 'secondary_interests'
     id = db.Column(db.Integer, primary_key=True)
     secondary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
-    primary_interest = db.relationship("PrimaryInterest", backref='student')
+    students = db.relationship('Student', backref='secondary_interest')
 
     def __init__(self, secondary_interest_name):
         self.secondary_interest_name = secondary_interest_name
