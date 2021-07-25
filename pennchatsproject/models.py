@@ -48,8 +48,8 @@ class Student(db.Model, UserMixin):
     # matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_classes.matched_class_num'))
     matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_class.matched_class_num'))
     cohort_name = db.Column(db.Text, db.ForeignKey('cohort.cohort_name'))
-    primary_interest_name = db.Column(db.Text, db.ForeignKey('primary_interests.primary_interest_name'))
-    secondary_interest_name = db.Column(db.Text, db.ForeignKey('secondary_interests.secondary_interest_name'))
+    primary_interest_name = db.Column(db.Text, db.ForeignKey('primary_interest.primary_interest_name'))
+    secondary_interest_name = db.Column(db.Text, db.ForeignKey('secondary_interest.secondary_interest_name'))
 
     networking_goal_name = db.Column(db.Text, db.ForeignKey('networking_goal.networking_goal_name'))
 
@@ -87,9 +87,6 @@ class WeeklySignUp(db.Model):
     primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
     secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
     # secondary='weekly_signups_secondary_time_preferences', backref='weekly_signup')
-
-
-
 
     def __init__(self, week_of_meeting):
         self.week_of_meeting = week_of_meeting
@@ -236,9 +233,10 @@ class PrimaryInterest(db.Model):
     An association table between Primary Interest and students
     """
 
-    __tablename__ = 'primary_interests'
-    primary_interest_id = db.Column(db.Integer, primary_key=True)
-    primary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
+   # __tablename__ = 'primary_interests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    primary_interest_name = db.Column(db.Text, unique=True, nullable=False)
     students = db.relationship('Student', backref='primary_interest')
 
     def __init__(self, primary_interest_name):
@@ -260,9 +258,9 @@ class SecondaryInterest(db.Model):
     The secondary interests students have chosen
     """
 
-    __tablename__ = 'secondary_interests'
+   # __tablename__ = 'secondary_interests'
     id = db.Column(db.Integer, primary_key=True)
-    secondary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
+    secondary_interest_name = db.Column(db.Text, unique=True, nullable=False)
     students = db.relationship('Student', backref='secondary_interest')
 
     def __init__(self, secondary_interest_name):
@@ -530,5 +528,5 @@ db.create_all()
 
 db.session.commit()
 
-print(ClassEnrolled.query.all())
+print(PrimaryInterest.query.all())
 
