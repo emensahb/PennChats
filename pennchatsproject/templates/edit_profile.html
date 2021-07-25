@@ -11,8 +11,13 @@
 <div class="jumbotron">
     <div class="container">
         <form class="form form-horizontal" action="{{url_for('students.edit_profile')}}" method="POST" role="form">
+            {{ form.hidden_tag() }}
             <!-- Name row -->
             <div class="row">
+                <div class="col-sm-3">
+                    <!-- Username Field -->
+                    {{ render_field(form.username) }}
+                </div>
                 <div class="col-sm-3">
                     <!-- First Name Field -->
                     {{ render_field(form.first_name) }}
@@ -61,7 +66,7 @@
             <!-- Interests and cohort row -->
             <div class="row">
                 <div class="col-md-6">
-                    <!-- Others Interests Field -->
+                    <!-- Interests Field -->
                     {{ render_field(form.interests) }}
                 </div>
                 <div class="col-md-6">

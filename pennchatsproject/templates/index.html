@@ -5,7 +5,7 @@
 
 {% block title %} Penn Chats {% endblock %}
 
-{% block heading %} {% endblock %}
+{% block head %} {% endblock %}
 
 {% block content%}
 
@@ -17,29 +17,23 @@
 
     <!-- Intro paragraph -->
     <div class="jumbotron">
-        <h1 class="display-4">Welcome to Penn Chats!</h1>
-        <p class="lead">Penn Chats is a platform designed to connect
-        MCIT Online students. Tell us what classes you
-        are taking, your interests, and when you'd like to meet,
-        and we'll match you with a group of 2-5 students for a chat!</p></div>
-
-<!-- Do not need buttons as all links are in navbar -->
-
-<!--    &lt;!&ndash; If studnet is signed in &ndash;&gt;-->
-<!--      {% if current_user.is_authenticated %}-->
-<!--      &lt;!&ndash; Intro paragraph &ndash;&gt;-->
-<!--      <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! To sign up for next week's chat,-->
-<!--          click on "Sign Up for Next Week". We can't wait to meet you!</div></center></h3>-->
-<!--    &lt;!&ndash; If studnet is not signed in &ndash;&gt;-->
-<!--      {% else %}-->
-<!--      &lt;!&ndash; Signup/Login buttons &ndash;&gt;-->
-<!--      <center>-->
-<!--          <a href="#">-->
-<!--              <button type="button" name="button" class="btn btn-primary btn-lg background-color: penn_blue;">Sign Up</button></a>-->
-<!--          <a href="#">-->
-<!--              <button type="button" name="button" class="btn btn-primary btn-lg">Login</button></a>-->
-<!--      </center>-->
-<!--      {% endif %}-->
+      
+      <!-- If studnet is signed in -->
+      {% if current_user.is_authenticated %}
+        <!-- Intro paragraph -->
+        <h3><center><div>Welcome to Penn Chats, {{current_user.username}}! Please ensure you have updated your profile before signing up for PennChats.</div></center></h3>
+      <!-- If studnet is not signed in -->
+      {% else %}
+      <!-- Signup/Login buttons -->
+      <center>
+          <h1 class="display-4">Welcome to Penn Chats!</h1>
+          <p class="lead">Penn Chats is a platform designed to connect
+          MCIT Online students. Tell us what classes you
+          are taking, your interests, and when you'd like to meet,
+          and we'll match you with a group of 2-5 students for a chat!</p>
+      </center>
+      {% endif %}
+     </div>
 
 
 {% endblock %}

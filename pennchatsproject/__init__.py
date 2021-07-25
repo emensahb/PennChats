@@ -27,6 +27,7 @@ db = SQLAlchemy(app)
 Migrate(app, db)
 
 
+
 #####################################
 ######## Login Configuration ########
 #####################################
@@ -40,9 +41,11 @@ login_manager.login_view = 'login'
 ##################################################
 
 from pennchatsproject.core.views import core
-from pennchatsproject.error_pages.handlers import error_pages
 from pennchatsproject.students.views import students
+from pennchatsproject.meetings.views import meetings
+from pennchatsproject.error_pages.handlers import error_pages
 
 app.register_blueprint(core)
-app.register_blueprint(error_pages)
 app.register_blueprint(students)
+app.register_blueprint(meetings)
+app.register_blueprint(error_pages)
