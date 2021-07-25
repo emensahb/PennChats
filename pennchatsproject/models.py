@@ -48,7 +48,12 @@ class Student(db.Model, UserMixin):
     # matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_classes.matched_class_num'))
     matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_class.matched_class_num'))
     cohort_name = db.Column(db.Text, db.ForeignKey('cohort.cohort_name'))
+    primary_interest_name = db.Column(db.Text, db.ForeignKey('primary_interests.primary_interest_name'))
+    secondary_interest_name = db.Column(db.Text, db.ForeignKey('secondary_interests.secondary_interest_name'))
+
     networking_goal_name = db.Column(db.Text, db.ForeignKey('networking_goal.networking_goal_name'))
+
+
 
     weekly_signup = db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'))
     # meetings = db.relationship('Meeting', backref='week_of_meeting')
@@ -83,8 +88,8 @@ class WeeklySignUp(db.Model):
     secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
     # secondary='weekly_signups_secondary_time_preferences', backref='weekly_signup')
 
-    primary_interest = db.relationship("PrimaryInterest", backref='weekly_signup')
-    secondary_interest = db.relationship("SecondaryInterest", backref='weekly_signup')
+
+
 
     def __init__(self, week_of_meeting):
         self.week_of_meeting = week_of_meeting
@@ -234,7 +239,7 @@ class PrimaryInterest(db.Model):
     __tablename__ = 'primary_interests'
     primary_interest_id = db.Column(db.Integer, primary_key=True)
     primary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
-    weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
+    primary_interest = db.relationship("PrimaryInterest", backref='student')
 
     def __init__(self, primary_interest_name):
         self.primary_interest_name = primary_interest_name
@@ -258,7 +263,7 @@ class SecondaryInterest(db.Model):
     __tablename__ = 'secondary_interests'
     id = db.Column(db.Integer, primary_key=True)
     secondary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
-    weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
+    primary_interest = db.relationship("PrimaryInterest", backref='student')
 
     def __init__(self, secondary_interest_name):
         self.secondary_interest_name = secondary_interest_name

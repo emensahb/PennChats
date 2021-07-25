@@ -82,8 +82,8 @@ def create_profile():
         student.bio = form.bio.data,
         student.cohort = form.cohort.data,
         student.linkedin = form.linkedin.data,
-        student.prim_interest = form.primary_interest.data,
-        student.sec_interest = form.secondary_interest.data,
+        student.primary_interest = form.primary_interest.data,
+        student.secondary_interest = form.secondary_interest.data,
         student.matched_class = form.primary_class.data,  # just using primary class for now
 
         student.current_classes = form.classes_checkboxes.data,
