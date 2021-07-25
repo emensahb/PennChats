@@ -1,3 +1,5 @@
+from sqlalchemy import DateTime, func
+
 from pennchatsproject import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -19,8 +21,8 @@ class Student(db.Model, UserMixin):
     past courses, interests, and groups."""
 
     __tablename__ = 'students'
-    # id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, primary_key=True,nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, unique=True, nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
@@ -32,6 +34,9 @@ class Student(db.Model, UserMixin):
     bio = db.Column(db.Text)
     linkedin = db.Column(db.String)
 
+   # updated_at = db.Column(DateTime(timezone=True), onupdate=func.now())
+   # created_at = db.Column(DateTime(timezone=True),server_default=func.now())
+
     # profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
 
     # many to many relationships
@@ -39,10 +44,11 @@ class Student(db.Model, UserMixin):
     class_taken_id = db.relationship('ClassTaken', secondary='students_classes_taken', backref='student')
     interests = db.relationship('Interest', secondary='students_interests', backref='student')
 
-    # One to many
-    matched_class_id = db.Column(db.Integer, db.ForeignKey('matched_classes.matched_class_id'))
-    cohort_name = db.Column(db.String, db.ForeignKey('cohorts.cohort_name'))
-    networking_goal_id = db.Column(db.Integer, db.ForeignKey('networking_goals.id'))
+    # many-to-one relationships
+    # matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_classes.matched_class_num'))
+    matched_class_num = db.Column(db.Integer, db.ForeignKey('matched_class.matched_class_num'))
+    cohort_name = db.Column(db.Text, db.ForeignKey('cohort.cohort_name'))
+    networking_goal_name = db.Column(db.Text, db.ForeignKey('networking_goal.networking_goal_name'))
 
     weekly_signup = db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'))
     # meetings = db.relationship('Meeting', backref='week_of_meeting')
@@ -72,7 +78,7 @@ class WeeklySignUp(db.Model):
     # week_of_meeting = db.relationship("WeekOfMeeting", backref='weekly_signup')
     week_of_meeting_name = db.Column('week_of_meeting_name', db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
 
-    #cohort = db.relationship('Cohort', backref='student')
+    # cohort = db.relationship('Cohort', backref='student')
     primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
     secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
     # secondary='weekly_signups_secondary_time_preferences', backref='weekly_signup')
@@ -180,18 +186,19 @@ class MatchedClass(db.Model):
     Many to One
     """
 
-    __tablename__ = 'matched_classes'
+    # __tablename__ = 'matched_class'
 
-    matched_class_id = db.Column(db.Integer, primary_key=True, nullable=False)
-    matched_class_name = db.Column(db.Text, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    matched_class_num = db.Column(db.Integer, unique=True, nullable=False)
+    matched_class_name = db.Column(db.Text, unique=True, nullable=False)
     students = db.relationship('Student', backref='matched_class')
 
-    def __init__(self, matched_class_id, matched_class_name):
-        self.matched_class_id = matched_class_id
+    def __init__(self, matched_class_num, matched_class_name):
+        self.matched_class_num = matched_class_num
         self.matched_class_name = matched_class_name
 
     def __repr__(self):
-        return f"{self.matched_class_id} - {self.matched_class_name} "
+        return f"{self.matched_class_num} - {self.matched_class_name} "
 
 
 class Interest(db.Model):
@@ -269,15 +276,19 @@ class SecondaryInterest(db.Model):
 class Cohort(db.Model):
     """This is a list of cohorts ever to exist on MCIT Online"""
 
-    __tablename__ = 'cohorts'
-    cohort_name = db.Column(db.Text, primary_key=True, nullable=False)
-    student = db.relationship('Student', backref='cohort')
+    #__tablename__ = 'cohorts'
+
+   # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cohort_name = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
+    students = db.relationship('Student', backref='cohort')
 
     def __init__(self, cohort_name):
         self.cohort_name = cohort_name
 
     def __repr__(self):
-        return f"{self.cohort_name} "
+        return f"{self.cohort_name}"
+
+
 
 
 class PrimaryTimePreference(db.Model):
@@ -285,7 +296,7 @@ class PrimaryTimePreference(db.Model):
 
     __tablename__ = 'primary_time_preferences'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     primary_time_preference_name = db.Column(db.Text, primary_key=True, nullable=False)
     weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
 
@@ -307,7 +318,7 @@ class SecondaryTimePreference(db.Model):
 
     __tablename__ = 'secondary_time_preferences'
 
-    id = id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     secondary_time_preference_name = db.Column(db.Text, primary_key=True, nullable=False)
     weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
 
@@ -331,16 +342,17 @@ class NetworkingGoal(db.Model):
     There are two many to one relationships between this table and the WeeklySignUp table."""
     # how do we input data to this table?
 
-    __tablename__ = 'networking_goals'
-    id = db.Column(db.Integer, primary_key=True)
-    networking_goal = db.Column(db.Text, nullable=False, primary_key=True)
+   # __tablename__ = 'networking_goals'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    networking_goal_name = db.Column(db.Text, nullable=False, unique=True)
     student = db.relationship('Student', backref='networking_goal')
 
-    def __init__(self, networking_goal):
-        self.networking_goal = networking_goal
+    def __init__(self, networking_goal_name):
+        self.networking_goal_name = networking_goal_name
 
     def __repr__(self):
-        return f" Networking Goal: {self.id}. {self.networking_goal}"
+        return f" Networking Goal: {self.networking_goal_name}"
 
 
 class Meeting(db.Model):
@@ -349,7 +361,7 @@ class Meeting(db.Model):
     There is a many-to-many relationship between this table and the Student table."""
 
     __tablename__ = 'meetings'
-    id = db.Column(db.Integer, primary_key=True, unique = True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     time_id = db.Column(db.Integer)
     course_id = db.Column(db.Integer)
     interest_id = db.Column(db.Integer)
@@ -400,6 +412,58 @@ class UnmatchedStudents(db.Model):
     def __repr__(self):
         return f"Unmatched student: {self.firstname} {self.lastname}, {self.student_id}, and {self.email}. Unmatched week: {self.week_of_meeting_name}"
 
+
+# db.create_all()
+# db.drop_all()
+# db.drop("matched_classes")
+# enrolled classes
+ec1 = ClassEnrolled(591, "Intro to Software Development")
+ec2 = ClassEnrolled(592, "Math Foundations of Computer Science")
+ec3 = ClassEnrolled(593, "Intro to Computer Systems")
+ec4 = ClassEnrolled(594, "Data Structures and Software Design")
+ec5 = ClassEnrolled(595, "Computer Systems Programming")
+ec6 = ClassEnrolled(596, "Algorithms & Computation")
+ec7 = ClassEnrolled(515, "Fundamentals of Linear Algebra & Optimization")
+ec8 = ClassEnrolled(547, "Software Analysis")
+ec9 = ClassEnrolled(549, "Wireless Communication for Mobile Networks")
+ec10 = ClassEnrolled(581, "Computer Vision & Computational Photography")
+
+# taken classes
+tc1 = ClassTaken(591, "Intro to Software Development")
+tc2 = ClassTaken(592, "Math Foundations of Computer Science")
+tc3 = ClassTaken(593, "Intro to Computer Systems")
+tc4 = ClassTaken(594, "Data Structures and Software Design")
+tc5 = ClassTaken(595, "Computer Systems Programming")
+tc6 = ClassTaken(596, "Algorithms & Computation")
+tc7 = ClassTaken(515, "Fundamentals of Linear Algebra & Optimization")
+tc8 = ClassTaken(547, "Software Analysis")
+tc9 = ClassTaken(549, "Wireless Communication for Mobile Networks")
+tc10 = ClassTaken(581, "Computer Vision & Computational Photography")
+
+# Matched classes
+mc1 = MatchedClass(591, "Intro to Software Development")
+mc2 = MatchedClass(592, "Math Foundations of Computer Science")
+mc3 = MatchedClass(593, "Intro to Computer Systems")
+mc4 = MatchedClass(594, "Data Structures and Software Design")
+mc5 = MatchedClass(595, "Computer Systems Programming")
+mc6 = MatchedClass(596, "Algorithms & Computation")
+mc7 = MatchedClass(515, "Fundamentals of Linear Algebra & Optimization")
+mc8 = MatchedClass(547, "Software Analysis")
+mc9 = MatchedClass(549, "Wireless Communication for Mobile Networks")
+mc10 = MatchedClass(581, "Computer Vision & Computational Photography")
+
+# Interests
+i1 = Interest("Artificial Intelligence & Machine Learning")
+i2 = Interest("Blockchain")
+i3 = Interest("Cybersecurity & Cryptography")
+i4 = Interest("Data Science")
+i5 = Interest("Game Design")
+i6 = Interest("Interview Prep")
+i7 = Interest("Mathematics for Computer Science")
+i8 = Interest("Networking & Computer Systems")
+i9 = Interest("Project Management")
+i10 = Interest("Software Development")
+
 # Primary Interests
 pi1 = PrimaryInterest("Artificial Intelligence & Machine Learning")
 pi2 = PrimaryInterest("Blockchain")
@@ -424,6 +488,7 @@ si8 = SecondaryInterest("Networking & Computer Systems")
 si9 = SecondaryInterest("Project Management")
 si10 = SecondaryInterest("Software Development")
 
+
 # cohort
 cht1 = Cohort("Spring 2019")
 cht2 = Cohort("Fall 2019")
@@ -435,7 +500,6 @@ cht6 = Cohort("Fall 2021")
 # networking goals options
 ng1 = NetworkingGoal("class")
 ng2 = NetworkingGoal("interest")
-
 
 # Primary Time preference
 ptp1 = PrimaryTimePreference("Morning: 9am ET")
@@ -449,6 +513,8 @@ stp2 = SecondaryTimePreference("Afternoon: 3pm ET")
 stp3 = SecondaryTimePreference("Evening: 7pm ET")
 stp4 = SecondaryTimePreference("Overnight: 1am ET")
 
+
+db.create_all()
 # db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # matched classes
 # db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
 # db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
@@ -457,8 +523,7 @@ stp4 = SecondaryTimePreference("Overnight: 1am ET")
 # db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
 # db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
 
-
-
 db.session.commit()
 
-print(NetworkingGoal.query.all())
+print(MatchedClass.query.all())
+

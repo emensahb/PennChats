@@ -31,6 +31,7 @@ app.config['SQLALCHEMY_TRACK_NOTIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+db.session.commit()
 
 
 #####################################
