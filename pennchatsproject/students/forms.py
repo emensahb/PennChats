@@ -74,11 +74,11 @@ class ProfileForm(FlaskForm):
     )
 
     # create checkboxes for classes
-    class_taken_list = [x.class_taken_id for x in ClassTaken.query.all()]  # Gets the list of classes from the DB
+    class_taken_list = [x.class_taken_name for x in ClassTaken.query.all()]  # Gets the list of classes from the DB
     class_taken_tuples = [(x, x) for x in class_taken_list]
     classes_checkboxes = MultipleCheckboxField('What classes have you taken?', choices=class_taken_tuples)
 
-    class_enrolled_list = [x.class_enrolled_id for x in ClassEnrolled.query.all()]  # Gets the list of classes from the DB
+    class_enrolled_list = [x.class_enrolled_name for x in ClassEnrolled.query.all()]  # Gets the list of classes from the DB
     class_enrolled_tuples = [(x, x) for x in class_enrolled_list]
     current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_enrolled_tuples)
 
@@ -109,7 +109,7 @@ class ProfileForm(FlaskForm):
                      # 'Data Science', 'Game Design', 'Interview Prep', 'Mathematics for Computer Science',
                      # 'Networking & Computer Systems', 'Project Management', 'Software Development']
 
-    primary_interest_list = [x.interest_name for x in PrimaryInterest.query.all()]  # Gets the list of classes from the DB
+    primary_interest_list = [x.primary_interest_name for x in PrimaryInterest.query.all()]  # Gets the list of classes from the DB
     # create value/label pairs (should both be str for name of class)
     primary_interest_tuples = [(x, x) for x in primary_interest_list]
 
@@ -119,7 +119,7 @@ class ProfileForm(FlaskForm):
         choices=primary_interest_tuples,
     )
 
-    secondary_interest_list = [x.interest_name for x in SecondaryInterest.query.all()]  # Gets the list of classes from the DB
+    secondary_interest_list = [x.secondary_interest_name for x in SecondaryInterest.query.all()]  # Gets the list of classes from the DB
     # create value/label pairs (should both be str for name of class)
     secondary_interest_tuples = [(x, x) for x in secondary_interest_list]
     secondary_interest = SelectField(
