@@ -20,7 +20,7 @@ class Student(db.Model, UserMixin):
 
     __tablename__ = 'students'
     # id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, primary_key=True,nullable=False)
     email = db.Column(db.String(64), index=True, unique=True, nullable=False)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
