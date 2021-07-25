@@ -9,7 +9,7 @@
 <!-- import form template -->
 {% from "_formhelpers.html" import render_field %}
 
-<form class="form form-horizontal" action="{{url_for('create_profile')}}" method="POST" role="form">
+<form class="form form-horizontal" action="{{url_for('students.create_profile')}}" method="POST" role="form">
     <!-- First Name Field -->
     {{ render_field(form.first_name) }}
     <br>
@@ -39,7 +39,7 @@
     <br>
 
     <!-- Class Field -->
-    {{ render_field(form.class_checkboxes) }}
+    {{ render_field(form.classes_checkboxes) }}
     <br>
 
     <!-- Current Class Field -->

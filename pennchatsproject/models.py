@@ -525,5 +525,5 @@ db.create_all()
 
 db.session.commit()
 
-print(MatchedClass.query.all())
+print(ClassEnrolled.query.all())
 

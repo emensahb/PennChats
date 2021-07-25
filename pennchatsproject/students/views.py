@@ -82,13 +82,13 @@ def create_profile():
         student.bio = form.bio.data,
         student.cohort = form.cohort.data,
         student.linkedin = form.linkedin.data,
-        student.prim_interest = form.primary_interest.data
-        student.sec_interest = form.secondary_interest.data
-        student.matched_class = form.primary_class.data  # just using primary class for now
+        student.prim_interest = form.primary_interest.data,
+        student.sec_interest = form.secondary_interest.data,
+        student.matched_class = form.primary_class.data,  # just using primary class for now
 
-        student.current_classes = form.current_classes
-        student.classes_taken = form.classes_checkboxes
-        student.interests = form.other_interests
+        student.current_classes = form.classes_checkboxes.data,
+        student.classes_taken = form.current_class.data,
+        student.interests = form.other_interests.data,
 
         db.session.commit()
         # maybe want to take them to url for editing profile
@@ -101,9 +101,9 @@ def next_week():
     form = NextWeek()
     if form.validate_on_submit():
         student = Student.query.filter_by(email=form.email.data).first()
-        student.networking_goal = form.matching.data
-        student.prim_time = form.primary_time.data
-        student.sec_time = form.secondary_time.data
+        student.networking_goal = form.matching.data,
+        student.prim_time = form.primary_time.data,
+        student.sec_time = form.secondary_time.data,
         db.session.commit()
     return render_template("next_week.html", form=form)
 

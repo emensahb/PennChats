@@ -80,7 +80,7 @@ class ProfileForm(FlaskForm):
 
     class_enrolled_list = [x.class_enrolled_id for x in ClassEnrolled.query.all()]  # Gets the list of classes from the DB
     class_enrolled_tuples = [(x, x) for x in class_enrolled_list]
-    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_enrolled_list)
+    current_class = MultipleCheckboxField('What classes are you currently taking?', choices=class_enrolled_tuples)
 
     first_name = StringField('First Name', validators = [InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])
