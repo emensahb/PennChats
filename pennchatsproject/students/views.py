@@ -88,7 +88,7 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        return redirect(url_for('students.edit_profile'))
+        return redirect(url_for('students.student_profile', username=current_user.username))
 
     elif request.method == 'GET':
 

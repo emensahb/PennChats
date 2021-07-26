@@ -73,9 +73,9 @@ class ProfileForm(FlaskForm):
     class_list = [x.course_id for x in Course.query.all()]
     class_tuples = [(x, x) for x in class_list]
     current_courses = QuerySelectMultipleField(
-        query_factory=course_query, allow_blank=True)
+        query_factory=course_query)
     past_courses = QuerySelectMultipleField(
-        query_factory=course_query, allow_blank=True)
+        query_factory=course_query)
     course_id_to_match = SelectField(
         'Preferred course to be matched with',
         validators=[DataRequired()],
@@ -88,7 +88,7 @@ class ProfileForm(FlaskForm):
     interest_tuples = list(
         map(lambda x, y: (x, y), interest_id_list, interest_name_list))
     interests = QuerySelectMultipleField(
-        query_factory=interest_query, allow_blank=True, get_label='interest_name')
+        query_factory=interest_query, get_label='interest_name')
     interest_id_to_match = SelectField(
         'Preferred interest to be matched with',
         validators=[DataRequired()],
