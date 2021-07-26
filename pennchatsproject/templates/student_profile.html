@@ -4,16 +4,18 @@
 
 {% block content %}
 
-<div class="container">
+<div class="jumbotron">
   <div align='center'>
     <h2>{{ student.first_name }} {{ student.last_name }}</h2>
-    <p>{{ student.bio }}</p>
     <p>{{ student.city }} {{ student.state }} {{ student.country }}</p>
-    <p>{{ student.email }}</p>
-    MCIT Online Cohort: {{ student.cohort }}
-    LinkedIn: <a href="{{ student.linkedin }}"></a>
-    Interests: {% for interest in interests %} {{interest.interest_name}}, {% endfor %} 
+    <p>Interests: {% for interest in interests %} {{interest.interest_name}} |{% endfor %}</p>
+    MCIT Online Cohort: {{ student.cohort }} 
     <br>
+    LinkedIn: <a href="{{ student.linkedin }}">{{student.linkedin}}</a> 
+    <br>
+    Email: <a href="mailto:{{student.email}}">{{student.email}}</a>
+    <br>
+    {% if student.bio %} Bio: {{ student.bio }} {% endif %}
     
     <h3>Current Courses</h3>
     <table class="table">

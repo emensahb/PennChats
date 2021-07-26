@@ -2,23 +2,21 @@
 
 {% block title %} Generate Meetings {% endblock %}
 
-{% block head %} Generate Meetings {% endblock %}
-
 {% block content %}
-<div style="text-align: center;">
-  <div style="display: inline-block; text-align: left;">
+
+{% from "_formhelpers.html" import render_field %}
+
+<div class="jumbotron">
+    <h2>Generate Meetings</h2>
     <form method="POST" style="padding:5px;">
-        <!-- Email Field -->
+        <!-- Week Meet Field -->
         {{ form.hidden_tag() }}
-        {{ form.week_meet.label }}:
-        {{ form.week_meet }}
+        {{ render_field(form.week_meet) }}
         <br>
 
         <!-- Submit Field -->
-        {{ form.submit }}
+        {{ form.submit() }}
     </form>
-  </div>
 </div>
-
 
 {% endblock %}
