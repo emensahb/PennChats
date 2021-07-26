@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %} Results {% endblock %}
+
+{% block head %} Results {% endblock %}
+
+{% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+    
+
+    <h2>Matched Meetings</h2>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Meeting Week</th>
+          <th scope="col">Meeting Time</th>
+          <th scope="col">Participants</th>
+        </tr>
+      </thead>
+      <tbody>
+        {# {% for meeting in meetings %}  #}
+        {% for meeting in meetings.items() %} {# Not sure if we need () after items #}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ meeting.meeting_week_name }}</td>
+            <td>{{ meeting.time_id }}</td>
+            <td>
+              {% for student in meeting.students.items() %}
+              {# {% for student in meeting.students %} #}
+                <!-- <a href="#">{{ student.first_name }} {{ student.last_name }}</a> -->
+                <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }}</a>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <h2>Unmatched Students</h2>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Meeting Week</th>
+          <th scope="col">Student</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in unmatched_students.items() %} 
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ student.meeting_week_name }}</td>
+            <td><a href="#">{{ student.first_name }} {{ student.last_name }}</a></td>
+            <td>{{ student.email }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+  </div>
+</div>
+
+
+{% endblock %}

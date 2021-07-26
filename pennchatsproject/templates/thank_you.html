@@ -1,7 +1,11 @@
 {% extends "base.html" %}
+
+{% block title %} Thank You {% endblock %}
+
+{% block head %} Thank you {% endblock %}
+
 {% block content %}
-  <div class="jumbotron">
-    <h1>Thank You</h1>
-    <p>Thanks for signing up!</p>
-  </div>
+
+<h2><div>Thank you for signing up for PennChats, {{current_user.first_name}}! Your preferences have been submitted.</div></h2>
+
 {% endblock %}

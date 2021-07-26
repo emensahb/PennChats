@@ -23,42 +23,17 @@
 
   <body>
 
+  <div class="container"><h2>{% block head %} {% endblock %}</h2></div>
 
-<!--      &lt;!&ndash; Optional JavaScript &ndash;&gt;-->
-<!--    &lt;!&ndash; jQuery first, then Popper.js, then Bootstrap JS &ndash;&gt;-->
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
-<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
-
-<!-- Original header (just Penn Chats & logo) -->
-<!--    <div class="container">-->
-<!--        <div class="jumbotron">-->
-<!--            <div class="row">-->
-<!--                <div class="column">-->
-<!--                    <img src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->
-<!--                    class="img-responsive"-->
-<!--                     width="15%"-->
-<!--                     height="15%"-->
-<!--                         align="left"-->
-<!--                    alt="PennChats logo">-->
-<!--                </div>-->
-<!--                <div class="column">-->
-<!--                    <h1 class="display-4">Penn Chats</h1>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-  <div class="container"><h2>{% block heading %} {% endblock %}</h2></div>
-
-
-<!-- Bootstrap CDN example navbar -->
+<!-- Bootstrap CDN navbar -->
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
         <a class="navbar-brand">
-            <img alt="Penn Chats logo" src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png" width="40" height="30">
+            <img alt="Penn Chats logo"
+                 src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"
+                 style="max-width:40px">
         </a>
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -75,9 +50,10 @@
         <li><a href="{{ url_for('core.index') }}">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="{{ url_for('core.info') }}">About Us</a></li>
           {% if current_user.is_authenticated %}
+            <li><a href="{{url_for('students.edit_profile')}}">Edit Profile</a></li>
+            <li><a href="{{url_for('students.sign_up')}}">Sign Up for PennChats</a></li>
+            <li><a href="{{url_for('students.my_meetings')}}">My Meetings</a></li>
             <li><a href="{{url_for('students.logout')}}">Logout</a></li>
-            <li><a href="#">Sign Up for Next Week</a></li>
-            <li><a href="#">Meetings</a></li>
           {% else %}
             <li><a href="{{url_for('students.login')}}">Login</a></li>
             <li><a href="{{url_for('students.register')}}">Register</a></li>
@@ -87,33 +63,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-<!--Old navbar -->
-<!--&lt;!&ndash; Navbar &ndash;&gt;-->
-<!--<nav class="nav nav-fill">-->
-<!--    <div class="container">-->
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <div class="navbar-nav">-->
-<!--            <a class="nav-item nav-link active" href="{{ url_for('core.index') }}">Home</a>-->
-<!--            <a class="nav-item nav-link" href="{{ url_for('core.info') }}">About Us</a>-->
-<!--            {% if current_user.is_authenticated %}-->
-<!--                <a class="nav-item nav-link" href="{{url_for('students.logout')}}">Log Out</a>-->
-<!--                <a class="nav-link" href="#">Sign Up for Next Week</a>-->
-<!--                <a class="nav-link" href="#">Meetings</a>-->
-<!--            {% else %}-->
-<!--                <a class="nav-item nav-link" href="{{url_for('students.login')}}">Log In</a>-->
-<!--                <a class="nav-link nav-link" href="{{url_for('students.register')}}">Register</a>-->
-<!--            {% endif %}-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    </div>-->
-<!--</nav>-->
-
-
-  <!--    <img-->
-  <!--            src="https://user-images.githubusercontent.com/84137452/124787872-da51ca80-df16-11eb-8ab6-954a5e3d1bee.png"-->
-  <!--            alt="Penn Chats Logo"-->
-  <!--            class="responsive">-->
 
       <div class="container">
           {% block content %} {% endblock %}
