@@ -156,7 +156,7 @@ class Course(db.Model):
         self.course_name = course_name
 
     def __repr__(self):
-        return f"This is the course of {self.course_name} with the course ID of {self.course_id}."
+        return f"{self.course_id} {self.course_name}"
 
 
 # many to many relatinoship association tables

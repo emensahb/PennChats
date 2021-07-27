@@ -5,10 +5,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 from pennchatsproject import db
-# from werkzeug.security import generate_password_hash, check_password_hash
 from pennchatsproject.models import *
 from pennchatsproject.students.forms import *
-# from pennchatsproject.students.picture_handler import add_profile_pic
 
 
 students = Blueprint('students', __name__)
@@ -90,7 +88,7 @@ def edit_profile():
 
         db.session.commit()
         flash('Profile Updated')
-        return redirect(url_for('students.edit_profile'))
+        return redirect(url_for('students.student_profile', username=current_user.username))
 
     elif request.method == 'GET':
 

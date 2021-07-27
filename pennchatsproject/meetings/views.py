@@ -3,10 +3,9 @@
 # contains routing code for x views:
 # generate matches, view matches meetings & unmatched students, student-meeting view etc.
 
-from flask import render_template, url_for, flash, redirect, request, Blueprint
-from flask_login import login_user, login_required, logout_user, current_user
+from flask import render_template, url_for, redirect, Blueprint
 from pennchatsproject import db
-# from werkzeug.security import generate_password_hash, check_password_hash
+from pennchatsproject.meetings.forms import GenerateMeetingForm
 from pennchatsproject.models import *
 from pennchatsproject.meetings.matchingalgo import *
 
@@ -41,7 +40,7 @@ def generate():
         db.session.commit()
         return redirect(url_for('meetings.results'))
 
-    return render_template("generate_meeting.html")
+    return render_template("generate_meeting.html", form=form)
 
 
 # view results
@@ -50,9 +49,8 @@ def generate():
     # filter func to be added in future updates to filter by week and date
 @meetings.route('/results')
 def results():
-
-    # use some query language to grab specific meetings and unmatched students
     meetings = Meeting.query.all()
     unmatched_students = UnmatchedStudents.query.all()
 
-    return render_template('results.html', meetings=meetings, unmatched_students=unmatched_students)
+    return render_template('results.html', meetings=meetings,
+                           unmatched_students=unmatched_students)
