@@ -75,14 +75,15 @@ class WeeklySignUp(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=True, autoincrement=True)
     week_of_meeting_name = db.Column('week_of_meeting_name', db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
-    student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
 
     primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
     secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
 
-    def __init__(self, id, week_of_meeting_name):
+    def __init__(self, id, week_of_meeting_name, student_id):
         self.id = id
         self.week_of_meeting_name = week_of_meeting_name
+        self.student_id = student_id
 
     def __repr__(self):
         return f"Meetings for the week starting: {self.week_of_meeting}"
@@ -516,6 +517,8 @@ stp2 = SecondaryTimePreference(2, "Afternoon: 3pm ET")
 stp3 = SecondaryTimePreference(3, "Evening: 7pm ET")
 stp4 = SecondaryTimePreference(4, "Overnight: 1am ET")
 
+st1 = Student("tester@tester.com", "test123", 123456, "test1234")  # student
+
 wm1 = WeekOfMeeting("Aug 2")
 wm2 = WeekOfMeeting("Aug 9")
 wm3 = WeekOfMeeting("Aug 16")
@@ -539,19 +542,21 @@ wm20 = WeekOfMeeting("Dec 12")
 
 
 #weekly signup
-ws1 = WeeklySignUp(1, "Aug 2")
-ws2 = WeeklySignUp(2, "Aug 9")
-ws3 = WeeklySignUp(3, "Aug 16")
-ws4 = WeeklySignUp(4, "Aug 23")
-ws5 = WeeklySignUp(5, "Aug 30")
-ws6 = WeeklySignUp(6, "Sep 5")
-ws7 = WeeklySignUp(7, "Sep 12")
-ws8 = WeeklySignUp(8, "Sep 19")
-ws9 = WeeklySignUp(9, "Sep 26")
-ws10 = WeeklySignUp(10, "Oct 3")
+ws1 = WeeklySignUp(1, "Aug 2", 12346)
+ws2 = WeeklySignUp(2, "Aug 9", 12346)
+ws3 = WeeklySignUp(3, "Aug 16", 12346)
+ws4 = WeeklySignUp(4, "Aug 23", 12346)
+ws5 = WeeklySignUp(5, "Aug 30", 12346)
+ws6 = WeeklySignUp(6, "Sep 5", 12346)
+ws7 = WeeklySignUp(7, "Sep 12", 12346)
+ws8 = WeeklySignUp(8, "Sep 19", 12346)
+ws9 = WeeklySignUp(9, "Sep 26", 12346)
+ws10 = WeeklySignUp(10, "Oct 3", 12346)
 
 
-db.create_all()
+
+
+
 db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # matched classes
 db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
 db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
@@ -561,6 +566,7 @@ db.session.add_all([ws1, ws2, ws3, ws4, ws5, ws6, ws7, ws8, ws9, ws10])  # weekl
 db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
 db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
 # db.session.add_all([wm1, wm2, wm3, wm4, wm5, wm6, wm7, wm8, wm9, wm10, wm11, wm12, wm13, wm14, wm15, wm16, wm17, wm18, wm19, wm20])  # week meet
+db.session.add_all([st1])
 
 db.session.commit()
 
