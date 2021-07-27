@@ -231,8 +231,8 @@ class PrimaryInterest(db.Model):
 
     __tablename__ = 'primary_interests'
 
-    id = db.Column(db.Integer, primary_key=True)
-    primary_interest_name = db.Column(db.Text, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    primary_interest_name = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
     students = db.relationship('Student', backref='primary_interest')
 
     def __init__(self, id, primary_interest_name):
