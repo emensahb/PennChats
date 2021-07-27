@@ -3,7 +3,6 @@
 # contains routing code for x views:
 # generate matches, view matches meetings & unmatched students, student-meeting view etc.
 
-import jinja2
 from flask import render_template, url_for, redirect, Blueprint
 from pennchatsproject import db
 from pennchatsproject.meetings.forms import GenerateMeetingForm
@@ -44,20 +43,10 @@ def generate():
     return render_template("generate_meeting.html", form=form)
 
 
-# @jinja2.contextfilter
-# @meetings.app_template_filter()
-# def query_time(context, time_id):
-#     time = TimeOption.query.get(time_id)
-#     return time.time_option
-
-
-# meetings.add_app_template_filter(query_time)
-
-
 # view results
-# accessible only by admins by typing extension
-# currently showing all existing meetings and unmatched students
-# filter func to be added in future updates to filter by week and date
+    # accessible only by admins by typing extension
+    # currently showing all existing meetings and unmatched students
+    # filter func to be added in future updates to filter by week and date
 @meetings.route('/results')
 def results():
     meetings = Meeting.query.all()
