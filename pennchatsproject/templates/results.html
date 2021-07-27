@@ -26,7 +26,7 @@
           <tr>
             <th scope="row">{{ loop.index }}</th>
             <td>{{ meeting.meeting_week_name }}</td>
-            <td>{{ meeting.time_id }}</td>
+            <td>{{ meeting.time_id | query_time }}</td>
             <td>
               {% for student in meeting.students %}
                 <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }} | </a>
