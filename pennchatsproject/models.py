@@ -63,6 +63,9 @@ class Student(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    # def get_id(self):
+       # return self.student_id
+
     def __repr__(self):
         return f"{self.firstname}  {self.lastname} has email: {self.email} and student ID: {self.student_id}"
 
@@ -102,13 +105,22 @@ class WeeklySignUp(db.Model):
     week_of_meeting_name = db.Column(db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
 
-    primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
-    secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
+    # primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
+    # secondary_time_preference = db.relationship("SecondaryTimePreference", backref='weekly_signup')
+    primary_time_preference_id = db.Column(db.Text, db.ForeignKey('primary_time_preferences.id'))
+    secondary_time_preference_id = db.Column(db.Text, db.ForeignKey('secondary_time_preferences.id'))
+
+    primary_networking_goal_id = db.Column(db.Text, db.ForeignKey('networking_goals.id'))
+    secondary_networking_goal_id = db.Column(db.Text, db.ForeignKey('networking_goals.id'))
 
     def __init__(self, id, week_of_meeting_name, student_id):
         self.id = id
         self.week_of_meeting_name = week_of_meeting_name
         self.student_id = student_id
+        # self.primary_time_preference_id = primary_time_preference_id
+        # self.secondary_time_preference_id = secondary_time_preference_id
+        # self.primary_networking_goal_id = primary_networking_goal_id
+        # self.secondary_networking_goal_id = secondary_networking_goal_id
 
     def __repr__(self):
         return f"Meetings for the week starting: {self.week_of_meeting}"
@@ -126,8 +138,6 @@ student_weekly_signup = db.Table('students_weekly_signups',
     db.Column('student_id', db.Integer, db.ForeignKey('students.student_id'), primary_key=True),
     db.Column('weekly_signup_id', db.Integer, db.ForeignKey('weekly_signups.id'), primary_key=True)
 )
-
-
 
 
 class ClassEnrolled(db.Model):
@@ -522,6 +532,7 @@ stp3 = SecondaryTimePreference(3, "Evening: 7pm ET", 3)
 stp4 = SecondaryTimePreference(4, "Overnight: 1am ET", 4)
 
 st1 = Student("tester@tester.com", "test123", 123456, "test1234")  # student
+# st1 = Student()  # student
 
 wm1 = WeekOfMeeting(1, "Aug 2")
 wm2 = WeekOfMeeting(2, "Aug 9")
@@ -546,7 +557,7 @@ wm20 = WeekOfMeeting(20, "Dec 12")
 
 
 #weekly signup
-ws1 = WeeklySignUp(1, "Aug 2", 12346)
+ws1 = WeeklySignUp(1, "Aug 2", 12346,)
 ws2 = WeeklySignUp(2, "Aug 9", 12346)
 ws3 = WeeklySignUp(3, "Aug 16", 12346)
 ws4 = WeeklySignUp(4, "Aug 23", 12346)
