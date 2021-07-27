@@ -39,7 +39,7 @@ Migrate(app, db)
 
 
 #####################################
-######## Login Configuration ########
+######## Login Configuration ########flask
 #####################################
 
 login_manager.init_app(app)
