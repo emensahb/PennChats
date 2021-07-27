@@ -67,6 +67,31 @@ class Student(db.Model, UserMixin):
         return f"{self.firstname}  {self.lastname} has email: {self.email} and student ID: {self.student_id}"
 
 
+class WeekOfMeeting(db.Model):
+    """This table will store all the available weeks that students to sign up
+        for PennChats. The table will be queried to provide options for students to
+        fill out their WeeklySignUp forms.
+        There is a many torelationship between this table and the WeeklySignUp
+        table."""
+
+    __tablename__ = 'week_of_meetings'
+    id = db.Column(db.Integer, primary_key=True, nullable=True, autoincrement=True)
+    week_of_meeting_name = db.Column(db.Text, primary_key=True, unique=True, nullable=False)
+    # weekly_signup = db.Column(db.Integer, db.ForeignKey('weekly_signup.id'), nullable=False)
+    weekly_signup = db.relationship("WeeklySignUp", backref='week_of_meeting')
+    # many to one relationship)
+    # weekly_signups = db.relationship('WeeklySignUp', backref='week_of_meeting')
+    # meetings = db.relationship('Meeting', backref='week_of_meeting')
+    # unmatched_students = db.relationship('UnmatchedStudents', backref='week_of_meeting')
+
+    def __init__(self, id, week_of_meeting_name):
+        self.id = id
+        self.week_of_meeting_name = week_of_meeting_name
+
+    def __repr__(self):
+        return f"Meeting week: {self.week_of_meeting_name}."
+
+
 class WeeklySignUp(db.Model):
     """
     A list of students who are signed up to chat this week
@@ -74,7 +99,7 @@ class WeeklySignUp(db.Model):
     __tablename__ = 'weekly_signups'
 
     id = db.Column(db.Integer, primary_key=True, nullable=True, autoincrement=True)
-    week_of_meeting_name = db.Column('week_of_meeting_name', db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
+    week_of_meeting_name = db.Column(db.Text, db.ForeignKey('week_of_meetings.week_of_meeting_name'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
 
     primary_time_preference = db.relationship("PrimaryTimePreference", backref='weekly_signup')
@@ -103,29 +128,6 @@ student_weekly_signup = db.Table('students_weekly_signups',
 )
 
 
-class WeekOfMeeting(db.Model):
-    """This table will store all the available weeks that students to sign up
-        for PennChats. The table will be queried to provide options for students to
-        fill out their WeeklySignUp forms.
-        There is a many to one relationship between this table and the WeeklySignUp
-        table."""
-
-    __tablename__ = 'week_of_meetings'
-
-    week_of_meeting_name = db.Column(db.Text, primary_key=True, nullable=False)
-    # weekly_signup = db.Column(db.Integer, db.ForeignKey('weekly_signup.id'), nullable=False)
-    weekly_signup = db.relationship("WeeklySignUp", backref='week_of_meeting')
-
-    # many to one relationship
-    # weekly_signups = db.relationship('WeeklySignUp', backref='week_of_meeting')
-    # meetings = db.relationship('Meeting', backref='week_of_meeting')
-    # unmatched_students = db.relationship('UnmatchedStudents', backref='week_of_meeting')
-
-    def __init__(self, week_of_meeting_name):
-        self.week_of_meeting_name = week_of_meeting_name
-
-    def __repr__(self):
-        return f"Meeting week: {self.week_of_meeting_name}."
 
 
 class ClassEnrolled(db.Model):
@@ -299,9 +301,10 @@ class PrimaryTimePreference(db.Model):
     primary_time_preference_name = db.Column(db.Text, primary_key=True, nullable=False)
     weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
 
-    def __init__(self, id, primary_time_preference_name):
+    def __init__(self, id, primary_time_preference_name, weekly_signup_id):
         self.id = id
         self.primary_time_preference_name = primary_time_preference_name
+        self.weekly_signup_id = weekly_signup_id 
 
     def __repr__(self):
         return f" Primary Time Preference: {self.id} - {self.primary_time_preference_name} "
@@ -322,9 +325,10 @@ class SecondaryTimePreference(db.Model):
     secondary_time_preference_name = db.Column(db.Text, unique=True, nullable=False)
     weekly_signup_id = db.Column(db.Integer, db.ForeignKey('weekly_signups.id'), nullable=False)
 
-    def __init__(self, id, secondary_time_preference_name):
+    def __init__(self, id, secondary_time_preference_name, weekly_signup_id):
         self.id = id
         self.secondary_time_preference_name = secondary_time_preference_name
+        self.weekly_signup_id = weekly_signup_id
 
     def __repr__(self):
         return f" Secondary Time Preference: {self.id} - {self.secondary_time_preference_name} "
@@ -364,7 +368,7 @@ class Meeting(db.Model):
 
     __tablename__ = 'meetings'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     time_id = db.Column(db.Integer)
     course_id = db.Column(db.Integer)
     interest_id = db.Column(db.Integer)
@@ -506,39 +510,39 @@ ng1 = NetworkingGoal(1, "class")
 ng2 = NetworkingGoal(2, "interest")
 
 # Primary Time preference
-ptp1 = PrimaryTimePreference(1, "Morning: 9am ET")
-ptp2 = PrimaryTimePreference(2, "Afternoon: 3pm ET")
-ptp3 = PrimaryTimePreference(3, "Evening: 7pm ET")
-ptp4 = PrimaryTimePreference(4, "Overnight: 1am ET")
+ptp1 = PrimaryTimePreference(1, "Morning: 9am ET", 1)
+ptp2 = PrimaryTimePreference(2, "Afternoon: 3pm ET",2)
+ptp3 = PrimaryTimePreference(3, "Evening: 7pm ET", 3)
+ptp4 = PrimaryTimePreference(4, "Overnight: 1am ET",4)
 
 # Secondary time preference
-stp1 = SecondaryTimePreference(1, "Morning: 9am ET")
-stp2 = SecondaryTimePreference(2, "Afternoon: 3pm ET")
-stp3 = SecondaryTimePreference(3, "Evening: 7pm ET")
-stp4 = SecondaryTimePreference(4, "Overnight: 1am ET")
+stp1 = SecondaryTimePreference(1, "Morning: 9am ET", 1)
+stp2 = SecondaryTimePreference(2, "Afternoon: 3pm ET", 2)
+stp3 = SecondaryTimePreference(3, "Evening: 7pm ET", 3)
+stp4 = SecondaryTimePreference(4, "Overnight: 1am ET", 4)
 
 st1 = Student("tester@tester.com", "test123", 123456, "test1234")  # student
 
-wm1 = WeekOfMeeting("Aug 2")
-wm2 = WeekOfMeeting("Aug 9")
-wm3 = WeekOfMeeting("Aug 16")
-wm4 = WeekOfMeeting("Aug 23")
-wm5 = WeekOfMeeting("Aug 30")
-wm6 = WeekOfMeeting("Sep 5")
-wm7 = WeekOfMeeting("Sep 12")
-wm8 = WeekOfMeeting("Sep 19")
-wm9 = WeekOfMeeting("Sep 26")
-wm10 = WeekOfMeeting("Oct 3")
-wm11 = WeekOfMeeting("Oct 10")
-wm12 = WeekOfMeeting("Oct 17")
-wm13 = WeekOfMeeting("Oct 24")
-wm14 = WeekOfMeeting("Oct 31")
-wm15 = WeekOfMeeting("Nov 7")
-wm16 = WeekOfMeeting("Nov 14")
-wm17 = WeekOfMeeting("Nov 21")
-wm18 = WeekOfMeeting("Nov 28")
-wm19 = WeekOfMeeting("Dec 5")
-wm20 = WeekOfMeeting("Dec 12")
+wm1 = WeekOfMeeting(1, "Aug 2")
+wm2 = WeekOfMeeting(2, "Aug 9")
+wm3 = WeekOfMeeting(3, "Aug 16")
+wm4 = WeekOfMeeting(4, "Aug 23")
+wm5 = WeekOfMeeting(5, "Aug 30")
+wm6 = WeekOfMeeting(6, "Sep 5")
+wm7 = WeekOfMeeting(7, "Sep 12")
+wm8 = WeekOfMeeting(8, "Sep 19")
+wm9 = WeekOfMeeting(9, "Sep 26")
+wm10 = WeekOfMeeting(10, "Oct 3")
+wm11 = WeekOfMeeting(11, "Oct 10")
+wm12 = WeekOfMeeting(12, "Oct 17")
+wm13 = WeekOfMeeting(13, "Oct 24")
+wm14 = WeekOfMeeting(14, "Oct 31")
+wm15 = WeekOfMeeting(15, "Nov 7")
+wm16 = WeekOfMeeting(16, "Nov 14")
+wm17 = WeekOfMeeting(17, "Nov 21")
+wm18 = WeekOfMeeting(18, "Nov 28")
+wm19 = WeekOfMeeting(19, "Dec 5")
+wm20 = WeekOfMeeting(20, "Dec 12")
 
 
 #weekly signup
@@ -554,19 +558,19 @@ ws9 = WeeklySignUp(9, "Sep 26", 12346)
 ws10 = WeeklySignUp(10, "Oct 3", 12346)
 
 
+# db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7,
+# mc8, mc9, mc10])  # matched classes
+# db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
+# db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
+# db.session.add_all([cht1, cht2, cht3, cht4, cht5, cht6])  # cohorts
+# db.session.add_all([ng1, ng2])
+# db.session.add_all([wm1, wm2, wm3, wm4, wm5, wm6, wm7, wm8, wm9, wm10, wm11, wm12,
+# wm13, wm14, wm15, wm16, wm17, wm18, wm19, wm20])  # week meet
+# db.session.add_all([ws1, ws2, ws3, ws4, ws5, ws6, ws7, ws8, ws9, ws10])  # weekly signup
+# db.session.add_all([st1])
+# db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
+# db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
 
-
-
-db.session.add_all([mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10])  # matched classes
-db.session.add_all([pi1, pi2, pi3, pi4, pi5, pi6, pi7, pi8, pi9, pi10])  # primary interests
-db.session.add_all([si1, si2, si3, si4, si5, si6, si7, si8, si9, si10])  # secondary interests
-db.session.add_all([cht1, cht2, cht3, cht4, cht5, cht6])  # cohorts
-db.session.add_all([ng1, ng2])
-db.session.add_all([ws1, ws2, ws3, ws4, ws5, ws6, ws7, ws8, ws9, ws10])  # weekly signup
-db.session.add_all([ptp1, ptp2, ptp3, ptp4])  # primary time preferences
-db.session.add_all([stp1, stp2, stp3, stp4])  # secondary time preferences
-# db.session.add_all([wm1, wm2, wm3, wm4, wm5, wm6, wm7, wm8, wm9, wm10, wm11, wm12, wm13, wm14, wm15, wm16, wm17, wm18, wm19, wm20])  # week meet
-db.session.add_all([st1])
 
 db.session.commit()
 
