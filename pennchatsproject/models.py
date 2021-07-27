@@ -326,20 +326,19 @@ class UnmatchedStudents(db.Model):
     __tablename__ = 'unmatched_students'
 
     student_id = db.Column(db.Integer, primary_key=True, unique=True)
-    email = db.Column(db.String(64), index=True, unique=True, nullable=False)
-    first_name = db.Column(db.Text)
-    last_name = db.Column(db.Text)
+    
+    # might be able to get rid of these three fields and replace with filter calls for student_id
+    # email = db.Column(db.String(64), index=True, unique=True, nullable=False)
+    # first_name = db.Column(db.Text)
+    # last_name = db.Column(db.Text)
 
     # one to many relationship
     meeting_week_name = db.Column(db.Text, db.ForeignKey(
         'meeting_weeks.week_meet_name'), nullable=False)
 
-    def __init__(self, meeting_week_name, student_id, email, first_name, last_name):
+    def __init__(self, meeting_week_name, student_id):
         self.meeting_week_name = meeting_week_name
         self.student_id = student_id
-        self.email = email
-        self.first_name = first_name
-        self.last_name = last_name
 
     def __repr__(self):
         return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}. Unmatched week: {self.meeting_week_name}"
