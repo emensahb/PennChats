@@ -54,7 +54,7 @@
             <th scope="row">{{ loop.index }}</th>
             <td>{{ student.meeting_week_name }}</td>
             <td><a href="{{url_for('students.student_profile', username=student.student_id|query_student_username)}}">{{ student.student_id | query_student_first_name }} {{ student.student_id | query_student_last_name }}</a></td>
-            <td>{{ student.email }}</td>
+            <td><a href="mailto:{{student.student_id|query_student_email}}">{{student.student_id|query_student_email}}</a></td>
           </tr>
         {% endfor %}
       </tbody>
