@@ -29,12 +29,12 @@ def generate():
             db.session.add(meeting)
         for student in unmatched_students:
             student_id = student.student_id
-            email = student.email
-            first_name = student.first_name
-            last_name = student.last_name
+            # email = student.email
+            # first_name = student.first_name
+            # last_name = student.last_name
             # initialize unmatched student object
             unmatched_student = UnmatchedStudents(
-                week_meet, student_id, email, first_name, last_name)
+                week_meet, student_id)
             db.session.add(unmatched_student)
         # commit new meeting and unmatched_student objects to session
         db.session.commit()
