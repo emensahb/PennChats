@@ -4,7 +4,7 @@
 
 import jinja2
 from flask import render_template, Blueprint
-from pennchatsproject.models import TimeOption
+from pennchatsproject.models import TimeOption, Student
 
 
 core = Blueprint('core', __name__)
@@ -28,3 +28,24 @@ def info():
 def query_time(context, time_id):
     time = TimeOption.query.get(time_id)
     return time.time_option
+
+
+@jinja2.contextfilter
+@core.app_template_filter()
+def query_student_first_name(context, student_id):
+    student = Student.query.get(student_id)
+    return student.first_name
+
+
+@jinja2.contextfilter
+@core.app_template_filter()
+def query_student_last_name(context, student_id):
+    student = Student.query.get(student_id)
+    return student.last_name
+
+
+@jinja2.contextfilter
+@core.app_template_filter()
+def query_student_username(context, student_id):
+    student = Student.query.get(student_id)
+    return student.username
