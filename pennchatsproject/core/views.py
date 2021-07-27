@@ -49,3 +49,10 @@ def query_student_last_name(context, student_id):
 def query_student_username(context, student_id):
     student = Student.query.get(student_id)
     return student.username
+
+
+@jinja2.contextfilter
+@core.app_template_filter()
+def query_student_email(context, student_id):
+    student = Student.query.get(student_id)
+    return student.email
