@@ -10,10 +10,11 @@ MarkupSafe==1.1.1
 Werkzeug==0.16.1 # changed from 1.0.1 to resolve error: https://stackoverflow.com/questions/60896993/importerror-cannot-import-name-url-encode-from-werkzeug
 
 # Flask Packages
+sqlalchemy
 Flask-Login==0.4.0
 Flask-Migrate==2.0.2
 Flask-Script==2.0.5
-Flask-SQLAlchemy==2.4.0
+Flask-SQLAlchemy>=2.4.0
 Flask-WTF==0.14.3 #changed from 0.14.2 to resolve error: https://github.com/scoringengine/scoringengine/issues/670
 Flask-User==1.0.1.5
 
