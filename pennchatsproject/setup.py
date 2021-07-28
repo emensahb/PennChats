@@ -88,7 +88,7 @@ co6 = Cohort("Fall 2021")
 # courses = Course.query.all()
 # week_meets = WeekMeet.query.all()
 #
-print(time_options)
+# print(time_options)
 # print(networking_goals)
 # print(interests)
 # print(cohorts)
