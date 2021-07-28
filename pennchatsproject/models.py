@@ -343,5 +343,3 @@ class UnmatchedStudents(db.Model):
 
     def __repr__(self):
         return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}. Unmatched week: {self.meeting_week_name}"
-
-db.create_all()
