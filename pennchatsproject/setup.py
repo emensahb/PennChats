@@ -44,8 +44,7 @@ c10 = Course("CIS550", "Database & Information Systems")
 c11 = Course("CIS581", "Computer Vision & Computational Photography")
 c12 = Course("CIT520", "Intro to Robotics")
 c13 = Course("CIT582", "Blockchains & Cryptography")
-c14 = Course(
-    "ESE542", "Statistics for Data Science: An Applied Machine Learning Course")
+c14 = Course("ESE542", "Statistics for Data Science: An Applied Machine Learning Course")
 
 
 # interests
@@ -70,15 +69,15 @@ co5 = Cohort("Spring 2021")
 co6 = Cohort("Fall 2021")
 
 
-db.session.add_all([t1, t2, t3, t4, n1, n2, c1, c2, c3, c4, c5, c6, c7, c8, c9,
-                 c10, c11, c12, c13, c14, i1, i2, i3, i4, i5, i6, i7, i8, i9,
-                 i10, co1, co2, co3, co4, co5, co6, w1, w2, w3, w4, w5, w6,
-                 w7, w8, w9])
+# db.session.add_all([t1, t2, t3, t4, n1, n2,
+                  #  c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14,
+                  #  i1, i2, i3, i4, i5, i6, i7, i8, i9, i10,
+                   # co1, co2, co3, co4, co5, co6,
+                   # w1, w2, w3, w4, w5, w6, w7, w8, w9])
 
-#db.session.add_all([t1, t2, t3, t4, n1, n2, c1, c2, c3, c4, c5, c6, c7, c8, c9,
-                   #c10, c11, c12, c13, c14, i1, i2, i3, i4, i5, i6, i7, i8, i9,
-                   #i10, co1, co2, co3, co4, co5, co6, w1, w2, w3, w4, w5, w6,
-                   #w7, w8, w9])
+db.session.add_all([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14])
+
+
 db.session.commit()
 
 # time_options = TimeOption.query.all()

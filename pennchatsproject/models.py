@@ -143,8 +143,7 @@ class Course(db.Model):
 
     __tablename__ = 'courses'
 
-    course_id = db.Column(db.Text, primary_key=True,
-                          unique=True, nullable=False)
+    course_id = db.Column(db.Text, primary_key=True)
     course_name = db.Column(db.Text, nullable=False)
 
     # many to one relationships
@@ -159,7 +158,7 @@ class Course(db.Model):
         return f"{self.course_id} {self.course_name}"
 
 
-# many to many relatinoship association tables
+# many to many relationship association tables
 current_courses_record = db.Table('current_courses_record',
                                   db.Column('student_id', db.Integer, db.ForeignKey(
                                       'students.student_id'), primary_key=True),
