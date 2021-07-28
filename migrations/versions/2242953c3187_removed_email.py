@@ -1,8 +1,8 @@
-"""removed Email()
+"""removed Email
 
-Revision ID: e4bef0f01dad
+Revision ID: 2242953c3187
 Revises: 
-Create Date: 2021-07-27 22:09:50.745402
+Create Date: 2021-07-27 22:16:53.474714
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e4bef0f01dad'
+revision = '2242953c3187'
 down_revision = None
 branch_labels = None
 depends_on = None
