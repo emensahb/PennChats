@@ -70,8 +70,8 @@ class ProfileForm(FlaskForm):
 
     # Course
     # Gets the list of courses from the DB & create class list to choose
-    # class_list = [x.course_id for x in Course.query.all()]
-    class_list = [591, 592, 593, 594, 595, 596]
+    class_list = [x.course_id for x in Course.query.all()]
+    #class_list = [591, 592, 593, 594, 595, 596]
     class_tuples = [(x, x) for x in class_list]
     current_courses = QuerySelectMultipleField(
         query_factory=course_query)
