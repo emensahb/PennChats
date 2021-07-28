@@ -1,8 +1,8 @@
-"""new models
+"""removed Email()
 
-Revision ID: 86f11cdfa23d
+Revision ID: e4bef0f01dad
 Revises: 
-Create Date: 2021-07-27 22:05:08.651764
+Create Date: 2021-07-27 22:09:50.745402
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '86f11cdfa23d'
+revision = 'e4bef0f01dad'
 down_revision = None
 branch_labels = None
 depends_on = None
