@@ -4,7 +4,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, ValidationError
-from wtforms.validators import DataRequired, Email, EqualTo, URL
+from wtforms.validators import DataRequired, EqualTo, URL
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from pennchatsproject.models import *
 
