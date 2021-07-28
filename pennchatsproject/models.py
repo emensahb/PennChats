@@ -343,7 +343,7 @@ class UnmatchedStudents(db.Model):
     def __repr__(self):
         return f"Unmatched student: {self.first_name} {self.last_name}, {self.student_id}, and {self.email}. Unmatched week: {self.meeting_week_name}"
 
-db.create_all()
+# db.create_all()
 
 # courses
 c1 = Course("CIT591", "Intro to Software Development")
@@ -408,13 +408,13 @@ co5 = Cohort("Spring 2021")
 co6 = Cohort("Fall 2021")
 
 
-db.session.add_all([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14,
-                    t1, t2, t3, t4, n1, n2,
-                    i1, i2, i3, i4, i5, i6, i7, i8, i9, i10,
-                    co1, co2, co3, co4, co5, co6,
-                    w1, w2, w3, w4, w5, w6, w7, w8, w9])
+#db.session.add_all([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14,
+                   # t1, t2, t3, t4, n1, n2,
+                   # i1, i2, i3, i4, i5, i6, i7, i8, i9, i10,
+                   # co1, co2, co3, co4, co5, co6,
+                   # w1, w2, w3, w4, w5, w6, w7, w8, w9])
 
 # db.session.add_all([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14])
 
 
-db.session.commit()
+# db.session.commit()
