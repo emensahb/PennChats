@@ -2,40 +2,44 @@
 
 {% block title %} My Meetings {% endblock %}
 
-{% block head %} ooo {% endblock %}
-
 {% block content %}
-<div style="text-align: center;">
-  <div style="display: inline-block; text-align: left;">
+<div class="jumbotron">
+  <div class="container">
+    
+    <div style="text-align: center;">
+      <div style="display: inline-block; text-align: left;">
 
-    <h2>Matched Meetings for {{current_user.first_name}} {{current_user.last_name}}</h2>
-    
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Meeting Week</th>
-          <th scope="col">Meeting Time</th>
-          <th scope="col">Participants</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for meeting in meetings %}
-          <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ meeting.meeting_week_name }}</td>
-            <td>{{ meeting.time_id | query_time }}</td>
-            <td>
-              {% for student in meeting.students %}
-                <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }} | </a>
-              {% endfor %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    
+        <h2>Matched Meetings for {{current_user.first_name}} {{current_user.last_name}}</h2>
+        
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Meeting Week</th>
+              <th scope="col">Meeting Time</th>
+              <th scope="col">Participants</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for meeting in meetings %}
+              <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ meeting.meeting_week_name }}</td>
+                <td>{{ meeting.time_id | query_time }}</td>
+                <td>
+                  {% for student in meeting.students %}
+                    <a href="{{url_for('students.student_profile', username=student.username)}}">{{ student.first_name }} {{ student.last_name }} | </a>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
   </div>
+
 </div>
 
 {% endblock %}

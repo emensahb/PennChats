@@ -5,59 +5,61 @@
 {% block content %}
 
 <div class="jumbotron">
-  <div align='center'>
-    <h2>{{ student.first_name }} {{ student.last_name }}</h2>
-    <p>{{ student.city }} {{ student.state }} {{ student.country }}</p>
-    <p>Interests: {% for interest in interests %} {{interest.interest_name}} |{% endfor %}</p>
-    MCIT Online Cohort: {{ student.cohort }} 
-    <br>
-    LinkedIn: <a href="{{ student.linkedin }}">{{student.linkedin}}</a> 
-    <br>
-    Email: <a href="mailto:{{student.email}}">{{student.email}}</a>
-    <br>
-    {% if student.bio %} Bio: {{ student.bio }} {% endif %}
-    
-    <h3>Current Courses</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Course ID</th>
-          <th scope="col">Course Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course in current_courses %} 
+  <div class="container">
+    <div align='center'>
+      <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+      <p>{{ student.city }} {{ student.state }} {{ student.country }}</p>
+      <p>Interests: {% for interest in interests %} {{interest.interest_name}} |{% endfor %}</p>
+      MCIT Online Cohort: {{ student.cohort }} 
+      <br>
+      LinkedIn: <a href="{{ student.linkedin }}">{{student.linkedin}}</a> 
+      <br>
+      Email: <a href="mailto:{{student.email}}">{{student.email}}</a>
+      <br>
+      {% if student.bio %} Bio: {{ student.bio }} {% endif %}
+      
+      <h3>Current Courses</h3>
+      <table class="table">
+        <thead>
           <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ course.course_id }}</td>
-            <td>{{ course.course_name }}</td>
+            <th scope="col"></th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Course Name</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <br>
-    
-    <h3>Past Courses</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Course ID</th>
-          <th scope="col">Course Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for course in past_courses %} 
+        </thead>
+        <tbody>
+          {% for course in current_courses %} 
+            <tr>
+              <th scope="row">{{ loop.index }}</th>
+              <td>{{ course.course_id }}</td>
+              <td>{{ course.course_name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br>
+      
+      <h3>Past Courses</h3>
+      <table class="table">
+        <thead>
           <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ course.course_id }}</td>
-            <td>{{ course.course_name }}</td>
+            <th scope="col"></th>
+            <th scope="col">Course ID</th>
+            <th scope="col">Course Name</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <br>
+        </thead>
+        <tbody>
+          {% for course in past_courses %} 
+            <tr>
+              <th scope="row">{{ loop.index }}</th>
+              <td>{{ course.course_id }}</td>
+              <td>{{ course.course_name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br>
+    </div>
   </div>
 </div>
 
