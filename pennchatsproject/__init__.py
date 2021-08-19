@@ -20,7 +20,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 ## Cloud testing ##
-SQLALCHEMY_DATABASE_URI = 'postgres://croqfcixiufmgv:f8caeaa60ed22208124855e753629d5439edd16d5a356481832e6db15ff2fa92@ec2-18-204-101-137.compute-1.amazonaws.com:5432/d76k1g0ggj8muo'
+SQLALCHEMY_DATABASE_URI = 'postgres://jptzhekgkreqix:63b073aa48f21f67beddd6c591d994c1253cb752b6b92edcf237c94b47afc82a@ec2-54-147-93-73.compute-1.amazonaws.com:5432/du3ru7o3olo36'
 if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
