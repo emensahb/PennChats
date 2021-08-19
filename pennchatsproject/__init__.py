@@ -33,6 +33,8 @@ if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
 app.config['SECRET_KEY'] = 'dfewfew123213rwdsgert34tgfd1234trgf'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
+
 db = SQLAlchemy(app)
 Migrate(app, db)
 
