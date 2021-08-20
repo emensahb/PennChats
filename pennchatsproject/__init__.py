@@ -20,7 +20,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 #print(basedir)
 
 
-## Cloud testing ##
+## Cloud testing 8/19##
 SQLALCHEMY_DATABASE_URI = 'postgres://jptzhekgkreqix:63b073aa48f21f67beddd6c591d994c1253cb752b6b92edcf237c94b47afc82a@ec2-54-147-93-73.compute-1.amazonaws.com:5432/du3ru7o3olo36'
 if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
