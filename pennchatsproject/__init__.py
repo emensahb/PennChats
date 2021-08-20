@@ -16,12 +16,11 @@ app = Flask(__name__)
 ######## Database Setup ########
 ################################
 basedir = os.path.abspath(os.path.dirname(__file__))
-# port = int(os.environ.get('PORT', 5000))
 #print(basedir)
 
 
 ## Cloud testing 8/19##
-SQLALCHEMY_DATABASE_URI = 'postgres://jptzhekgkreqix:63b073aa48f21f67beddd6c591d994c1253cb752b6b92edcf237c94b47afc82a@ec2-54-147-93-73.compute-1.amazonaws.com:5432/du3ru7o3olo36'
+SQLALCHEMY_DATABASE_URI = 'postgres://ssldqbppegmblq:9287ee9524c32eaeac5ad6d7dfbd7eae744fe8c1d6f7822ef77f9d6c84dbdcc3@ec2-54-159-35-35.compute-1.amazonaws.com:5432/'
 if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
