@@ -74,10 +74,11 @@ nbformat==5.0.7
 networkx==2.4
 notebook==6.0.3
 numba==0.49.1
+numpy==1.19.5
 oauthlib==3.1.0
 opt-einsum==3.3.0
 packaging==20.4
-pandas==1.0.4
+pandas==1.3.2
 pandas-profiling @ https://github.com/pandas-profiling/pandas-profiling/archive/master.zip
 pandocfilters==1.4.2
 parso==0.7.0
