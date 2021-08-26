@@ -41,7 +41,7 @@ Main entities of the database include:
 - Unmatched Students
 
 ## Technology
-Penn Chats is developed using Python and the Flask web framework, with ProsgreSQL as the back-end database solution. 
+Penn Chats is developed using Python and the Flask web framework, with PostgreSQL as the back-end database solution. 
 
 ## The Algorithm
 The design principles of the algorithm:
